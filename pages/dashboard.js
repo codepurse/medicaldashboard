@@ -6,8 +6,8 @@ import MessageService from "../services/api/api.message";
 
 export default function dashboard() {
   return (
-    <>
-     
-    </>
+   <Container fluid className = "h-100 conDashboard">
+    
+   </Container>
   );
 }

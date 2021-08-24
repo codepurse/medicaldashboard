@@ -1,6 +1,6 @@
 import React, { Component, useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Analytics } from "./sidebardata";
+import { Analytics, Directory } from "./sidebardata";
 import Link from "next/link";
 
 export default function sidebar() {
@@ -8,22 +8,35 @@ export default function sidebar() {
     <Container className="divSidebar">
       <Row>
         <Col lg={12}>
-          <img src="Image/logosmallblack.png" className="img-fluid imgLogo" />
+          <img src="Image/Resurface_Logo.webp" className="img-fluid imgLogo" />
+        </Col>
+        <Col lg={12} className="colUl">
           <p className="pHeader">ANALYTICS</p>
           <ul>
             {Analytics.map((item, index) => (
-              <>
+              <Link href={item.path}>
                 <li key={index}>
-                  <Link href={item.path}>
-                    <div className="form-inline">
-                      <i>{item.icon}</i>
-                      <a>
-                        <span>{item.title}</span>
-                      </a>
-                    </div>
-                  </Link>
+                  <div className="centered-label">
+                    <i> {item.icon}</i>
+                    <span>{item.title}</span>
+                  </div>
                 </li>
-              </>
+              </Link>
+            ))}
+          </ul>
+        </Col>
+        <Col lg={12} className="colUl">
+          <p className="pHeader">DIRECTORY</p>
+          <ul>
+            {Directory.map((item, index) => (
+              <Link href={item.path}>
+                <li key={index}>
+                  <div className="centered-label">
+                    <i> {item.icon}</i>
+                    <span>{item.title}</span>
+                  </div>
+                </li>
+              </Link>
             ))}
           </ul>
         </Col>

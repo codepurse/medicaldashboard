@@ -3,9 +3,10 @@ import React, { Component, useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
 import MessageService from "../services/api/api.message";
-import { isEmail, haha } from "../utils/validation";
+import { isEmail} from "../utils/validation";
 
 export default function Login() {
+  const router = useRouter()
   const goHide = useRef();
   const pErroremail = useRef(0);
   const [state, setState] = React.useState({
@@ -31,11 +32,12 @@ export default function Login() {
       setPassworderror(false);
     }
     if (!isEmail(state.email)) {
+      alert(state.email)
       setEmailerror(false);
       pErroremail.current.style.display = "block";
     }
 
-    if (state.email && state.password && !isEmail(state.email)) {
+    if (state.email && state.password && isEmail(state.email)) {
       const formData = new FormData();
       formData.append("email", state.email);
       formData.append("password", state.password);
@@ -43,7 +45,7 @@ export default function Login() {
         .then((response) => {
           console.log("login", response.data);
           localStorage.setItem("token", response.data.token);
-          alert("tama");
+          router.push("/dashboard")
         })
         .catch((error) => {
           console.log("login", error);
@@ -91,7 +93,7 @@ export default function Login() {
                   setEmailerror(true);
                 }}
                 className={emailError ? "txtInput" : "txtError"}
-                name="email txtEmail"
+                name="email"
                 onInput={(e) => {
                   pErroremail.current.style.display = "none";
                 }}
