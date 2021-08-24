@@ -79,7 +79,7 @@ img {
     position: absolute;
     top: 30px;
     left: 30px;
-    z-index: 1;
+    z-index: 3;
   }
   .rowLogin {
     height: 100vh;
@@ -131,9 +131,6 @@ img {
         margin-top: 13px;
         display: none;
       }
-      .txtEmail {
-        
-      }
     }
     .colVideo {
       height: 100%;
@@ -142,10 +139,11 @@ img {
       .bgOverlay {
         height: 100%;
         width: 100%;
-        z-index: 1000;
+        z-index: 2;
         background-color: rgba(25, 118, 210, 0.4);
         display: flex;
         align-items: center;
+        position: relative;
         .childOverlay {
           max-width: 500px;
           .pOverlayHeader {
@@ -170,7 +168,7 @@ img {
         height: 100vh;
         min-height: 100%;
         object-fit: fill;
-        z-index: -1;
+        z-index: 0;
         top: 0px;
       }
     }

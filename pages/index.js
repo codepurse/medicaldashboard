@@ -23,8 +23,6 @@ export default function Login() {
     });
   };
 
-
-
   const goLogin = (evt) => {
     if (!state.email) {
       setEmailerror(false);
@@ -61,12 +59,6 @@ export default function Login() {
         <img src="Image/Logo-white.png" className="img-fluid" />
         <Row className="align-items-center rowLogin">
           <Col lg={6} className="colVideo">
-            <video className="video-fluid" autoPlay loop muted>
-              <source
-                src="https://video.wixstatic.com/video/aa4ea1_2a58fdec77224362960c40c6d399a6ac/1080p/mp4/file.mp4"
-                type="video/mp4"
-              ></source>
-            </video>
             <div className="bgOverlay align-items-center">
               <div className="childOverlay mx-auto">
                 <p className="pOverlayHeader">
@@ -79,6 +71,12 @@ export default function Login() {
                 </p>
               </div>
             </div>
+            <video className="video-fluid" autoPlay loop muted>
+              <source
+                src="https://video.wixstatic.com/video/aa4ea1_2a58fdec77224362960c40c6d399a6ac/1080p/mp4/file.mp4"
+                type="video/mp4"
+              ></source>
+            </video>
           </Col>
           <Col lg={6}>
             <div className="divLogin mx-auto">
@@ -94,12 +92,16 @@ export default function Login() {
                 }}
                 className={emailError ? "txtInput" : "txtError"}
                 name="email txtEmail"
-                  onInput={(e) => {
+                onInput={(e) => {
                   pErroremail.current.style.display = "none";
                 }}
                 onChange={handleChange}
               />
-              <p className="pInvalid" ref={pErroremail} style = {{marginBottom: "8px",marginTop: "5px"}}>
+              <p
+                className="pInvalid"
+                ref={pErroremail}
+                style={{ marginBottom: "8px", marginTop: "5px" }}
+              >
                 Invalid email format.
               </p>
               <p className="pHeaderinput">Password</p>
