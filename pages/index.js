@@ -4,8 +4,10 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
 import MessageService from "../services/api/api.message";
 import { isEmail} from "../utils/validation";
+import useStore from "../store/store";
 
 export default function Login() {
+  const setInfo = useStore(state => state.addInfo);
   const router = useRouter()
   const goHide = useRef();
   const pErroremail = useRef(0);
@@ -45,6 +47,7 @@ export default function Login() {
         .then((response) => {
           console.log("login", response.data);
           localStorage.setItem("token", response.data.token);
+          setInfo(response.data)
           router.push("/dashboard")
         })
         .catch((error) => {

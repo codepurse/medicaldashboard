@@ -8,14 +8,14 @@ export default function sidebar() {
     <Container className="divSidebar">
       <Row>
         <Col lg={12}>
-          <img src="Image/Resurface_Logo.webp" className="img-fluid imgLogo" />
+          <img src="Image/Logo-white.png" className="img-fluid imgLogo" />
         </Col>
         <Col lg={12} className="colUl">
           <p className="pHeader">ANALYTICS</p>
           <ul>
             {Analytics.map((item, index) => (
-              <Link href={item.path}>
-                <li key={index}>
+              <Link key={index} href={item.path}>
+                <li>
                   <div className="centered-label">
                     <i> {item.icon}</i>
                     <span>{item.title}</span>
@@ -29,7 +29,7 @@ export default function sidebar() {
           <p className="pHeader">DIRECTORY</p>
           <ul>
             {Directory.map((item, index) => (
-              <Link href={item.path}>
+              <Link key={index} href={item.path}>
                 <li key={index}>
                   <div className="centered-label">
                     <i> {item.icon}</i>

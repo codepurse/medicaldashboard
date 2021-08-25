@@ -29,7 +29,7 @@ export const Analytics = [
 export const Directory = [
   {
     title: "Medical Records",
-    path: "/dashboard",
+    path: "/emr",
     icon: <FaLaptopMedical />,
     cname: "nav-text",
   },

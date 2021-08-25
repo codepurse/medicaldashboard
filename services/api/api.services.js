@@ -3,6 +3,7 @@ module.exports = appglobal = {
   api: {
 
     base_api:"https://staging.resurfacehub.com",
+    aws: "https://resurface-s3.s3.ap-southeast-1.amazonaws.com/",
   
 
     // Auth Endpoint

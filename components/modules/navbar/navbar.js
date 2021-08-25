@@ -2,9 +2,16 @@ import React, { Component, useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import Image from "react-bootstrap/Image";
-import {RiNotification3Line} from "react-icons/ri";
+import { RiNotification3Line } from "react-icons/ri";
+import appglobal from "../../../services/api/api.services";
+import useStore from "../../../store/store";
 
 export default function navbar() {
+  const people = useStore((state) => state.people);
+  useEffect(() => {
+    console.log(people[0]);
+  }, []);
+
   return (
     <Container fluid className="conNavbar">
       <Row>
@@ -12,9 +19,9 @@ export default function navbar() {
           <div>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic-button">
-                <span className="pFname">Alfon Labadan</span>
+                <span className="pFname">{people[0].user.full_name}</span>
                 <br></br>
-                <span className="pRole">Admin</span>
+                <span className="pRole">{people[0].user.roles[0]}</span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item>My profile</Dropdown.Item>
@@ -29,11 +36,13 @@ export default function navbar() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <Image fluid src={"Image/avatar.jpg"} width={35} id="imgProfile" />
+            <Image fluid src={appglobal.api.aws + people[0].user.photo} width={35} id="imgProfile" />
             <div className="divHorizontal"></div>
             <div className="divBell">
               <div className="numberCircle"></div>
-              <i><RiNotification3Line/></i>
+              <i>
+                <RiNotification3Line />
+              </i>
             </div>
           </div>
         </Col>

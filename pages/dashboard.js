@@ -7,7 +7,11 @@ import MessageService from "../services/api/api.message";
 export default function dashboard() {
   return (
    <Container fluid className = "h-100 conDashboard">
-    
+      <Row className = "h-100 align-items-center">
+        <Col lg = {12}>
+        <p style = {{textAlign: "center"}}>Dashboard</p>
+        </Col>
+      </Row>
    </Container>
   );
 }

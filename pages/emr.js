@@ -6,8 +6,12 @@ import MessageService from "../services/api/api.message";
 
 export default function emr() {
   return (
-    <>
-      <p>asdasd</p>
-    </>
+    <Container fluid className="h-100 conDashboard">
+      <Row className="h-100 align-items-center">
+        <Col lg={12}>
+          <p style={{ textAlign: "center" }}>EMR</p>
+        </Col>
+      </Row>
+    </Container>
   );
 }
