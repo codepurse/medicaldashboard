@@ -8,9 +8,6 @@ import useStore from "../../../store/store";
 
 export default function navbar() {
   const people = useStore((state) => state.people);
-  useEffect(() => {
-    console.log(people[0]);
-  }, []);
 
   return (
     <Container fluid className="conNavbar">
@@ -36,7 +33,12 @@ export default function navbar() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <Image fluid src={appglobal.api.aws + people[0].user.photo} width={35} id="imgProfile" />
+            <Image
+              fluid
+              src={appglobal.api.aws + people[0].user.photo}
+              width={35}
+              id="imgProfile"
+            />
             <div className="divHorizontal"></div>
             <div className="divBell">
               <div className="numberCircle"></div>
