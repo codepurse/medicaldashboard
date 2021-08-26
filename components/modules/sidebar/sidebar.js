@@ -8,7 +8,7 @@ export default function sidebar() {
     <Container className="divSidebar">
       <Row>
         <Col lg={12}>
-          <img src="Image/Logo-white.png" className="img-fluid imgLogo" />
+          <img src="Image/logosmall.png" className="img-fluid imgLogo" />
         </Col>
         <Col lg={12} className="colUl">
           <p className="pHeader">ANALYTICS</p>

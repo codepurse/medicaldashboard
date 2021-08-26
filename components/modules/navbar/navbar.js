@@ -6,8 +6,14 @@ import { RiNotification3Line } from "react-icons/ri";
 import appglobal from "../../../services/api/api.services";
 import useStore from "../../../store/store";
 
+
+
 export default function navbar() {
   const people = useStore((state) => state.people);
+
+  useEffect(() => {
+
+  }, []);
 
   return (
     <Container fluid className="conNavbar">

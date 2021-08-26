@@ -2,7 +2,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
-$bg-color-blue: rgb(5, 19, 58);
+$bg-color-blue: #0c2556;
 $bg-color-lightblue: rgb(31, 43, 80);
 $bg-color-darkwhite: #fafbfd;
 $bg-color-hover-white: #f7f8fa;
@@ -34,12 +34,55 @@ body {
   backface-visibility: hidden;
   text-rendering: optimizeLegibility !important;
 }
-
 img {
   image-rendering: crisp-edges;
 }
 #__next {
   height: 100%;
+}
+
+.ulDashboard {
+  list-style-type: none;
+  overflow: hidden;
+  margin: 0px auto;
+  padding: 0px;
+  margin-bottom: 0px;
+  margin-top: 30px;
+  margin-left: 2px;
+
+  li {
+    float: left;
+    font-size: 15px;
+    display: block;
+    color: $font-color-gray;
+    text-align: center;
+    margin-right: 35px;
+    text-decoration: none;
+    cursor: pointer;
+    margin-bottom: 0px;
+    width: max-content;
+    text-align: center;
+    padding-bottom: 7px;
+    font-size: 14px;
+  }
+
+  .activeUl {
+    color: $bg-color-blue !important;
+    font-weight: 500;
+    border-bottom: 2px solid $bg-color-blue !important;
+  }
+}
+
+.hrDashboard {
+  background-color: #9e9e9e;
+  margin-top: 0px;
+  margin-left: 5px;
+}
+
+.conPages {
+  padding-left: 250px !important;
+  padding-top: 90px;
+  padding-right: 25px !important;
 }
 
 .txtInput {
@@ -71,6 +114,59 @@ img {
   outline: none;
   &:focus {
     border: 2px solid $font-color-blue;
+  }
+}
+
+.table-responsive {
+  padding-bottom: 0px !important;
+}
+
+.conTable {
+  background-color: wihte !important;
+  border-radius: 10px;
+  margin-top: 30px;
+  box-shadow: 0 0 30px rgb(28 39 60 / 8%);
+  border: 1px solid rgba(28, 39, 60, 0.12);
+  padding: 0px !important;
+}
+
+table {
+  margin-top: -2px;
+  border-collapse: separate;
+  border-spacing: 0 2px !important;
+  thead {
+    tr {
+      th {
+        font-family: "Poppins";
+        padding: 10px !important;
+        padding-bottom: 12px !important;
+        font-size: 15px;
+        font-weight: 500 !important;
+        background-color: #f9f9fb !important;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  tbody {
+    tr {
+      &:hover {
+        background-color: #f3f2ee;
+      }
+      td {
+        transition: all 0.5ms;
+        vertical-align: middle;
+        border-top: 1px solid #dee2e6 !important;
+        p {
+          font-size: 15px;
+          color: $font-color-black;
+          font-weight: 500;
+          font-family: "Poppins";
+          text-transform: capitalize;
+          margin-bottom: 2px;
+        }
+      }
+    }
   }
 }
 
@@ -287,6 +383,18 @@ img {
 }
 
 .conDashboard {
-  background-color: #f9fafc;
-  height: 100vh !important;
+  .pHeader {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: $font-color-black;
+    margin-bottom: 2px;
+    span {
+      font-weight: 600;
+    }
+  }
+  .pHeadersub {
+    font-size: 13px;
+    font-weight: 400;
+    color: $font-color-gray;
+  }
 }
