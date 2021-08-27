@@ -10,14 +10,16 @@ import MessageService from "../../../services/api/api.message";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import { GoSearch } from "react-icons/go";
-import { searchTable } from "../../../utils/dashboardSearch";
+import { searchTable, searchPota } from "../../../utils/dashboardSearch";
 const fetcher = (url) =>
   MessageService.getEvents(Cookies.get("clinician_id")).then(
     (response) => response.data
   );
 export default function appointment() {
+  const ourRequest = axios.CancelToken.source();
   const { data, error } = useSWR("Appointment", fetcher);
   const [appointment, setAppointment] = useState([]);
+  const [query, setQuery] = useState("");
   if (error) {
     console.log(error);
   }
@@ -25,7 +27,7 @@ export default function appointment() {
   useEffect(() => {
     setAppointment(data);
   }, [data]);
-  console.log("Appointment", data);
+
   return (
     <>
       <Container fluid className="conAppointment p-0">
@@ -47,8 +49,9 @@ export default function appointment() {
                     type="text"
                     className="form-control txtInput"
                     placeholder="Type here.."
-                    onChange={() => {
-                      searchTable(Cookies.get("clinician_id"));
+                    onChange={(e) => {
+                      console.log(searchPota(6, e.currentTarget.value))
+                    
                     }}
                   />
                 </div>
