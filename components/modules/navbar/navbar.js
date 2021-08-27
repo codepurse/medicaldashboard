@@ -12,7 +12,7 @@ export default function navbar() {
   const people = useStore((state) => state.people);
 
   useEffect(() => {
-
+    console.log(people)
   }, []);
 
   return (
@@ -41,7 +41,7 @@ export default function navbar() {
             </Dropdown>
             <Image
               fluid
-              src={appglobal.api.aws + people[0].user.photo}
+              src=""
               width={35}
               id="imgProfile"
             />

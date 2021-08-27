@@ -2,33 +2,58 @@ import Header from "../../../components/header";
 import React, { Component, useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
-import { useRouter } from "next/router";
 import useSWR from "swr";
 import axios from "axios";
 import moment from "moment";
-
-const token =
-  "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNDRhNWQ2YzcxZmMyMDM5MWIwNDE0NjdiMWZjNzQ0MWEwZGU4MjFkOTBiMjFiMjBjMDIxYzMxMTk2NThhZDc2YTQ2NzdjYzVmOWVlZjFmNzciLCJpYXQiOjE2Mjk4OTQ3MDIuNDk5Mjc2LCJuYmYiOjE2Mjk4OTQ3MDIuNDk5MjgsImV4cCI6MTY0NTc5NTkwMi4yNDUwODQsInN1YiI6IjIiLCJzY29wZXMiOltdfQ.SDQLFckHuVN3GCKGglX1Xg-uhKOUT2k8b9ct33HhAP_n0oAoPa5kAsg0TXZBqa_lAhTRnXmJ4-CgOvLLF3hXTsj6T5pLFNyw1d0ptlBi28_7YoZcdvmYyPHUbz30dfTZG4gTS49RYywIY0qW4-slXgkAY-KrTXmhKZcVj1Aoji0HIlTKeQ2nwNBdeBIfpDtTpGe14yMGeqKTW0I5F0i94QeselFxz2E-_fTK9qgs2CDAh0xE6ucnCmAy7VRB9-MfUWUiS5SWbVdaYIrEODnvMWI7LRWhHwwzagj_s--o8wrQeeLwBjmLiVNSdidipjgpdPBQb6qJ3liLLcqkJQecV1v7Y3ulOikZsxYl7w8XRnrNwgd4Tgw_mPHkHNoTNO68j2Dq1MEBMLQvfZQznuDxJ7skkEVhXbsaAbFjTozz_x6Ql9HS9bXRBXQAORL7Z_t7SEnrFFZI8tN6zJSbekh4ov69_FWEgtPJgleBQ6t-KIQo8kzZWTqucyp-aJCnNMkXnhjHzviDBNSmzzZyEaF5dLpzEesqowUgatR6iWOHyX6rQcgiPIRALRPI1nSED6UCBuh0x-2g8eX_Dl6Z3VapehH8uvK0lOgtL_DomZBpazd5AetJvGK4wp_Xh1ldcPUVhOKPzdIUYeFBxrY7iNc3l1T9i9YUksT2zL5dauaVLvs";
+import Cookies from "js-cookie";
+import MessageService from "../../../services/api/api.message";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FiEdit2 } from "react-icons/fi";
+import { GoSearch } from "react-icons/go";
+import { searchTable } from "../../../utils/dashboardSearch";
 const fetcher = (url) =>
-  axios
-    .get("https://staging.resurfacehub.com/api/auth/events?clinician_id=6", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((res) => res.data);
-
+  MessageService.getEvents(Cookies.get("clinician_id")).then(
+    (response) => response.data
+  );
 export default function appointment() {
-  const { data, error } = useSWR("location", fetcher);
-  const [location, setLocation] = useState([]);
+  const { data, error } = useSWR("Appointment", fetcher);
+  const [appointment, setAppointment] = useState([]);
   if (error) {
     console.log(error);
   }
-  console.log("location1", data);
 
+  useEffect(() => {
+    setAppointment(data);
+  }, [data]);
+  console.log("Appointment", data);
   return (
     <>
-      <Container fluid  className = "conAppointment p-0">
+      <Container fluid className="conAppointment p-0">
         <Row>
-          <Col lg={12} className = "p-0">
+          <Col lg={12} className="p-3">
+            <Row>
+              <Col lg={4}>
+                <br />
+                <div className="input-group mb-3">
+                  <div className="input-group-prepend">
+                    <span className="input-group-text" id="basic-addon1">
+                      <i>
+                        <GoSearch />
+                      </i>
+                      Search
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    className="form-control txtInput"
+                    placeholder="Type here.."
+                    onChange={() => {
+                      searchTable(Cookies.get("clinician_id"));
+                    }}
+                  />
+                </div>
+              </Col>
+            </Row>
             <div className="conTable">
               <Table>
                 <thead>
@@ -42,8 +67,8 @@ export default function appointment() {
                   </tr>
                 </thead>
                 <tbody>
-                  {data
-                    ? data.data.map((event, i) => (
+                  {appointment
+                    ? appointment.map((event, i) => (
                         <tr key={i}>
                           <td>
                             <p className="pDate">
@@ -67,8 +92,61 @@ export default function appointment() {
                           <td>
                             <p> {event.event_type}</p>
                           </td>
-                          <td></td>
-                          <td></td>
+                          <td>
+                            <div className="form-inline">
+                              {event.events_participants[0].clinicians !==
+                                null &&
+                              event.events_participants[0].clinicians.photo ? (
+                                <img
+                                  src={
+                                    "https://resurface-s3.s3.ap-southeast-1.amazonaws.com/" +
+                                    event.events_participants[0].clinicians
+                                      .photo
+                                  }
+                                  className="imgProfile"
+                                ></img>
+                              ) : (
+                                <p className="profileImage">
+                                  {event.events_participants[0].clinicians !==
+                                    null &&
+                                    event.events_participants[0].clinicians.first_name.charAt(
+                                      0
+                                    )}{" "}
+                                  {event.events_participants[0].clinicians !==
+                                    null &&
+                                    event.events_participants[0].clinicians.last_name.charAt(
+                                      0
+                                    )}
+                                </p>
+                              )}
+                              <div>
+                                <p className="pNamelist">
+                                  {event.events_participants[0].clinicians !==
+                                    null &&
+                                    event.events_participants[0].clinicians
+                                      .first_name}{" "}
+                                  {event.events_participants[0].clinicians !==
+                                    null &&
+                                    event.events_participants[0].clinicians
+                                      .last_name}
+                                </p>
+                                <p>
+                                  {event.events_participants[0].clinicians !==
+                                    null &&
+                                    event.events_participants[0].clinicians
+                                      .email}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <i>
+                              <FiEdit2 />
+                            </i>
+                            <i>
+                              <AiOutlineDelete />
+                            </i>
+                          </td>
                         </tr>
                       ))
                     : null}

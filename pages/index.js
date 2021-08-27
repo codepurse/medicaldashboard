@@ -3,12 +3,13 @@ import React, { Component, useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
 import MessageService from "../services/api/api.message";
-import { isEmail} from "../utils/validation";
+import { isEmail } from "../utils/validation";
 import useStore from "../store/store";
+import Cookies from "js-cookie";
 
 export default function Login() {
-  const setInfo = useStore(state => state.addInfo);
-  const router = useRouter()
+  const setInfo = useStore((state) => state.addInfo);
+  const router = useRouter();
   const goHide = useRef();
   const pErroremail = useRef(0);
   const [state, setState] = React.useState({
@@ -34,7 +35,7 @@ export default function Login() {
       setPassworderror(false);
     }
     if (!isEmail(state.email)) {
-      alert(state.email)
+      alert(state.email);
       setEmailerror(false);
       pErroremail.current.style.display = "block";
     }
@@ -47,8 +48,10 @@ export default function Login() {
         .then((response) => {
           console.log("login", response.data);
           localStorage.setItem("token", response.data.token);
-          setInfo(response.data)
-          router.push("/dashboard")
+          Cookies.set("token", response.data.token);
+          Cookies.set("clinician_id", response.data.user.clinician_id);
+          setInfo(response.data);
+          router.push("/dashboard");
         })
         .catch((error) => {
           console.log("login", error);
