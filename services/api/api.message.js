@@ -25,7 +25,7 @@ function getEvents(id) {
 
 function getTime(id) {
   return request({
-    url: appglobal.api.get_all_time_entries + "?clinician_id=" + `${id}`,
+    url: appglobal.api.get_all_time_entries + "?clinicians_id=" + `${id}`,
     method: "GET",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,

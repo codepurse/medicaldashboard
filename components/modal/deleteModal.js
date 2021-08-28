@@ -3,10 +3,14 @@ import { Container, Row, Col } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import { AiOutlineDelete } from "react-icons/ai";
 import MessageService from "../../services/api/api.message";
+import useSWR, { mutate } from "swr";
 
 export default function modal(props) {
   const discard = () => {
-    MessageService.deleteEvent(props.id).then((response) =>props.closeModal());
+    MessageService.deleteEvent(props.id).then((response) => {
+      props.closeModal();
+      mutate("Appointment");
+    });
   };
 
   return (

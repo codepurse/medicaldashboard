@@ -46,20 +46,16 @@ export default function Login() {
       formData.append("password", state.password);
       MessageService.goLogin(formData)
         .then((response) => {
-          console.log("login", response.data);
-          localStorage.setItem("token", response.data.token);
           Cookies.set("token", response.data.token);
           Cookies.set("clinician_id", response.data.user.clinician_id);
           setInfo(response.data);
           router.push("/dashboard");
         })
         .catch((error) => {
-          console.log("login", error);
           goHide.current.style.display = "block";
         });
     }
   };
-
   return (
     <>
       <Header></Header>

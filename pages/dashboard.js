@@ -10,6 +10,8 @@ import TimeEntry from "../components/pages/dashboard/timeEntry";
 export default function dashboard() {
   const people = useStore((state) => state.people);
   const [fullname, setFullname] = useState("");
+  const [showAppointment, setShowAppointment] = useState(true);
+  const [showTimeentry, setShowTimeentry] = useState(false);
   useEffect(() => {
     setFullname(people[0].user.full_name);
   }, []);
@@ -22,14 +24,33 @@ export default function dashboard() {
           </p>
           <p className="pHeadersub">This is what we've got for you today.</p>
           <ul className="ulDashboard">
-            <li className="activeUl" id="ulAppointment">
+            <li
+              className={showAppointment ? "activeUl" : ""}
+              id="ulAppointment"
+              onClick={() => {
+                setShowAppointment(true);
+                setShowTimeentry(false);
+              }}
+            >
               Appointments
             </li>
-            <li id="ulTime">Time Entries</li>
+            <li
+              className={showTimeentry ? "activeUl" : ""}
+              id="ulTime"
+              onClick={() => {
+                setShowAppointment(false);
+                setShowTimeentry(true);
+              }}
+            >
+              Time Entries
+            </li>
           </ul>
         </Col>
-        <Col lg={12}>
+        <Col lg={12} className={showAppointment ? "" : "d-none"}>
           <Appointment />
+        </Col>
+        <Col lg={12} className={showTimeentry ? "" : "d-none"}>
+          <TimeEntry />
         </Col>
       </Row>
     </Container>

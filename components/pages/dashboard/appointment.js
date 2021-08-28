@@ -48,7 +48,7 @@ export default function appointment() {
                   <input
                     type="text"
                     className="form-control txtInput"
-                    placeholder="Type here.."
+                    placeholder="Search events.."
                     onChange={(e) => {
                       searchPota(6, e.currentTarget.value).then((res) =>
                         setAppointment(res)
@@ -157,7 +157,7 @@ export default function appointment() {
                             </i>
                             <i
                               onClick={() => {
-                                handleShow()
+                                handleShow();
                                 setId(event.id);
                               }}
                             >
@@ -180,7 +180,7 @@ export default function appointment() {
         centered
         className="modalDelete"
       >
-        <Modaldelete closeModal={handleClose} id={id} />
+        <Modaldelete closeModal={handleClose} id={id} mutatedata={fetcher} />
       </Modal>
     </>
   );
