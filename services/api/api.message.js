@@ -149,7 +149,7 @@ function deleteEvent(id) {
     url: appglobal.api.delete_event + id,
     method: "DELETE",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: "Bearer " + Cookies.get("token"),
     },
   });
 }

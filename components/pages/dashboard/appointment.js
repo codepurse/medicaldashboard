@@ -8,21 +8,22 @@ import moment from "moment";
 import Cookies from "js-cookie";
 import MessageService from "../../../services/api/api.message";
 import { AiOutlineDelete } from "react-icons/ai";
-import { FiEdit2 } from "react-icons/fi";
-import { GoSearch } from "react-icons/go";
+import { FiEdit2, FiPlus } from "react-icons/fi";
+import { GoSearch, GoPlus } from "react-icons/go";
 import { searchTable, searchPota } from "../../../utils/dashboardSearch";
+import Modal from "react-bootstrap/Modal";
+import Modaldelete from "../../../components/modal/deleteModal";
 const fetcher = (url) =>
   MessageService.getEvents(Cookies.get("clinician_id")).then(
     (response) => response.data
   );
 export default function appointment() {
-  const ourRequest = axios.CancelToken.source();
   const { data, error } = useSWR("Appointment", fetcher);
   const [appointment, setAppointment] = useState([]);
-  const [query, setQuery] = useState("");
-  if (error) {
-    console.log(error);
-  }
+  const [id, setId] = useState("");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
 
   useEffect(() => {
     setAppointment(data);
@@ -32,7 +33,7 @@ export default function appointment() {
     <>
       <Container fluid className="conAppointment p-0">
         <Row>
-          <Col lg={12} className="p-3">
+          <Col lg={12} className="p-3 ">
             <Row>
               <Col lg={4}>
                 <br />
@@ -42,7 +43,6 @@ export default function appointment() {
                       <i>
                         <GoSearch />
                       </i>
-                      Search
                     </span>
                   </div>
                   <input
@@ -50,11 +50,20 @@ export default function appointment() {
                     className="form-control txtInput"
                     placeholder="Type here.."
                     onChange={(e) => {
-                      console.log(searchPota(6, e.currentTarget.value))
-                    
+                      searchPota(6, e.currentTarget.value).then((res) =>
+                        setAppointment(res)
+                      );
                     }}
                   />
                 </div>
+              </Col>
+              <Col lg={8} className="align-self-center">
+                <button className="btnBlue float-right ">
+                  <i>
+                    <GoPlus />
+                  </i>
+                  New Event
+                </button>
               </Col>
             </Row>
             <div className="conTable">
@@ -146,7 +155,12 @@ export default function appointment() {
                             <i>
                               <FiEdit2 />
                             </i>
-                            <i>
+                            <i
+                              onClick={() => {
+                                handleShow()
+                                setId(event.id);
+                              }}
+                            >
                               <AiOutlineDelete />
                             </i>
                           </td>
@@ -159,6 +173,15 @@ export default function appointment() {
           </Col>
         </Row>
       </Container>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        size="sm"
+        centered
+        className="modalDelete"
+      >
+        <Modaldelete closeModal={handleClose} id={id} />
+      </Modal>
     </>
   );
 }

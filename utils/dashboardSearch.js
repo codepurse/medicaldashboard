@@ -15,7 +15,7 @@ const once = (config = {}) => {
   return axios(config);
 };
 
-export const searchPota = (id, query) => {
+export const searchPota = async (id, query) => {
   var config = {
     method: "get",
     url:
@@ -28,11 +28,10 @@ export const searchPota = (id, query) => {
     },
   };
 
-  once(config)
+  await once(config)
     .then((response) => {
-      result = response.data.data;
+      result = response.data.data
     })
     .catch((error) => {});
-
   return result;
 };

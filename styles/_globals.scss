@@ -8,7 +8,7 @@ $bg-color-darkwhite: #fafbfd;
 $bg-color-hover-white: #f7f8fa;
 $border-color-white: #f5f5f5;
 $font-color-black: #081333;
-$font-color-blue: #1e88e5;
+$font-color-blue: #1976d2;
 $font-color-gray: rgb(78, 81, 103);
 $font-color-white: #e0e0e0;
 $font-color-red: #fc4444;
@@ -42,13 +42,27 @@ img {
 }
 
 .input-group-text {
-  background-color: #1976d2 !important;
-  color: white !important;
-  border: 0px !important;
-  font-weight: 400 !important;
-  font-size: 14px !important;
+  background-color: #f5f5f5 !important;
+  color: #1e88e5 !important;
+  font-weight: 700 !important;
+  font-size: 15px !important;
   i {
-    margin-right: 5px;
+    margin-right: 0px;
+  }
+}
+
+.btnBlue {
+  color: white;
+  border: 0px;
+  background-color: $font-color-blue;
+  cursor: pointer;
+  box-shadow: 0 2px 12px -6px $font-color-blue !important;
+  border-radius: 5px;
+  font-weight: 400 !important;
+  font-size: 15px;
+  padding: 8px 10px;
+  i {
+    margin-right: 8px;
   }
 }
 
@@ -130,8 +144,57 @@ img {
   }
 }
 
-.table-responsive {
-  padding-bottom: 0px !important;
+.modalDelete {
+  .modal-dialog {
+    width: 100%;
+    border-radius: 5px;
+  }
+  .modal-content {
+    border-radius: 5px;
+  }
+  .conDelete {
+    padding: 25px 25px;
+    background-color: #1d1e22;
+    border-radius: 5px;
+    i {
+      color: white;
+      font-size: 2.5rem;
+    }
+    .pTitle {
+      color: white;
+      font-size: 17px;
+      font-weight: 400;
+      margin-top: 20px;
+      margin-bottom: 2px;
+      font-family: "Poppins";
+    }
+    .pTitlesub {
+      color: #bdbdbd;
+      font-size: 14px;
+      margin-bottom: 10px;
+      margin-top: 5px;
+    }
+    .btnCancel {
+      color: white;
+      font-size: 14px;
+      width: 100%;
+      border-radius: 5px;
+      background-color: #2f3037;
+      border: 0px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .btnDiscard {
+      color: white;
+      font-size: 14px;
+      width: 100%;
+      border-radius: 5px;
+      background-color: #0952b1;
+      border: 0px;
+      padding: 10px;
+      margin-top: 10px;
+    }
+  }
 }
 
 .conTable {
@@ -157,7 +220,7 @@ table {
         font-size: 14px;
         color: $font-color-gray;
         font-weight: 500 !important;
-        background-color: #F5F5F5 !important;
+        background-color: #f5f5f5 !important;
         text-transform: uppercase;
       }
     }
@@ -223,6 +286,20 @@ table {
           }
           .pNamelist {
             text-align: right !important;
+          }
+          .profileImage {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: $font-color-blue;
+            font-size: 14px;
+            color: white;
+            align-items: center;
+            font-family: "Poppins";
+            display: flex;
+            margin-right: 10px;
+            justify-content: center;
+            box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
           }
         }
         i {
