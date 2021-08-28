@@ -7,10 +7,17 @@ import useSWR, { mutate } from "swr";
 
 export default function modal(props) {
   const discard = () => {
-    MessageService.deleteEvent(props.id).then((response) => {
-      props.closeModal();
-      mutate("Appointment");
-    });
+    if (props.type === "event") {
+      MessageService.deleteEvent(props.id).then((response) => {
+        props.closeModal();
+        mutate("Appointment");
+      });
+    } else {
+      MessageService.deleteTime(props.id).then((response) => {
+        props.closeModal();
+        mutate("TimeEntry");
+      });
+    }
   };
 
   return (
@@ -23,7 +30,7 @@ export default function modal(props) {
             </i>
             <p className="pTitle">Are you sure?</p>
             <p className="pTitlesub">
-              You are going to delete a event. please confirm.
+              You are going to delete a {props.type}. please confirm.
             </p>
           </Col>
           <Col lg={6}>

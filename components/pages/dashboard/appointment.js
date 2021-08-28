@@ -11,8 +11,10 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2, FiPlus } from "react-icons/fi";
 import { GoSearch, GoPlus } from "react-icons/go";
 import { searchTable, searchPota } from "../../../utils/dashboardSearch";
+import { permission } from "../../../utils/validation";
 import Modal from "react-bootstrap/Modal";
 import Modaldelete from "../../../components/modal/deleteModal";
+import ModalAppointment from "../../../components/pages/dashboard/modalAppointment";
 const fetcher = (url) =>
   MessageService.getEvents(Cookies.get("clinician_id")).then(
     (response) => response.data
@@ -22,10 +24,14 @@ export default function appointment() {
   const [appointment, setAppointment] = useState([]);
   const [id, setId] = useState("");
   const [show, setShow] = useState(false);
+  const [showAppointment, setShowAppointment] = useState(false);
   const handleClose = () => setShow(false);
+  const handleCloseAppointment = () => setShowAppointment(false);
   const handleShow = () => setShow(true);
+  const handleShowAppointment = () => setShowAppointment(true);
 
   useEffect(() => {
+    console.log(data);
     setAppointment(data);
   }, [data]);
 
@@ -67,7 +73,7 @@ export default function appointment() {
               </Col>
             </Row>
             <div className="conTable">
-              <Table>
+              <Table responsive>
                 <thead>
                   <tr>
                     <th>Start</th>
@@ -102,7 +108,9 @@ export default function appointment() {
                             <p className="pEtype">{event.subject}</p>
                           </td>
                           <td>
-                            <p> {event.event_type}</p>
+                            <p className={permission(event.event_type)}>
+                              {event.event_type}
+                            </p>
                           </td>
                           <td>
                             <div className="form-inline">
@@ -152,7 +160,12 @@ export default function appointment() {
                             </div>
                           </td>
                           <td>
-                            <i>
+                            <i
+                              onClick={() => {
+                                handleShowAppointment();
+                                setId(event.id);
+                              }}
+                            >
                               <FiEdit2 />
                             </i>
                             <i
@@ -180,7 +193,24 @@ export default function appointment() {
         centered
         className="modalDelete"
       >
-        <Modaldelete closeModal={handleClose} id={id} mutatedata={fetcher} />
+        <Modaldelete
+          closeModal={handleClose}
+          id={id}
+          mutatedata={fetcher}
+          type="event"
+        />
+      </Modal>
+      <Modal
+        show={showAppointment}
+        onHide={handleCloseAppointment}
+        centered
+        className="modalNormal"
+      >
+        <ModalAppointment
+          closeModal={handleCloseAppointment}
+          id={id}
+          mutatedata={fetcher}
+        />
       </Modal>
     </>
   );

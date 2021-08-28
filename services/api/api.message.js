@@ -154,6 +154,17 @@ function deleteEvent(id) {
   });
 }
 
+function deleteTime(id) {
+  return request({
+    url: appglobal.api.delete_time_entries + id,
+    method: "DELETE",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+    },
+  });
+}
+
+
 function addFamily(data) {
   return request({
     url: appglobal.api.add_family,
@@ -182,6 +193,7 @@ const MessageService = {
   deleteEvent,
   getLocations,
   goLogin,
+  deleteTime
 };
 
 export default MessageService;

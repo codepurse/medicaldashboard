@@ -13,6 +13,7 @@ import { GoSearch, GoPlus } from "react-icons/go";
 import { searchTable, searchPota } from "../../../utils/dashboardSearch";
 import Modal from "react-bootstrap/Modal";
 import Modaldelete from "../../../components/modal/deleteModal";
+import { converter,  timeType } from "../../../utils/validation";
 const fetcher = (url) =>
   MessageService.getTime(Cookies.get("clinician_id")).then(
     (response) => response.data
@@ -26,9 +27,11 @@ export default function appointment() {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    console.log("Time" , data);
+    console.log("Time", data);
     setTimeentry(data);
   }, [data]);
+
+
 
   return (
     <>
@@ -52,7 +55,7 @@ export default function appointment() {
                     placeholder="Search time entry.."
                     onChange={(e) => {
                       searchPota(6, e.currentTarget.value).then((res) =>
-                        setAppointment(res)
+                        setTimeentry(res)
                       );
                     }}
                   />
@@ -68,7 +71,58 @@ export default function appointment() {
               </Col>
             </Row>
             <div className="conTable">
-         
+              <Table responsive>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Clients</th>
+                    <th>Activity Type</th>
+                    <th>Duration</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {timeentry
+                    ? timeentry.map((event, i) => (
+                        <tr key={i}>
+                          <td>
+                            <p className="pDate">
+                              {moment(event.date_from).format("MMMM do, YYYY")}
+                            </p>
+                            <p className="pDay">
+                              {moment(event.date_from).format("dddd")}
+                            </p>
+                          </td>
+                          <td>
+                            <p>
+                              {event.clients.first_name}{" "}
+                              {event.clients.last_name}
+                            </p>
+                          </td>
+                          <td>
+                            <p className = {timeType(event.activity_type)}>{event.activity_type}</p>
+                          </td>
+                          <td>
+                            <p>{converter(event.date_from, event.date_to)}</p>
+                          </td>
+                          <td>
+                            <i>
+                              <FiEdit2 />
+                            </i>
+                            <i
+                              onClick={() => {
+                                handleShow();
+                                setId(event.id);
+                              }}
+                            >
+                              <AiOutlineDelete />
+                            </i>
+                          </td>
+                        </tr>
+                      ))
+                    : null}
+                </tbody>
+              </Table>
             </div>
           </Col>
         </Row>
@@ -80,7 +134,7 @@ export default function appointment() {
         centered
         className="modalDelete"
       >
-        <Modaldelete closeModal={handleClose} id={id} mutatedata={fetcher} />
+        <Modaldelete closeModal={handleClose} id={id} type = "time entry" mutatedata={fetcher} />
       </Modal>
     </>
   );

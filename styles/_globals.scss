@@ -66,6 +66,46 @@ img {
   }
 }
 
+.pSession {
+  color: #02b176 !important;
+  background-color: #f1f8e9 !important;
+  padding: 4px 10px;
+  border-radius: 5px;
+  width: max-content;
+}
+
+.pVirtual {
+  color: #1565c0 !important;
+  background-color: #ecf6ff !important;
+  padding: 4px 10px;
+  border-radius: 5px;
+  width: max-content;
+}
+
+.pPhone {
+  color: #ffc48f !important;
+  background-color: #fff4eb !important;
+  padding: 4px 10px;
+  border-radius: 5px;
+  width: max-content;
+}
+
+.pTravel {
+  color: #f66c6a !important;
+  background-color: #fef4f3 !important;
+  padding: 4px 10px;
+  border-radius: 5px;
+  width: max-content;
+}
+
+.pMeeting {
+  color: #6f51ed !important;
+  background-color: #f4f3fb !important;
+  padding: 4px 10px;
+  border-radius: 5px;
+  width: max-content;
+}
+
 .ulDashboard {
   list-style-type: none;
   overflow: hidden;
@@ -104,6 +144,29 @@ img {
   margin-left: 5px;
 }
 
+.conModal {
+  padding: 25px !important;
+  .pHeader {
+    font-size: 1.1rem;
+    color: $font-color-black;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .pHeadersub {
+    font-size: 13px;
+    color: $font-color-gray;
+    font-weight: 400;
+    margin-bottom: 0px;
+  }
+  .pTitleInput {
+    font-size: 14px;
+    color: $font-color-black;
+    font-weight: 500;
+    margin-bottom: 5px;
+    margin-top: 13px;
+  }
+}
+
 .conPages {
   padding-left: 250px !important;
   padding-top: 90px;
@@ -111,6 +174,24 @@ img {
 }
 
 .txtInput {
+  padding: 8px !important;
+  border-radius: 5px;
+  font-family: "Poppins";
+  font-size: 15px !important;
+  font-weight: 500;
+  width: 100%;
+  min-height: 42px !important;
+  color: $font-color-black;
+  background: #f7f8fa !important;
+  border: 2px solid #eeeeee;
+  box-shadow: none !important;
+  outline: none !important;
+  &:focus {
+    border: 2px solid $font-color-blue;
+  }
+}
+
+.textarea {
   padding: 8px !important;
   border-radius: 5px;
   font-family: "Poppins";
@@ -142,6 +223,30 @@ img {
   &:focus {
     border: 2px solid $font-color-blue;
   }
+}
+
+.btnCancel {
+  box-shadow: rgba(10, 57, 119, 0.3) 0px 1px 2px 0px,
+    rgba(10, 57, 119, 0.15) 0px 2px 6px 2px;
+  margin-right: 10px;
+  background-color: white;
+  font-size: 14px;
+  color: #fc4444;
+  border: 0px;
+  border-radius: 5px;
+  padding: 9px 25px;
+  margin-top: 15px;
+}
+
+.btnSave {
+  color: white;
+  font-size: 14px;
+  border: 0px;
+  padding: 9px 25px;
+  background-color: $font-color-blue;
+  border-radius: 5px;
+  margin-top: 15px;
+  box-shadow: 0 2px 12px -6px #1976d2 !important;
 }
 
 .modalDelete {
