@@ -27,7 +27,6 @@ export default function appointment() {
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    console.log("Time", data);
     setTimeentry(data);
   }, [data]);
 

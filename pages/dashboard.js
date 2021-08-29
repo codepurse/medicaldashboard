@@ -2,13 +2,13 @@ import Header from "../components/header";
 import React, { Component, useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
-import useStore from "../store/store";
+import {useSettingStore} from "../store/store";
 import useSWR from "swr";
 import Appointment from "../components/pages/dashboard/appointment";
 import TimeEntry from "../components/pages/dashboard/timeEntry";
 
 export default function dashboard() {
-  const people = useStore((state) => state.people);
+  const people = useSettingStore((state) => state.people);
   const [fullname, setFullname] = useState("");
   const [showAppointment, setShowAppointment] = useState(true);
   const [showTimeentry, setShowTimeentry] = useState(false);

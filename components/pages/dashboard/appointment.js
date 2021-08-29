@@ -12,6 +12,7 @@ import { FiEdit2, FiPlus } from "react-icons/fi";
 import { GoSearch, GoPlus } from "react-icons/go";
 import { searchTable, searchPota } from "../../../utils/dashboardSearch";
 import { permission } from "../../../utils/validation";
+import { useAppointmentStore } from "../../../store/store";
 import Modal from "react-bootstrap/Modal";
 import Modaldelete from "../../../components/modal/deleteModal";
 import ModalAppointment from "../../../components/pages/dashboard/modalAppointment";
@@ -20,6 +21,8 @@ const fetcher = (url) =>
     (response) => response.data
   );
 export default function appointment() {
+  const setInfo = useAppointmentStore((state) => state.addInfo);
+  const setAction = useAppointmentStore((state) => state.addAction);
   const { data, error } = useSWR("Appointment", fetcher);
   const [appointment, setAppointment] = useState([]);
   const [id, setId] = useState("");
@@ -31,7 +34,6 @@ export default function appointment() {
   const handleShowAppointment = () => setShowAppointment(true);
 
   useEffect(() => {
-    console.log(data);
     setAppointment(data);
   }, [data]);
 
@@ -64,7 +66,13 @@ export default function appointment() {
                 </div>
               </Col>
               <Col lg={8} className="align-self-center">
-                <button className="btnBlue float-right ">
+                <button
+                  className="btnBlue float-right "
+                  onClick={() => {
+                    setAction("Add");
+                    handleShowAppointment()
+                  }}
+                >
                   <i>
                     <GoPlus />
                   </i>
@@ -114,56 +122,68 @@ export default function appointment() {
                           </td>
                           <td>
                             <div className="form-inline">
-                              {event.events_participants[0].clinicians !==
-                                null &&
-                              event.events_participants[0].clinicians.photo ? (
-                                <img
-                                  src={
-                                    "https://resurface-s3.s3.ap-southeast-1.amazonaws.com/" +
-                                    event.events_participants[0].clinicians
-                                      .photo
-                                  }
-                                  className="imgProfile"
-                                ></img>
-                              ) : (
-                                <p className="profileImage">
-                                  {event.events_participants[0].clinicians !==
-                                    null &&
-                                    event.events_participants[0].clinicians.first_name.charAt(
-                                      0
-                                    )}{" "}
-                                  {event.events_participants[0].clinicians !==
-                                    null &&
-                                    event.events_participants[0].clinicians.last_name.charAt(
-                                      0
-                                    )}
-                                </p>
-                              )}
-                              <div>
-                                <p className="pNamelist">
-                                  {event.events_participants[0].clinicians !==
-                                    null &&
-                                    event.events_participants[0].clinicians
-                                      .first_name}{" "}
-                                  {event.events_participants[0].clinicians !==
-                                    null &&
-                                    event.events_participants[0].clinicians
-                                      .last_name}
-                                </p>
-                                <p>
-                                  {event.events_participants[0].clinicians !==
-                                    null &&
-                                    event.events_participants[0].clinicians
-                                      .email}
-                                </p>
-                              </div>
+                              {(() => {
+                                try {
+                                  return (
+                                    <>
+                                      <div className="form-inline">
+                                        {event.events_participants[0]
+                                          .clinicians !== null &&
+                                        event.events_participants[0].clinicians
+                                          .photo ? (
+                                          <img
+                                            src={
+                                              "https://resurface-s3.s3.ap-southeast-1.amazonaws.com/" +
+                                              event.events_participants[0]
+                                                .clinicians.photo
+                                            }
+                                            className="imgProfile"
+                                          ></img>
+                                        ) : (
+                                          <p className="profileImage">
+                                            {event.events_participants[0]
+                                              .clinicians !== null &&
+                                              event.events_participants[0].clinicians.first_name.charAt(
+                                                0
+                                              )}{" "}
+                                            {event.events_participants[0]
+                                              .clinicians !== null &&
+                                              event.events_participants[0].clinicians.last_name.charAt(
+                                                0
+                                              )}
+                                          </p>
+                                        )}
+                                        <div>
+                                          <p className="pNamelist">
+                                            {event.events_participants[0]
+                                              .clinicians !== null &&
+                                              event.events_participants[0]
+                                                .clinicians.first_name}{" "}
+                                            {event.events_participants[0]
+                                              .clinicians !== null &&
+                                              event.events_participants[0]
+                                                .clinicians.last_name}
+                                          </p>
+                                          <p>
+                                            {event.events_participants[0]
+                                              .clinicians !== null &&
+                                              event.events_participants[0]
+                                                .clinicians.email}
+                                          </p>
+                                        </div>
+                                      </div>
+                                    </>
+                                  );
+                                } catch (error) {}
+                              })()}
                             </div>
                           </td>
                           <td>
                             <i
                               onClick={() => {
+                                setInfo(event);
+                                setAction("Edit");
                                 handleShowAppointment();
-                                setId(event.id);
                               }}
                             >
                               <FiEdit2 />

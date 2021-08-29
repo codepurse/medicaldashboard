@@ -6,7 +6,7 @@ export const option_page = [
 
 export const event_type = [
   { value: "Session", label: "Session" },
-  { value: "Company", label: "Company" },
+  { value: "Company Meeting", label: "Company Meeting" },
 ];
 
 
@@ -116,7 +116,7 @@ export const customStyles = {
 export const customStyles_error = {
   control: (base, state) => ({
     ...base,
-    background: "#F7F8FA",
+    background: "#fef1f2",
     color: "#212121",
     border: "2px solid red",
     boxShadow: "none",
@@ -228,50 +228,12 @@ export const customStylesFilter = {
   }),
 };
 
-const customStylesPage = {
-  control: (base, state) => ({
-    ...base,
-    background: "white",
-    color: "#212121",
-    border: "2px solid #EEEEEE",
-    boxShadow: "none",
-    borderRadius: "5px",
-    width: "130px",
-    padding: "1px",
-    marginTop: "5px",
-    fontFamily: "Roboto",
-    boxShadow: state.isFocused ? "#003171" : null,
-    "&:hover": {
-      borderColor: state.isFocused ? "#003171" : "",
-    },
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: "#212121",
-  }),
-};
-
-const customStylesnotes = {
-  control: (base, state) => ({
-    ...base,
-    background: "white",
-    color: "#212121",
-    border: "2px solid #EEEEEE",
-    boxShadow: "none",
-    borderRadius: "5px",
-    width: "140px",
-    padding: "0px",
-    marginTop: "5px",
-    marginLeft: "20px",
-    fontSize: "14px",
-    fontFamily: "Poppins",
-    boxShadow: state.isFocused ? "#003171" : null,
-    "&:hover": {
-      borderColor: state.isFocused ? "#003171" : "",
-    },
-  }),
-  singleValue: (provided) => ({
-    ...provided,
-    color: "#212121",
-  }),
-};
+ export const renderInput = (props) => (
+    <input
+      type="text"
+      className= {props.invalid ? "txtError" : "txtInput"}
+      onClick={props.onClick}
+      value = {props.value}
+      onChange={props.onChange}
+    />
+  );

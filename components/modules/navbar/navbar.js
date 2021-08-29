@@ -4,17 +4,9 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Image from "react-bootstrap/Image";
 import { RiNotification3Line } from "react-icons/ri";
 import appglobal from "../../../services/api/api.services";
-import useStore from "../../../store/store";
-
-
-
+import {useSettingStore} from "../../../store/store";
 export default function navbar() {
-  const people = useStore((state) => state.people);
-
-  useEffect(() => {
-    console.log(people)
-  }, []);
-
+  const people = useSettingStore((state) => state.people);
   return (
     <Container fluid className="conNavbar">
       <Row>

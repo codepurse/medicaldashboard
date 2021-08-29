@@ -4,11 +4,11 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
 import MessageService from "../services/api/api.message";
 import { isEmail } from "../utils/validation";
-import useStore from "../store/store";
+import {useSettingStore}from "../store/store";
 import Cookies from "js-cookie";
 
 export default function Login() {
-  const setInfo = useStore((state) => state.addInfo);
+  const setInfo = useSettingStore((state) => state.addInfo);
   const router = useRouter();
   const goHide = useRef();
   const pErroremail = useRef(0);

@@ -1,13 +1,20 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
 
-let store = (set) => ({
+let settingStore = (set) => ({
   people: [],
   addInfo: (person) => set((state) => ({ people: [person] })),
   setShowdashboard: "",
 });
 
-store = persist(store);
-const useStore = create(store);
+let stateAppointment = (set) => ({
+  appointmentInfo: [],
+  action: "",
+  addInfo: (appointment) => set((state) => ({ appointmentInfo: [appointment] })),
+  addAction: (action) => set((state) => ({ action: action })),
+});
 
-export default useStore;
+settingStore = persist(settingStore, { name: "user_info" });
+
+export const useSettingStore = create(settingStore);
+export const useAppointmentStore = create(stateAppointment);

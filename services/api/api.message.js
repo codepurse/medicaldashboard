@@ -23,6 +23,33 @@ function getEvents(id) {
   });
 }
 
+function createEvent(data) {
+  return request({
+    url: appglobal.api.base_api + appglobal.api.add_event,
+    method: "POST",
+    data: data,
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function getParticipants(token) {
+  return request({
+    url: appglobal.api.base_api + appglobal.api.FilterLocationClinician,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
 function getTime(id) {
   return request({
     url: appglobal.api.get_all_time_entries + "?clinicians_id=" + `${id}`,
@@ -164,7 +191,6 @@ function deleteTime(id) {
   });
 }
 
-
 function addFamily(data) {
   return request({
     url: appglobal.api.add_family,
@@ -180,6 +206,7 @@ const MessageService = {
   getEvents,
   createPatient,
   createInstantfamily,
+  createEvent,
   addFamily,
   getTime,
   getLocation,
@@ -193,7 +220,8 @@ const MessageService = {
   deleteEvent,
   getLocations,
   goLogin,
-  deleteTime
+  getParticipants,
+  deleteTime,
 };
 
 export default MessageService;
