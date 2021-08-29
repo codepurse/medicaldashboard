@@ -13,7 +13,7 @@ export const activity_type = [
   { value: "Phone", label: "Phone" },
   { value: "Travel", label: "Travel" },
   { value: "Session", label: "Session" },
-  { value: "Vitual Session", label: "Virtual Session" },
+  { value: "Virtual Session", label: "Virtual Session" },
 ];
 
 export const options_phone = [

@@ -5,7 +5,7 @@ import MessageService from "../../../services/api/api.message";
 import useSWR, { mutate } from "swr";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import Grid from "@material-ui/core/Grid";
-import { useAppointmentStore } from "../../../store/store";
+import { useTimeStore } from "../../../store/store";
 import DateFnsUtils from "@date-io/date-fns";
 import moment from "moment";
 import Cookies from "js-cookie";
@@ -18,13 +18,16 @@ import {
   activity_type,
 } from "../../../utils/global";
 
-export default function modal(props) {
+export default function modalTime(props) {
+  const stateTime = useTimeStore((state) => state.timeInfo);
+  const stateAction = useTimeStore((state) => state.action);
   const dateToday = new Date();
   const [datefrom, setDatefrom] = React.useState(dateToday);
   const [dateto, setDateto] = React.useState(moment(dateToday).add(1, "hours"));
   const [invalidDate, setInvalidDate] = useState(false);
   const [activitytype, setActivitytype] = useState("");
   const [notes, setNotes] = useState("");
+  const [id, setId] = useState("");
   const [defaultClients, setDefaultClients] = useState([]);
   const [defaultActivity, setDefaultActivity] = useState([]);
   const [clients, setClients] = useState([]);
@@ -37,7 +40,6 @@ export default function modal(props) {
   const endChange = (date) => {
     setDateto(date);
   };
-
   useEffect(() => {
     MessageService.getClients(Cookies.get("token")).then((response) => {
       setClients(
@@ -46,10 +48,29 @@ export default function modal(props) {
           label: client.first_name + " " + client.last_name,
         }))
       );
+      console.log(response);
     });
   }, []);
-
-  function goSave() {
+  useEffect(() => {
+    if (stateAction === "Edit") {
+      console.log(stateTime);
+      setDatefrom(moment(stateTime[0].date_from));
+      setDateto(moment(stateTime[0].date_to));
+      setNotes(stateTime[0].notes);
+      setId(stateTime[0].id)
+      setDefaultActivity({
+        value: stateTime[0].activity_type,
+        label: stateTime[0].activity_type,
+      });
+      setActivitytype(stateTime[0].activity_type)
+      setDefaultClients({
+        value: stateTime[0].clients.id,
+        label: stateTime[0].clients.first_name + stateTime[0].clients.last_name,
+      });
+      setSelectedClient(stateTime[0].clients.id);
+    }
+  }, [stateTime]);
+  function goSave1() {
     var clear = 0;
     if (!selectedclients) {
       setErrorclients(true);
@@ -63,6 +84,26 @@ export default function modal(props) {
       setInvalidDate(true);
       clear = 1;
     }
+    if (clear === 0) {
+      const formData = new FormData();
+      formData.append("clinicians_id", Cookies.get("clinician_id"));
+      formData.append("clients_id", selectedclients);
+      formData.append("date_from", moment(datefrom).format("YYYY/MM/DD HH:mm"));
+      formData.append("date_to", moment(dateto).format("YYYY/MM/DD HH:mm"));
+      formData.append("duration", moment(dateto).diff(moment(datefrom)));
+      formData.append("activity_type", activitytype);
+      formData.append("notes", notes);
+      if (stateAction === "Edit") {
+        formData.append("_method", "PUT");
+      }
+      MessageService.createTime(formData, stateAction, id).then((response) => {
+        for (var pair of formData.entries()) {
+          console.log(pair[0] + ", " + pair[1]);
+        }
+        props.closeModal();
+        mutate("TimeEntry");
+      });
+    }
   }
 
   return (
@@ -72,7 +113,7 @@ export default function modal(props) {
           <Col lg={12}>
             <p className="pHeader">Create time entry</p>
             <p className="pHeadersub">
-              This section contains the basic details of your time entry
+              This section contains the basic details of your time entry.
             </p>
           </Col>
           <Col lg={6}>
@@ -99,23 +140,26 @@ export default function modal(props) {
                 />
               </Grid>
             </MuiPickersUtilsProvider>
+            <p className={invalidDate ? "pError" : "pError d-none"}>
+              End date must be in range.
+            </p>
           </Col>
           <Col lg={6}>
             <p className="pTitleInput">Clients</p>
             <Select
-              className={errorClients ? customStyles_error : customStyles}
+              styles={errorClients ? customStyles_error : customStyles}
               options={clients}
               value={defaultClients}
               onChange={(e) => {
-                setDefaultClients({ value: e.id, label: e.label });
-                setSelectedClient(e.id);
+                setDefaultClients({ value: e.value, label: e.label });
+                setSelectedClient(e.value);
               }}
             />
           </Col>
           <Col lg={6}>
             <p className="pTitleInput">Activity Type</p>
             <Select
-              className={errorActivity ? customStyles_error : customStyles}
+              styles={errorActivity ? customStyles_error : customStyles}
               options={activity_type}
               value={defaultActivity}
               onChange={(e) => {
@@ -144,7 +188,7 @@ export default function modal(props) {
               >
                 Cancel
               </button>
-              <button type="submit" className="btnSave" onClick={goSave}>
+              <button type="submit" className="btnSave" onClick={goSave1}>
                 Save
               </button>
             </div>

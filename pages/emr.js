@@ -9,7 +9,7 @@ export default function emr() {
     <Container fluid className="h-100 conDashboard">
       <Row className="h-100 align-items-center">
         <Col lg={12}>
-          <p style={{ textAlign: "center" }}>EMR</p>
+          <p style={{ textAlign: "center" }}>EMRSaasdasdsadsadsadsadsadsadsadsa</p>
         </Col>
       </Row>
     </Container>

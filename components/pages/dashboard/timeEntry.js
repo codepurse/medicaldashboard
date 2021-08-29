@@ -14,12 +14,15 @@ import { searchTable, searchPota } from "../../../utils/dashboardSearch";
 import Modal from "react-bootstrap/Modal";
 import Modaldelete from "../../../components/modal/deleteModal";
 import { converter, timeType } from "../../../utils/validation";
-import ModalTime from "../../../components/pages/dashboard/ModalTime";
+import ModalTime from "../../../components/pages/dashboard/Timemodal";
+import { useTimeStore } from "../../../store/store";
 const fetcher = (url) =>
   MessageService.getTime(Cookies.get("clinician_id")).then(
     (response) => response.data
   );
 export default function appointment() {
+  const setInfo = useTimeStore((state) => state.addInfo);
+  const setAction = useTimeStore((state) => state.addAction);
   const { data, error } = useSWR("TimeEntry", fetcher);
   const [timeentry, setTimeentry] = useState([]);
   const [id, setId] = useState("");
@@ -66,7 +69,7 @@ export default function appointment() {
                 <button
                   className="btnBlue float-right "
                   onClick={() => {
-                    handleShowTime()
+                    handleShowTime();
                   }}
                 >
                   <i>
@@ -114,7 +117,13 @@ export default function appointment() {
                             <p>{converter(event.date_from, event.date_to)}</p>
                           </td>
                           <td>
-                            <i>
+                            <i
+                              onClick={() => {
+                                setInfo(event);
+                                setAction("Edit");
+                                handleShowTime();
+                              }}
+                            >
                               <FiEdit2 />
                             </i>
                             <i
@@ -155,7 +164,7 @@ export default function appointment() {
         centered
         className="modalNormal"
       >
-        <ModalTime closeModal={handleCloseTime} mutatedata={fetcher} />
+        <ModalTime closeModal={handleCloseTime} />
       </Modal>
     </>
   );

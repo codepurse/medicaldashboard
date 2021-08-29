@@ -58,7 +58,27 @@ function getTime(id) {
     url: appglobal.api.get_all_time_entries + "?clinicians_id=" + `${id}`,
     method: "GET",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function createTime(data,action,id) {
+  return request({
+    url:
+      action === "Edit"
+        ? appglobal.api.update_time_entries + id
+        : appglobal.api.add_time_entries,
+    method: "POST",
+    data: data,
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
     },
   });
 }
@@ -223,6 +243,7 @@ const MessageService = {
   createPatient,
   createInstantfamily,
   createEvent,
+  createTime,
   addFamily,
   getTime,
   getLocation,
