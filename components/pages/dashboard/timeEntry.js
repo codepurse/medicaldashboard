@@ -13,7 +13,8 @@ import { GoSearch, GoPlus } from "react-icons/go";
 import { searchTable, searchPota } from "../../../utils/dashboardSearch";
 import Modal from "react-bootstrap/Modal";
 import Modaldelete from "../../../components/modal/deleteModal";
-import { converter,  timeType } from "../../../utils/validation";
+import { converter, timeType } from "../../../utils/validation";
+import ModalTime from "../../../components/pages/dashboard/ModalTime";
 const fetcher = (url) =>
   MessageService.getTime(Cookies.get("clinician_id")).then(
     (response) => response.data
@@ -25,12 +26,13 @@ export default function appointment() {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const [showTime, setShowTime] = useState(false);
+  const handleCloseTime = () => setShowTime(false);
+  const handleShowTime = () => setShowTime(true);
 
   useEffect(() => {
     setTimeentry(data);
   }, [data]);
-
-
 
   return (
     <>
@@ -61,7 +63,12 @@ export default function appointment() {
                 </div>
               </Col>
               <Col lg={8} className="align-self-center">
-                <button className="btnBlue float-right ">
+                <button
+                  className="btnBlue float-right "
+                  onClick={() => {
+                    handleShowTime()
+                  }}
+                >
                   <i>
                     <GoPlus />
                   </i>
@@ -99,7 +106,9 @@ export default function appointment() {
                             </p>
                           </td>
                           <td>
-                            <p className = {timeType(event.activity_type)}>{event.activity_type}</p>
+                            <p className={timeType(event.activity_type)}>
+                              {event.activity_type}
+                            </p>
                           </td>
                           <td>
                             <p>{converter(event.date_from, event.date_to)}</p>
@@ -133,7 +142,20 @@ export default function appointment() {
         centered
         className="modalDelete"
       >
-        <Modaldelete closeModal={handleClose} id={id} type = "time entry" mutatedata={fetcher} />
+        <Modaldelete
+          closeModal={handleClose}
+          id={id}
+          type="time entry"
+          mutatedata={fetcher}
+        />
+      </Modal>
+      <Modal
+        show={showTime}
+        onHide={handleCloseTime}
+        centered
+        className="modalNormal"
+      >
+        <ModalTime closeModal={handleCloseTime} mutatedata={fetcher} />
       </Modal>
     </>
   );

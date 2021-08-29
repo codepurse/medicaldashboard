@@ -26,6 +26,10 @@ export default function modal(props) {
   const [dateto, setDateto] = React.useState(moment(dateToday).add(1, "hours"));
   const [participant, setParticipants] = useState([]);
   const [errorEvent, setErrorvent] = useState(false);
+  const [id, setId] = useState("");
+  const [defaultType, setDefaulttype] = useState([
+    { value: "Session", label: "Session" },
+  ]);
   const [errorLocation, setErrorLocation] = useState(false);
   const [errorMember, setErrorMember] = useState(false);
   const [invalidDate, setInvalidDate] = useState(false);
@@ -71,7 +75,24 @@ export default function modal(props) {
         ...prev,
         event: stateAppointment[0].subject,
         locations: stateAppointment[0].location,
+        commentary: stateAppointment[0].description,
+        notes: stateAppointment[0].notes,
       }));
+      setDatefrom(moment(stateAppointment[0].date_from));
+      setDateto(moment(stateAppointment[0].date_to));
+      setId(stateAppointment[0].id);
+      setDefaulttype({
+        value: stateAppointment[0].event_type,
+        label: stateAppointment[0].event_type,
+      });
+      setEventtype(stateAppointment[0].event_type);
+      for (let i = 0; i < stateAppointment[0].events_participants.length; i++) {
+        members.push({
+          value: stateAppointment[0].events_participants[i].clinician_id,
+          label:
+            stateAppointment[0].events_participants[i].clinicians.first_name,
+        });
+      }
     }
   }, [stateAppointment]);
   function goSave() {
@@ -116,7 +137,13 @@ export default function modal(props) {
           participantValue[i]
         );
       }
-      MessageService.createEvent(formData).then((response) => {
+      if (stateAction === "Edit") {
+        formData.append("_method", "PUT");
+      }
+      MessageService.createEvent(formData, stateAction, id).then((response) => {
+        for (var pair of formData.entries()) {
+          console.log(pair[0] + ", " + pair[1]);
+        }
         props.closeModal();
         mutate("Appointment");
       });
@@ -186,9 +213,10 @@ export default function modal(props) {
             <Select
               options={event_type}
               styles={customStyles}
-              defaultValue={{ value: "Session", label: "Session" }}
+              value={defaultType}
               onChange={(e) => {
                 setEventtype(e.value);
+                setDefaulttype({ value: e.value, label: e.label });
               }}
             />
           </Col>
@@ -198,6 +226,7 @@ export default function modal(props) {
               isMulti
               styles={errorMember ? customStyles_error : customStyles}
               options={participant}
+              value={members}
               onChange={(e) => {
                 setMembers(e);
               }}
@@ -206,11 +235,13 @@ export default function modal(props) {
           <Col lg={12}>
             <p className="pTitleInput">Commentary</p>
             <textarea
+              onClick={() => console.log(members)}
               className="textarea"
               rows="2"
               cols="50"
               name="commentary"
               onChange={handleChange}
+              value={state.commentary}
             ></textarea>
           </Col>
           <Col lg={12}>
@@ -220,7 +251,7 @@ export default function modal(props) {
               rows="2"
               cols="50"
               name="notes"
-              onChange={handleChange}
+              value={state.notes}
             ></textarea>
           </Col>
         </Row>

@@ -41,6 +41,18 @@ img {
   height: 100%;
 }
 
+.css-1rhbuit-multiValue {
+  background-color: #ebf2ff !important;
+  border: 1px solid #4f91ff !important;
+}
+
+.css-12jo7m5 {
+  background-color: #ebf2ff;
+  color: #2264d1 !important;
+  font-family: "Poppins";
+  font-weight: 500 !important;
+}
+
 .input-group-text {
   background-color: #f5f5f5 !important;
   color: #1e88e5 !important;
@@ -156,7 +168,7 @@ img {
     font-size: 13px;
     color: $font-color-gray;
     font-weight: 400;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
   }
   .pTitleInput {
     font-size: 14px;

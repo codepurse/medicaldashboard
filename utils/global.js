@@ -9,6 +9,12 @@ export const event_type = [
   { value: "Company Meeting", label: "Company Meeting" },
 ];
 
+export const activity_type = [
+  { value: "Phone", label: "Phone" },
+  { value: "Travel", label: "Travel" },
+  { value: "Session", label: "Session" },
+  { value: "Vitual Session", label: "Virtual Session" },
+];
 
 export const options_phone = [
   { value: "Office", label: "Office" },
@@ -228,12 +234,12 @@ export const customStylesFilter = {
   }),
 };
 
- export const renderInput = (props) => (
-    <input
-      type="text"
-      className= {props.invalid ? "txtError" : "txtInput"}
-      onClick={props.onClick}
-      value = {props.value}
-      onChange={props.onChange}
-    />
-  );
+export const renderInput = (props) => (
+  <input
+    type="text"
+    className={props.invalid ? "txtError" : "txtInput"}
+    onClick={props.onClick}
+    value={props.value}
+    onChange={props.onChange}
+  />
+);

@@ -35,6 +35,7 @@ export default function appointment() {
 
   useEffect(() => {
     setAppointment(data);
+    console.log(data)
   }, [data]);
 
   return (
@@ -98,7 +99,7 @@ export default function appointment() {
                         <tr key={i}>
                           <td>
                             <p className="pDate">
-                              {moment(event.date_from).format("MMMM do, YYYY")}
+                              {moment(event.date_from).format("lll")}
                             </p>
                             <p className="pDay">
                               {moment(event.date_from).format("dddd")}
@@ -106,7 +107,7 @@ export default function appointment() {
                           </td>
                           <td>
                             <p className="pDate">
-                              {moment(event.date_to).format("MMMM do, YYYY")}
+                              {moment(event.date_to).format("lll")}
                             </p>
                             <p className="pDay">
                               {moment(event.date_to).format("dddd")}

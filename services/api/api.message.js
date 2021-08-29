@@ -23,9 +23,12 @@ function getEvents(id) {
   });
 }
 
-function createEvent(data) {
+function createEvent(data, action, id) {
   return request({
-    url: appglobal.api.base_api + appglobal.api.add_event,
+    url:
+      action === "Edit"
+        ? appglobal.api.update_event + id
+        : appglobal.api.add_event,
     method: "POST",
     data: data,
     headers: {
@@ -39,7 +42,7 @@ function createEvent(data) {
 
 function getParticipants(token) {
   return request({
-    url: appglobal.api.base_api + appglobal.api.FilterLocationClinician,
+    url: appglobal.api.FilterLocationClinician,
     method: "GET",
     headers: {
       Authorization: "Bearer " + Cookies.get("token"),
@@ -56,6 +59,19 @@ function getTime(id) {
     method: "GET",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+}
+
+function getClients(id) {
+  return request({
+    url: appglobal.api.allClentBasedToLocation,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
     },
   });
 }
@@ -221,6 +237,7 @@ const MessageService = {
   getLocations,
   goLogin,
   getParticipants,
+  getClients,
   deleteTime,
 };
 

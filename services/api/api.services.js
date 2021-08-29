@@ -20,7 +20,6 @@ module.exports = appglobal = {
     update_clinician: "/api/auth/clinicians/",
     delete_clinician: "/api/auth/clinicians/",
     update_clinicians: "/api/auth/clinicians/update-clinicians",
-    FilterLocationClinician: "/api/auth/getCliniciansBasedOnLocation",
 
     // Event Endpoint
     get_events: "/api/auth/events",
@@ -62,6 +61,7 @@ module.exports = appglobal = {
     create_notes: "/api/auth/clients/",
     update_notes: "/api/auth/clients/update-notes",
     delete_notes: "/api/auth/clients/",
+    allClentBasedToLocation: "/api/auth/eager-load-clients",
 
     // Documents Endpoint
     get_all_document: "/api/auth/documents?client_id=",
