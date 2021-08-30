@@ -1,21 +1,22 @@
-import Header from "../../../components/header";
-import React, { Component, useState, useEffect, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Table from "react-bootstrap/Table";
-import useSWR from "swr";
-import axios from "axios";
-import moment from "moment";
-import Cookies from "js-cookie";
-import MessageService from "../../../services/api/api.message";
-import { AiOutlineDelete } from "react-icons/ai";
-import { FiEdit2, FiPlus } from "react-icons/fi";
-import { GoSearch, GoPlus } from "react-icons/go";
 import { searchTable, searchPota } from "../../../utils/dashboardSearch";
-import Modal from "react-bootstrap/Modal";
+import React, { Component, useState, useEffect, useRef } from "react";
+import ModalTime from "../../../components/pages/dashboard/Timemodal";
 import Modaldelete from "../../../components/modal/deleteModal";
 import { converter, timeType } from "../../../utils/validation";
-import ModalTime from "../../../components/pages/dashboard/Timemodal";
+import MessageService from "../../../services/api/api.message";
+import { Container, Row, Col } from "react-bootstrap";
 import { useTimeStore } from "../../../store/store";
+import { GoSearch, GoPlus } from "react-icons/go";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FiEdit2, FiPlus } from "react-icons/fi";
+import Header from "../../../components/header";
+import Table from "react-bootstrap/Table";
+import Modal from "react-bootstrap/Modal";
+import Cookies from "js-cookie";
+import moment from "moment";
+import axios from "axios";
+import useSWR from "swr";
+
 const fetcher = (url) =>
   MessageService.getTime(Cookies.get("clinician_id")).then(
     (response) => response.data

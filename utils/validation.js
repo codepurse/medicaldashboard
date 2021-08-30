@@ -1,5 +1,7 @@
 import React from "react";
 import moment from "moment";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export const isEmail = (email) => {
   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -43,3 +45,18 @@ export const permission = (value) => {
       return "pMeeting";
   }
 };
+
+export const statusType = (value) => {
+  switch (value) {
+    case 1:
+      return "pActive";
+    default: 
+    return "pDischarge"
+  }
+};
+
+// validation for axios
+export const instance = axios.create({
+  headers: { Authorization: "Bearer " + Cookies.get("token") },
+});
+

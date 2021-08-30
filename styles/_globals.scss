@@ -78,7 +78,8 @@ img {
   }
 }
 
-.pSession {
+.pSession,
+.pActive {
   color: #02b176 !important;
   background-color: #f1f8e9 !important;
   padding: 4px 10px;
@@ -102,7 +103,8 @@ img {
   width: max-content;
 }
 
-.pTravel {
+.pTravel,
+.pDischarge {
   color: #f66c6a !important;
   background-color: #fef4f3 !important;
   padding: 4px 10px;
@@ -116,6 +118,15 @@ img {
   padding: 4px 10px;
   border-radius: 5px;
   width: max-content;
+}
+
+.avatar {
+  background-color: #0952b1 !important;
+  color: white;
+  font-size: 15px !important;
+  text-transform: uppercase;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+  margin-right: 10px;
 }
 
 .ulDashboard {
@@ -183,6 +194,7 @@ img {
   padding-left: 250px !important;
   padding-top: 90px;
   padding-right: 25px !important;
+  margin-bottom: 40px !important;
 }
 
 .txtInput {
@@ -192,12 +204,33 @@ img {
   font-size: 15px !important;
   font-weight: 500;
   width: 100%;
-  min-height: 42px !important;
+  min-height: 40px !important;
   color: $font-color-black;
   background: #f7f8fa !important;
   border: 2px solid #eeeeee;
   box-shadow: none !important;
   outline: none !important;
+  &:focus {
+    border: 2px solid $font-color-blue;
+  }
+}
+
+.txtForm {
+  padding: 8px !important;
+  border-radius: 5px !important;
+  font-family: "Poppins";
+  padding-left: 35px !important;
+  font-size: 15px !important;
+  font-weight: 500;
+  min-height: 40px !important;
+  color: $font-color-black;
+  border: 2px solid #eeeeee;
+  box-shadow: none !important;
+  outline: none !important;
+  background: #f7f8fa url(../public/Image/icon/search.png) left
+    no-repeat;
+  background-size: 15px;
+  background-position: 10px;
   &:focus {
     border: 2px solid $font-color-blue;
   }
@@ -268,6 +301,30 @@ img {
   box-shadow: 0 2px 12px -6px #1976d2 !important;
 }
 
+.dropdownFilter {
+  .dropdown-toggle::after {
+    display: none;
+  }
+  .btnFilter {
+    background-color: white;
+    color: $font-color-black;
+    border-radius: 5px !important;
+    font-size: 15px !important;
+    font-weight: 500;
+    padding: 7px 15px;
+    max-height: 40 !important;
+    box-shadow: 0 0 30px rgb(28 39 60 / 8%) !important;
+    border: 1px solid rgba(28, 39, 60, 0.12) !important;
+    width: 100%;
+    margin-right: 10px;
+    outline: none !important;
+    i {
+      margin-right: 10px;
+      font-size: 17px !important;
+    }
+  }
+}
+
 .modalDelete {
   .modal-dialog {
     width: 100%;
@@ -321,6 +378,15 @@ img {
   }
 }
 
+.conPagination {
+  background-color: wihte !important;
+  border-radius: 5px;
+  margin-top: 10px;
+  box-shadow: 0 0 30px rgb(28 39 60 / 8%);
+  border: 1px solid rgba(28, 39, 60, 0.12);
+  padding: 15px 0px !important;
+}
+
 .conTable {
   background-color: wihte !important;
   border-radius: 5px;
@@ -363,7 +429,6 @@ table {
           font-size: 15px;
           color: $font-color-black;
           font-weight: 500;
-          font-family: "Poppins";
           text-transform: capitalize;
           margin-bottom: 2px;
         }
@@ -388,7 +453,6 @@ table {
           .pImgname {
             background-color: #0952b1;
             color: white;
-            font-family: "Inter";
             font-size: 14px;
             max-width: 42px;
             min-width: 42px;
@@ -460,6 +524,7 @@ table {
   padding: 0px 30px;
   box-shadow: 0 0 30px rgb(28 39 60 / 8%);
   border-bottom: 1px solid rgba(28, 39, 60, 0.12);
+  z-index: 1;
   #imgProfile {
     border-radius: 50%;
     object-fit: cover;

@@ -66,7 +66,7 @@ function getTime(id) {
   });
 }
 
-function createTime(data,action,id) {
+function createTime(data, action, id) {
   return request({
     url:
       action === "Edit"
@@ -86,6 +86,19 @@ function createTime(data,action,id) {
 function getClients(id) {
   return request({
     url: appglobal.api.allClentBasedToLocation,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function getPatients(page) {
+  return request({
+    url: appglobal.api.get_patient + `?&page=${page}`,
     method: "GET",
     headers: {
       Authorization: "Bearer " + Cookies.get("token"),
@@ -123,7 +136,10 @@ function getLocationNoPage() {
     url: appglobal.api.get_all_location,
     method: "GET",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
     },
   });
 }
@@ -191,7 +207,7 @@ function createPatient(data, action, id) {
     method: "POST",
     data: data,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: "Bearer " + Cookies.get("token"),
     },
   });
 }
@@ -233,7 +249,7 @@ function addFamily(data) {
     method: "POST",
     data: data,
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: "Bearer " + Cookies.get("token"),
     },
   });
 }
@@ -259,6 +275,7 @@ const MessageService = {
   goLogin,
   getParticipants,
   getClients,
+  getPatients,
   deleteTime,
 };
 
