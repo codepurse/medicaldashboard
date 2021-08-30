@@ -74,8 +74,7 @@ export default function addPatient(props) {
               props.closeModal();
               mutate(
                 appglobal.api.base_api +
-                  appglobal.api.get_all_identified_patient +
-                  `?&page=1`
+                  appglobal.api.get_all_identified_patient
               );
             })
             .catch((error) => {
@@ -120,7 +119,7 @@ export default function addPatient(props) {
           <p className="pTitleInput">Location</p>
           <Select
             styles={customStyles}
-            options = {location}
+            options={location}
             onChange={(e) => {
               setLocid(e.value);
             }}

@@ -35,12 +35,18 @@ export default function emr() {
       setPagecount(data.last_page);
     }
   }, [data]);
+  const setData = (value) => {
+    try {
+      setPagecount(value.last_page);
+      setPatients(value);
+    } catch (error) {}
+  };
   return (
     <>
       <Header />
       <Container fluid className="conDashboard conPages">
         <Row>
-          <Search />
+          <Search getdata={setData} />
           <Col lg={12}>
             <div className="conTable">
               <Table>

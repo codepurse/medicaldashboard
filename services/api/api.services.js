@@ -20,6 +20,7 @@ module.exports = appglobal = {
     update_clinician: "/api/auth/clinicians/",
     delete_clinician: "/api/auth/clinicians/",
     update_clinicians: "/api/auth/clinicians/update-clinicians",
+    FilterLocationClinician:"/api/auth/getCliniciansBasedOnLocation",
 
     // Event Endpoint
     get_events: "/api/auth/events",

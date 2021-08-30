@@ -59,7 +59,7 @@ export default function appointment() {
                     className="form-control txtInput"
                     placeholder="Search events.."
                     onChange={(e) => {
-                      searchPota(6, e.currentTarget.value).then((res) =>
+                      searchPota(Cookies.get("clinician_id"), e.currentTarget.value).then((res) =>
                         setAppointment(res)
                       );
                     }}

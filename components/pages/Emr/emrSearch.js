@@ -1,8 +1,9 @@
+import { searchEmr } from "../../../utils/dashboardSearch";
 import appglobal from "../../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { HiOutlineFilter } from "react-icons/hi";
-import ModalAddPatient from  "../Emr/addPatient";
+import ModalAddPatient from "../Emr/addPatient";
 import Modal from "react-bootstrap/Modal";
 import { GoPlus } from "react-icons/go";
 import Cookies from "js-cookie";
@@ -50,12 +51,18 @@ export default function emrSearch(props) {
             className="form-control txtForm"
             placeholder="Search by first or last name.."
             aria-label="Text input with dropdown button"
+            onChange={(e) => {
+              searchEmr(
+                Cookies.get("clinician_id"),
+                e.currentTarget.value
+              ).then((res) => props.getdata(res));
+            }}
           />
         </div>
       </Col>
       <Col lg={7}>
         <div className="float-right">
-          <button className="btnBlue" onClick = {handleShow}>
+          <button className="btnBlue" onClick={handleShow}>
             <i>
               <GoPlus />
             </i>
@@ -63,15 +70,8 @@ export default function emrSearch(props) {
           </button>
         </div>
       </Col>
-      <Modal
-        show={show}
-        onHide={handleClose}
-        centered
-        className="modalNormal"
-      >
-        <ModalAddPatient
-          closeModal={handleClose}
-        />
+      <Modal show={show} onHide={handleClose} centered className="modalNormal">
+        <ModalAddPatient closeModal={handleClose} />
       </Modal>
     </>
   );

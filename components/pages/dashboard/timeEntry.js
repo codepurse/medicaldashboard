@@ -1,4 +1,4 @@
-import { searchTable, searchPota } from "../../../utils/dashboardSearch";
+import { searchTable, searchTime } from "../../../utils/dashboardSearch";
 import React, { Component, useState, useEffect, useRef } from "react";
 import ModalTime from "../../../components/pages/dashboard/Timemodal";
 import Modaldelete from "../../../components/modal/deleteModal";
@@ -59,7 +59,7 @@ export default function appointment() {
                     className="form-control txtInput"
                     placeholder="Search time entry.."
                     onChange={(e) => {
-                      searchPota(6, e.currentTarget.value).then((res) =>
+                      searchTime(Cookies.get("clinician_id"), e.currentTarget.value).then((res) =>
                         setTimeentry(res)
                       );
                     }}

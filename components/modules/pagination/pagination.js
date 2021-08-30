@@ -12,9 +12,12 @@ import axios from "axios";
 
 
 export default function pagination(props) {
+  const [page,setPage] = useState(1);
+
   const handleChange = (event, value) => {
       mutate("Patients")
       props.page(value)
+      setPage(value)
   };
 
   return (
@@ -27,6 +30,7 @@ export default function pagination(props) {
               count={props.count}
               showFirstButton
               showLastButton
+              page = {page}
               onChange={handleChange}
             />
           </div>
