@@ -124,6 +124,7 @@ img {
   background-color: #0952b1 !important;
   color: white;
   font-size: 15px !important;
+  font-weight: 500;
   text-transform: uppercase;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
   margin-right: 10px;
@@ -395,8 +396,8 @@ img {
   background-color: wihte !important;
   border-radius: 5px;
   margin-top: 10px;
-  box-shadow: 0 0 30px rgb(28 39 60 / 8%);
-  border: 1px solid rgba(28, 39, 60, 0.12);
+  box-shadow: 0 0 30px rgb(28 39 60 / 8%) !important;
+  border: 1px solid rgba(28, 39, 60, 0.12) !important;
   padding: 0px;
 }
 
@@ -805,5 +806,90 @@ table {
       color: $font-color-gray;
       margin-bottom: 0px;
     }
+  }
+}
+
+.divProfilelist {
+  padding: 25px !important;
+  padding-bottom: 0px !important;
+  position: relative;
+  .btnBack {
+    border: 0px;
+    right: 10px;
+    border-radius: 25px;
+    width: 45px;
+    height: 45px;
+    background-color: #0952b1;
+    color: white;
+    font-size: 1.2rem;
+    position: absolute;
+    top: 10px;
+    z-index: 1;
+    outline: none;
+    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
+      rgba(17, 17, 26, 0.1) 0px 0px 8px;
+  }
+  .btnEdit {
+    background-color: white;
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    border: 0px;
+    margin-top: 10px;
+    position: absolute;
+    bottom: 10px;
+    font-size: 1.2rem;
+    right: 10px;
+    box-shadow: rgba(10, 57, 119, 0.3) 0px 1px 2px 0px,
+      rgba(10, 57, 119, 0.15) 0px 2px 6px 2px;
+  }
+
+  .avatarProfile {
+    width: 75px;
+    height: 75px;
+    margin-right: 15px;
+    background-color: #0952b1;
+    font-size: 2rem;
+  }
+  .pFullname {
+    font-family: "Poppins";
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: $font-color-black;
+    margin-bottom: -3px;
+    word-break: break-all !important;
+  }
+  .pEmail {
+    font-family: "Poppins";
+    font-size: 14px;
+    font-weight: 500;
+    color: $font-color-gray;
+  }
+}
+
+.divProfileInfo {
+  background-color: white;
+  transition: all 0.2s !important;
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  padding: 20px 25px;
+  padding-bottom: 20px;
+  margin-top: 10px;
+  position: relative;
+  box-shadow: 0 0 30px rgb(28 39 60 / 8%) !important;
+  border: 1px solid rgba(28, 39, 60, 0.12) !important;
+  .pTitle {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .pTitlesub {
+    font-size: 13px;
+    font-weight: 400;
+    margin-bottom: 2px;
+  }
+  .pInfo {
+    font-size: 15px;
+    font-weight: 500;
   }
 }

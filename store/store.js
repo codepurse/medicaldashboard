@@ -24,7 +24,9 @@ let stateTime = (set) => ({
 
 let stateMemberInfo = (set) => ({
   memberInfo: [],
+  memberId: "",
   addInfo: (member) => set((state) => ({ memberInfo: [member] })),
+  addMemberId: (id) => set((state) => ({ memberId: id })),
 });
 
 settingStore = persist(settingStore, { name: "user_info" });

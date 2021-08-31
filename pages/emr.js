@@ -19,6 +19,7 @@ import axios from "axios";
 
 export default function emr() {
   const setInfo = useMemberInfoStore((state) => state.addInfo);
+  const setId = useMemberInfoStore((state) => state.addMemberId);
   const [page, setPage] = useState(1);
   const { data, error } = useSWR(
     appglobal.api.base_api +
@@ -68,6 +69,7 @@ export default function emr() {
                       onClick={() => {
                         router.push(`/emr/${event.families.id}`);
                         setInfo(event);
+                        setId(event.id);
                       }}
                     >
                       <td>
