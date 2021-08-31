@@ -129,6 +129,10 @@ img {
   margin-right: 10px;
 }
 
+.avatarImage {
+  margin-right: 10px;
+}
+
 .ulDashboard {
   list-style-type: none;
   overflow: hidden;
@@ -227,8 +231,7 @@ img {
   border: 2px solid #eeeeee;
   box-shadow: none !important;
   outline: none !important;
-  background: #f7f8fa url(../public/Image/icon/search.png) left
-    no-repeat;
+  background: #f7f8fa url(../public/Image/icon/search.png) left no-repeat;
   background-size: 15px;
   background-position: 10px;
   &:focus {
@@ -385,6 +388,15 @@ img {
   box-shadow: 0 0 30px rgb(28 39 60 / 8%);
   border: 1px solid rgba(28, 39, 60, 0.12);
   padding: 15px 0px !important;
+}
+
+.conLayout {
+  background-color: wihte !important;
+  border-radius: 5px;
+  margin-top: 10px;
+  box-shadow: 0 0 30px rgb(28 39 60 / 8%);
+  border: 1px solid rgba(28, 39, 60, 0.12);
+  padding: 0px;
 }
 
 .conTable {
@@ -738,5 +750,44 @@ table {
     font-size: 13px;
     font-weight: 400;
     color: $font-color-gray;
+  }
+}
+
+//patient
+
+.divMembers {
+  padding: 20px 25px !important;
+  .pHeader {
+    font-size: 15px;
+    font-weight: 500;
+    color: $font-color-black;
+    margin-bottom: 5px;
+    display: block;
+  }
+  .btnAdd {
+    background-color: white;
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    color: $font-color-black;
+    margin-right: 0px;
+    float: right !important;
+    margin-top: -5px;
+    border: 0px;
+    box-shadow: rgba(10, 57, 119, 0.3) 0px 1px 2px 0px,
+      rgba(10, 57, 119, 0.15) 0px 2px 6px 2px;
+    &:hover {
+      color: $font-color-blue;
+    }
+  }
+  .divList {
+    cursor: pointer;
+    border-radius: 5px;
+    padding: 8px;
+    transition: all 0.1s;
+    margin-bottom: 10px;
+    &:hover {
+      background-color: #f3f2ee;
+    }
   }
 }

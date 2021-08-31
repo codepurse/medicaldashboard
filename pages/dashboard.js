@@ -16,6 +16,7 @@ export default function dashboard() {
     setFullname(people[0].user.full_name);
   }, []);
   return (
+    
     <Container fluid className="conDashboard conPages">
       <Row>
         <Col lg={12}>

@@ -22,8 +22,14 @@ let stateTime = (set) => ({
   addAction: (action) => set((state) => ({ action: action })),
 });
 
+let stateFamilyMember = (set) => ({
+  FamilyIdInfo: "",
+  addInfo: (member) => set((state) => ({ FamilyIdInfo: member })),
+});
+
 settingStore = persist(settingStore, { name: "user_info" });
 
 export const useSettingStore = create(settingStore);
 export const useAppointmentStore = create(stateAppointment);
 export const useTimeStore = create(stateTime);
+export const useFamilyMemberStore = create(stateFamilyMember);

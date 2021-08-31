@@ -17,6 +17,7 @@ import axios from "axios";
 
 const fetcher = (url) => instance.get(url).then((res) => res.data);
 export default function emr() {
+  const router = useRouter();
   const [page, setPage] = useState(1);
   const [pagecount, setPagecount] = useState(1);
   const [patients, setPatients] = useState([]);
@@ -60,11 +61,14 @@ export default function emr() {
                 </thead>
                 <tbody>
                   {patients.data?.map((event, i) => (
-                    <tr key={i}>
+                    <tr key={i} onClick = {() => {
+                      router.push(`/emr/${event.families.id}`)
+                    }}>*
                       <td>
                         <div className="form-inline">
                           {event.photo ? (
                             <Avatar
+                              className="avatarImage"
                               alt="Remy Sharp"
                               src={appglobal.api.aws + event.photo}
                             />

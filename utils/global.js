@@ -33,6 +33,7 @@ export const options_marital = [
 ];
 
 export const options_relationship = [
+  {value: "All Member", label: "All Member"},
   { value: "Identified Patient", label: "Identified Patient" },
   { value: "Mother", label: "Mother" },
   { value: "Father", label: "Father" },

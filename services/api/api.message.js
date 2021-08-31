@@ -109,6 +109,19 @@ function getPatients(page) {
   });
 }
 
+function getMembers(id) {
+  return request({
+    url: appglobal.api.get_members + id,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
 function getLocation(page, sizePerPage) {
   return request({
     url:
@@ -275,6 +288,7 @@ const MessageService = {
   goLogin,
   getParticipants,
   getClients,
+  getMembers,
   getPatients,
   deleteTime,
 };
