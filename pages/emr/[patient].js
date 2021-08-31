@@ -3,6 +3,7 @@ import { statusType, instance } from "../../utils/validation";
 import MessageService from "../../services/api/api.message";
 import { Container, Row, Col } from "react-bootstrap";
 import appglobal from "../../services/api/api.services";
+import { useMemberInfoStore } from "../../store/store";
 import Avatar from "@material-ui/core/Avatar";
 import Modal from "react-bootstrap/Modal";
 import { useRouter } from "next/router";
@@ -20,13 +21,13 @@ import {
 
 const fetcher = (url) => instance.get(url).then((res) => res.data.data);
 export default function patient() {
+  const stateMemberInfo = useMemberInfoStore((state) => state.memberInfo);
   const router = useRouter();
   const patientId = router.query.patient;
   const url = appglobal.api.base_api + appglobal.api.get_members + patientId;
   const { data, error } = useSWR(url, fetcher);
+  const [memberInfo, setMemberInfo] = useState([]);
   const [familyFilter, setFamilyFilter] = useState([]);
-  console.log(error);
-  console.log(data);
   const [member, setMembers] = useState([]);
 
   useEffect(() => {
@@ -34,6 +35,17 @@ export default function patient() {
       setMembers(data);
     }
   }, [data]);
+
+  useEffect(() => {
+    if (member) {
+      console.log(member.clients);
+      setMemberInfo(member.clients);
+    }
+  }, [member]);
+
+  useEffect(() => {
+    console.log(memberInfo)
+  }, [memberInfo])
 
   return (
     <Container fluid className="conPages">
@@ -76,16 +88,46 @@ export default function patient() {
             <Row>
               <Col lg={12}>
                 {member?.map((event, i) => (
-                  <>
-                    <div className="divList">
-                      <div className="form-inline">
-                        <Avatar className="avatar">
-                          {event.clients[i].first_name.charAt(0)}
-                        </Avatar>
+                  <div key={i}>
+                    {event.clients.map((event, i) => (
+                      <div className="divList" key={i}>
+                        <div className="form-inline">
+                          {event.photo ? (
+                            <Avatar
+                              className="avatarImage"
+                              alt="Remy Sharp"
+                              src={appglobal.api.aws + event.photo}
+                            />
+                          ) : (
+                            <Avatar className="avatar">
+                              {event.first_name.charAt(0) +
+                                event.last_name.charAt(0)}
+                            </Avatar>
+                          )}
+                          <div>
+                            <p className="pNamelist">
+                              {event.first_name + " " + event.last_name}
+                            </p>
+                            <p className="pRelationship">
+                              {event.family_relationship}
+                            </p>
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </>
+                    ))}
+                  </div>
                 ))}
+              </Col>
+            </Row>
+          </div>
+        </Col>
+        <Col lg={8}>
+          <div className="divProfilelist conLayout">
+            <Row>
+              <Col lg={12}>
+                <div className="form-inline">
+                  <Avatar className="avatarImage" alt="Remy Sharp" src="" />
+                </div>
               </Col>
             </Row>
           </div>

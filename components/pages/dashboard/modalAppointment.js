@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
 import MessageService from "../../../services/api/api.message";
-  import useSWR, { mutate } from "swr";
+import useSWR, { mutate } from "swr";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import Grid from "@material-ui/core/Grid";
 import { useAppointmentStore } from "../../../store/store";

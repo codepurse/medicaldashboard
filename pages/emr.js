@@ -1,10 +1,12 @@
 import React, { Component, useState, useEffect, useRef } from "react";
 import Pagination from "../components/modules/pagination/pagination";
+const fetcher = (url) => instance.get(url).then((res) => res.data);
 import { statusType, instance } from "../utils/validation";
 import MessageService from "../services/api/api.message";
 import Search from "../components/pages/Emr/emrSearch";
 import { Container, Row, Col } from "react-bootstrap";
 import appglobal from "../services/api/api.services";
+import { useMemberInfoStore } from "../store/store";
 import Avatar from "@material-ui/core/Avatar";
 import Table from "react-bootstrap/Table";
 import Header from "../components/header";
@@ -15,18 +17,18 @@ import Cookies from "js-cookie";
 import moment from "moment";
 import axios from "axios";
 
-const fetcher = (url) => instance.get(url).then((res) => res.data);
 export default function emr() {
-  const router = useRouter();
+  const setInfo = useMemberInfoStore((state) => state.addInfo);
   const [page, setPage] = useState(1);
-  const [pagecount, setPagecount] = useState(1);
-  const [patients, setPatients] = useState([]);
   const { data, error } = useSWR(
     appglobal.api.base_api +
       appglobal.api.get_all_identified_patient +
       `?&page=${page}`,
     fetcher
   );
+  const [pagecount, setPagecount] = useState(1);
+  const [patients, setPatients] = useState([]);
+  const router = useRouter();
   const getPage = (value) => {
     setPage(value);
   };
@@ -61,9 +63,13 @@ export default function emr() {
                 </thead>
                 <tbody>
                   {patients.data?.map((event, i) => (
-                    <tr key={i} onClick = {() => {
-                      router.push(`/emr/${event.families.id}`)
-                    }}>*
+                    <tr
+                      key={i}
+                      onClick={() => {
+                        router.push(`/emr/${event.families.id}`);
+                        setInfo(event);
+                      }}
+                    >
                       <td>
                         <div className="form-inline">
                           {event.photo ? (
