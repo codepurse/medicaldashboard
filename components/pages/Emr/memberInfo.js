@@ -90,14 +90,6 @@ export default function memberInfo(props) {
                   </Col>
 
                   <Col lg={8}>
-                    {/*  <Row>
-                      <Col lg={6}>
-                        <p className="pTitlesub">Phone Number</p>
-                      </Col>
-                      <Col lg={6}>
-                        <p className="pTitlesub">Phone Type</p>
-                      </Col>
-                    </Row>*/}
                     {props.memberinfo[0].client_phones.map((event, i) => (
                       <Row key={i}>
                         <Col lg={6}>

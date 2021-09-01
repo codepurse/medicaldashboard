@@ -36,6 +36,7 @@ export default function patient() {
   const [memberInfo, setMemberInfo] = useState([]);
   const [familyFilter, setFamilyFilter] = useState([]);
   const [idFilter, setIdFilter] = useState("");
+  const [familyid, setFamilyId] = useState("");
   const [member, setMembers] = useState([]);
   useEffect(() => {
     if (data) {
@@ -55,6 +56,13 @@ export default function patient() {
     }
   }, [member]);
 
+  useEffect(() => {
+    if (memberInfo.length !== 0) {
+      setFamilyId(memberInfo[0].families_id);
+      console.log(memberInfo[0].families_id);
+    }
+  }, [memberInfo]);
+
   function changeFilter(e) {
     setFamilyFilter({ value: e.value, label: e.label });
     setIdFilter(e.value);
@@ -67,6 +75,10 @@ export default function patient() {
         el.style.display = "block";
       $(`.divList:not([data-relationship=${filter}])`).hide();
     }
+  }
+
+  function changeAction() {
+    setVisible(false);
   }
 
   return (
@@ -120,9 +132,13 @@ export default function patient() {
                         }
                         key={i}
                         onClick={() => {
-                          const myArray = [];
-                          myArray.push(event);
-                          setMemberInfo(myArray);
+                          if (visible) {
+                            
+                          } else {
+                            const myArray = [];
+                            myArray.push(event);
+                            setMemberInfo(myArray);
+                          }
                         }}
                       >
                         <div className="form-inline">
@@ -164,8 +180,7 @@ export default function patient() {
             <button
               className="btnBack"
               onClick={() => {
-                setAction(false);
-                console.log(action);
+                window.history.back();
               }}
             >
               <TiArrowBack />
@@ -192,7 +207,11 @@ export default function patient() {
                               <Avatar
                                 className="avatarProfile"
                                 alt={memberInfo[0].first_name}
-                                src={appglobal.api.aws + memberInfo[0].photo}
+                                src={
+                                  !visible
+                                    ? appglobal.api.aws + memberInfo[0].photo
+                                    : ""
+                                }
                               />
                             ) : (
                               <Avatar
@@ -231,13 +250,15 @@ export default function patient() {
               </Col>
             </Row>
           </div>
-
           {(() => {
             if (visible) {
               return (
                 <Formpatient
                   memberinfo={action ? "" : memberInfo}
                   action={action}
+                  setAction={changeAction}
+                  url={url}
+                  idfamily={familyid}
                 />
               );
             } else {

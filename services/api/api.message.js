@@ -214,7 +214,7 @@ function getFamily(familypage) {
 function createPatient(data, action, id) {
   return request({
     url:
-      action === "add"
+      action === "add"  || action
         ? appglobal.api.add_client
         : appglobal.api.edit_clients + id,
     method: "POST",

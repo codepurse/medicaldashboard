@@ -1,9 +1,12 @@
 import { statusType, instance, riskcategory } from "../../../utils/validation";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
+import { IoMdAddCircleOutline, IoMdCloudUpload } from "react-icons/io";
 import React, { Component, useState, useEffect, useRef } from "react";
 import MessageService from "../../../services/api/api.message";
 import appglobal from "../../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
+import Snackbar from "@material-ui/core/Snackbar";
+import { AiOutlineDelete } from "react-icons/ai";
 import DateFnsUtils from "@date-io/date-fns";
 import Grid from "@material-ui/core/Grid";
 import useSWR, { mutate } from "swr";
@@ -24,13 +27,16 @@ import {
   options_risk,
   renderInput,
 } from "../../../utils/global";
-
 export default function formPatient(props) {
   const inputFileRef = useRef(null);
+  const [open, setOpen] = React.useState(false);
   const [action, setAction] = useState(true); // true if add
   const [inputFields, setInputFields] = useState([
     { id: uuidv4(), phonenumber: "", type: "" },
   ]);
+  const phoneValue = inputFields.map((input) => input.phonenumber);
+  const phoneType = inputFields.map((input) => input.type);
+
   const [info, setInfo] = useState([]);
   const [marital, setMarital] = useState(
     props.action ? "" : props.memberinfo[0].marital_status
@@ -57,6 +63,7 @@ export default function formPatient(props) {
   const [ethnic, setEthnic] = useState(
     props.action ? "" : props.memberinfo[0].ethnic
   );
+  const [familyId, setFamilId] = useState(props.idfamily);
   const [profilepic, setProfilepic] = useState("");
   const [ss, setSs] = useState(
     props.action ? "" : props.memberinfo[0].social_security
@@ -64,6 +71,9 @@ export default function formPatient(props) {
   const [risk, setRisk] = useState(
     props.action ? "" : props.memberinfo[0].risk_category
   );
+  const [fnameError, setFnameError] = useState(false);
+  const [lnameError, setLnameError] = useState(false);
+  const [dischargeError, setDischargeError] = useState(false);
   const [state, setState] = React.useState({
     fname: props.action ? "" : props.memberinfo[0].first_name,
     mname: props.action ? "" : props.memberinfo[0].middle_name,
@@ -89,12 +99,8 @@ export default function formPatient(props) {
     pharmacyperson: props.action
       ? ""
       : props.memberinfo[0].pharmacy_contact_person,
-    pharmacycontact: props.action
-      ? ""
-      : props.memberinfo[0].pharmacy_number,
-    pharmacyaddress: props.action
-      ? ""
-      : props.memberinfo[0].pharmacy_address,
+    pharmacycontact: props.action ? "" : props.memberinfo[0].pharmacy_number,
+    pharmacyaddress: props.action ? "" : props.memberinfo[0].pharmacy_address,
   });
   const handleChange = (evt) => {
     setState({
@@ -116,11 +122,9 @@ export default function formPatient(props) {
       setInputFields(data_number);
     }
   }, [props]);
-
   const onBtnClick = () => {
     inputFileRef.current.click();
   };
-
   function handleFile(e) {
     var reader = new FileReader();
     let file = e.target.files[0];
@@ -134,14 +138,12 @@ export default function formPatient(props) {
       setProfilepic(file);
     }
   }
-
   const handleAddFields = () => {
     setInputFields([
       ...inputFields,
       { id: uuidv4(), phonenumber: "", type: "" },
     ]);
   };
-
   const handleRemoveFields = (id) => {
     const values = [...inputFields];
     values.splice(
@@ -150,7 +152,6 @@ export default function formPatient(props) {
     );
     setInputFields(values);
   };
-
   const handleChangeInput = (id, event) => {
     const newInputFields = inputFields.map((i) => {
       var val = event.target.value.replace(/\D/g, "");
@@ -162,11 +163,8 @@ export default function formPatient(props) {
       }
       return i;
     });
-
     setInputFields(newInputFields);
-    // console.log(inputFields);
   };
-
   const handleChangeInputselect = (id, event) => {
     const newInputFields = inputFields.map((i) => {
       if (id === i.id) {
@@ -174,25 +172,134 @@ export default function formPatient(props) {
       }
       return i;
     });
-
     setInputFields(newInputFields);
   };
+
+  function goSave() {
+    var clear = 0;
+    const formData = new FormData();
+    if (!state.fname) {
+      setFnameError(true);
+      clear = 1;
+    }
+    if (!state.lname) {
+      setLnameError(true);
+      clear = 1;
+    }
+    if (status === 0 && !discharge) {
+      setDischargeError(true);
+      clear = 1;
+    } else if (status === 0 && discharge) {
+      if (moment(discharge).isBefore(admission)) {
+        setDischargeError(true);
+        clear = 1;
+      }
+    }
+    if (clear === 0) {
+      formData.append("email", state.email);
+      formData.append("families_id", familyId);
+      formData.append("marital_status", marital);
+      formData.append("first_name", state.fname);
+      formData.append("middle_name", state.mname);
+      formData.append("last_name", state.lname);
+      formData.append("family_relationship", relationship);
+      formData.append("gender", gender);
+      formData.append("referred_name", state.refname);
+      formData.append("referred_company", state.refcom);
+      formData.append("referred_email", state.refemail);
+      formData.append("referred_phone", state.refphone);
+      formData.append("address", state.address);
+      formData.append("city", state.city);
+      formData.append("state", state.state);
+      formData.append("zipcode", state.zip);
+      formData.append("phone_number", "");
+      formData.append("status", status);
+      formData.append("pharmacy_name", "");
+      formData.append("pharmacy_address", state.pharmacyaddress);
+      formData.append("pharmacy_number", state.pharmacycontact);
+      formData.append("pharmacy_contact_person", state.pharmacyperson);
+      formData.append("emergency_name", state.contactname);
+      formData.append("emergency_number", state.contactnumber);
+      formData.append("insurance_plan", state.insurance);
+      formData.append("member_id", state.memberid);
+      formData.append("group_no", state.groupnumber);
+      formData.append("current_medication", state.medication);
+      formData.append("ethnic", ethnic);
+      formData.append("license_number", state.license);
+      formData.append("social_security", ss);
+      formData.append("diagnostic_code", state.diagnostic);
+      if (bday) {
+        formData.append("date_of_birth", moment(bday).format("YYYY/MM/DD"));
+      }
+      for (let i = 0; i < phoneValue.length; i++) {
+        formData.append(`phones[${i}][phone_number]`, phoneValue[i]);
+      }
+      for (let i = 0; i < phoneType.length; i++) {
+        formData.append(`phones[${i}][type]`, phoneType[i]);
+      }
+      if (status === 0) {
+        formData.append(
+          "discharge_date",
+          moment(discharge).format("YYYY/MM/DD")
+        );
+      }
+      if (!risk) {
+        formData.append("risk_category", 4);
+      } else {
+        formData.append("risk_category", risk);
+      }
+      if (relationship === "Identified Patient") {
+        formData.append("is_identified_person", 1);
+      } else {
+        formData.append("is_identified_person", 0);
+      }
+      if (profilepic) {
+        formData.append("photo", profilepic, profilepic.name);
+      }
+      if (admission) {
+        formData.append(
+          "admission_date",
+          moment(admission).format("YYYY-MM-DD")
+        );
+      }
+      if (!props.action) {
+        formData.append("_method", "PUT");
+      }
+      MessageService.createPatient(formData, props.action, props.idfamily)
+        .then((response) => {
+          mutate(props.url);
+          props.setAction();
+          setOpen(true);
+        })
+        .catch((error) => {
+          console.log(error);
+          alert("Something went wrong.");
+        });
+    }
+  }
 
   return (
     <div className="divProfileInfo">
       <Row>
         <Col lg={12}>
-          <p className="pTitle">Personal Information</p>
+          <p
+            className="pTitle"
+            onClick={(e) => {
+              setOpen(true);
+            }}
+          >
+            Personal Information
+          </p>
           <hr></hr>
         </Col>
         <Col lg={4}>
           <p className="pTitlesub">First Name</p>
           <input
             type="text"
-            className="txtInput"
+            className={fnameError ? "txtError" : "txtInput"}
             name="fname"
-            onClick={() => {
-              setAction(false);
+            onInput={(e) => {
+              setFnameError(false);
             }}
             value={state.fname}
             onChange={handleChange}
@@ -202,12 +309,9 @@ export default function formPatient(props) {
           <p className="pTitlesub">Middle Name</p>
           <input
             type="text"
-            className="txtInput"
+            className={"txtInput"}
             name="mname"
             value={state.mname}
-            onClick={() => {
-              console.log(action);
-            }}
             onChange={handleChange}
           />
         </Col>
@@ -215,8 +319,11 @@ export default function formPatient(props) {
           <p className="pTitlesub">Last Name</p>
           <input
             type="text"
-            className="txtInput"
+            className={lnameError ? "txtError" : "txtInput"}
             name="lname"
+            onInput={(e) => {
+              setLnameError(false);
+            }}
             value={state.lname}
             onChange={handleChange}
           />
@@ -251,7 +358,13 @@ export default function formPatient(props) {
           <p className="pTitlesub">Date of Birth</p>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <Grid container justifyContent="space-around">
-              <DateTimePicker value={bday} TextFieldComponent={renderInput} />
+              <DateTimePicker
+                value={bday}
+                TextFieldComponent={renderInput}
+                onChange={(date) => {
+                  setBday(date);
+                }}
+              />
             </Grid>
           </MuiPickersUtilsProvider>
         </Col>
@@ -319,7 +432,7 @@ export default function formPatient(props) {
           <div className="input-group mb-3" style={{ marginTop: "5px" }}>
             <div className="input-group-prepend">
               <button className="btnUpload" type="button" onClick={onBtnClick}>
-                Upload
+                <IoMdCloudUpload />
               </button>
             </div>
             <input
@@ -363,15 +476,24 @@ export default function formPatient(props) {
               </Col>
               <Col lg={2} className="align-self-end">
                 <div className={inputFields.length === 1 ? "d-none" : ""}>
-                  <button className="btnDeletephone">
-                    <img src="Image/icon/binwhite.png" className="img-fluid" />
+                  <button
+                    className="btnDeletephone"
+                    onClick={() => handleRemoveFields(inputField.id)}
+                  >
+                    <i>
+                      {" "}
+                      <AiOutlineDelete />
+                    </i>
                   </button>
                 </div>
               </Col>
             </Row>
           ))}
-          <p className="pAddnum">
-            <img src="Image/icon/addphone.png" />
+          <div></div>
+          <p className="pAddnum" onClick={handleAddFields}>
+            <i>
+              <IoMdAddCircleOutline />
+            </i>
             Add phone number
           </p>
         </Col>
@@ -460,6 +582,9 @@ export default function formPatient(props) {
             value={options_status.filter((option) => option.value === status)}
             options={options_status}
             styles={customStyles}
+            onChange={(e) => {
+              setStatus(e.value);
+            }}
           />
         </Col>
         <Col lg={4}>
@@ -469,6 +594,9 @@ export default function formPatient(props) {
               <DateTimePicker
                 value={admission}
                 TextFieldComponent={renderInput}
+                onChange={(date) => {
+                  setAdmission(date);
+                }}
               />
             </Grid>
           </MuiPickersUtilsProvider>
@@ -480,6 +608,10 @@ export default function formPatient(props) {
               <DateTimePicker
                 value={discharge}
                 TextFieldComponent={renderInput}
+                invalid={dischargeError}
+                onChange={(date) => {
+                  setDischarge(date);
+                }}
               />
             </Grid>
           </MuiPickersUtilsProvider>
@@ -503,8 +635,8 @@ export default function formPatient(props) {
           <input
             type="text"
             className="txtInput"
-            name="refname"
-            value={state.refname}
+            name="refcom"
+            value={state.refcom}
             onChange={handleChange}
           ></input>
         </Col>
@@ -537,7 +669,7 @@ export default function formPatient(props) {
           <input
             type="text"
             className="txtInput"
-            name="diagnostic"
+            name="medication"
             value={state.medication}
             onChange={handleChange}
           ></input>
@@ -555,9 +687,12 @@ export default function formPatient(props) {
         <Col lg={4}>
           <p className="pTitlesub">Risk Category</p>
           <Select
-            value={options_risk.filter((option) => option.value === risk)}
+            value={options_risk.filter(
+              (option) => option.value === risk.toString()
+            )}
             options={options_risk}
             styles={customStyles}
+            onChange={(e) => setRisk(e.value)}
           />
         </Col>
         <Col lg={4}>
@@ -575,8 +710,8 @@ export default function formPatient(props) {
           <input
             type="text"
             className="txtInput"
-            name="insurance"
-            value={state.insurance}
+            name="memberid"
+            value={state.memberid}
             onChange={handleChange}
           ></input>
         </Col>
@@ -630,7 +765,29 @@ export default function formPatient(props) {
             onChange={handleChange}
           ></input>
         </Col>
+        <Col lg={12}>
+          <div className="float-right" style={{ marginTop: "10px" }}>
+            <button className="btnCancel" onClick={props.setAction}>
+              Cancel
+            </button>
+            <button className="btnSave" onClick={goSave}>
+              Save
+            </button>
+          </div>
+        </Col>
       </Row>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+        open={open}
+        onClose  = {() => {
+          setOpen(close)
+        }}
+        autoHideDuration={2000}
+        message="Note archived"
+      />
     </div>
   );
 }

@@ -78,6 +78,30 @@ img {
   }
 }
 
+.btnDeletephone {
+  box-shadow: rgba(10, 57, 119, 0.3) 0px 1px 2px 0px,
+    rgba(10, 57, 119, 0.15) 0px 2px 6px 2px;
+  margin-right: 10px;
+  background-color: white;
+  font-size: 14px;
+  color: #fc4444;
+  border: 0px;
+  border-radius: 50%;
+  min-width: 35px;
+  max-width: 35px !important;
+  max-height: 35px !important;
+  min-height: 35px !important;
+  margin-top: 10px;
+  transform: all 0.1s;
+  i {
+    font-size: 1.2rem !important;
+  }
+  &:hover {
+    background-color: #fc4444;
+    color: white;
+  }
+}
+
 .pSession,
 .pActive {
   color: #02b176 !important;
@@ -208,6 +232,22 @@ img {
   }
 }
 
+.pAddnum {
+  font-size: 13px;
+  color: #424242;
+  font-weight: 500;
+  font-family: "Inter";
+  margin-top: 0px;
+  margin-bottom: 0px;
+  cursor: pointer;
+  color: $font-color-blue;
+  width: max-content;
+  i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+}
+
 .conPages {
   padding-left: 250px !important;
   padding-top: 90px;
@@ -254,6 +294,11 @@ img {
 }
 
 .btnUpload {
+  border: 2px solid #eeeeee;
+  color: $font-color-blue;
+  font-size: 1.2rem;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .txtUpload {
@@ -266,7 +311,7 @@ img {
   border: 2px solid #eeeeee;
   box-shadow: none !important;
   outline: none !important;
-  background-color: #f7f8fa !important; 
+  background-color: #f7f8fa !important;
   &:focus {
     border: 2px solid $font-color-blue;
   }
@@ -873,7 +918,7 @@ table {
     right: 10px;
     box-shadow: rgba(10, 57, 119, 0.3) 0px 1px 2px 0px,
       rgba(10, 57, 119, 0.15) 0px 2px 6px 2px;
-      z-index: 1;
+    z-index: 1;
   }
 
   .avatarProfile {
@@ -915,10 +960,15 @@ table {
     font-size: 15px;
     font-weight: 500;
   }
+  .pMargin {
+    margin-top: 15px;
+    margin-bottom: -5px;
+  }
   .pTitlesub {
     font-size: 13px;
-    font-weight: 400;
+    font-weight: 500;
     margin-bottom: 2px;
+    margin-top: 10px;
   }
   .pInfo {
     font-size: 15px;
