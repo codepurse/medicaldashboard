@@ -1,7 +1,7 @@
+import { statusType, instance, riskcategory } from "../utils/validation";
 import React, { Component, useState, useEffect, useRef } from "react";
 import Pagination from "../components/modules/pagination/pagination";
 const fetcher = (url) => instance.get(url).then((res) => res.data);
-import { statusType, instance } from "../utils/validation";
 import MessageService from "../services/api/api.message";
 import Search from "../components/pages/Emr/emrSearch";
 import { Container, Row, Col } from "react-bootstrap";
@@ -36,6 +36,7 @@ export default function emr() {
   useEffect(() => {
     if (data) {
       setPatients(data);
+      console.log(data);
       setPagecount(data.last_page);
     }
   }, [data]);
@@ -77,11 +78,15 @@ export default function emr() {
                           {event.photo ? (
                             <Avatar
                               className="avatarImage"
+                              id={riskcategory(event.risk_category)}
                               alt="Remy Sharp"
                               src={appglobal.api.aws + event.photo}
                             />
                           ) : (
-                            <Avatar className="avatar">
+                            <Avatar
+                              className="avatar"
+                              id={riskcategory(event.risk_category)}
+                            >
                               {event.first_name.charAt(0) +
                                 event.last_name.charAt(0)}
                             </Avatar>

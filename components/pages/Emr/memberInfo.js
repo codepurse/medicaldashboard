@@ -7,12 +7,6 @@ import useSWR, { mutate } from "swr";
 import moment from "moment";
 
 export default function memberInfo(props) {
-  const [memberInfo, setMemberInfo] = useState([]);
-  useEffect(() => {
-    if (props.memberinfo.length !== 0) {
-      setMemberInfo(props);
-    }
-  }, [props]);
   return (
     <>
       <div className="divProfileInfo">
@@ -86,7 +80,7 @@ export default function memberInfo(props) {
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Location</p>
-                    <p className="pInfo"> </p>
+                    <p className="pInfo">{props.memberinfo[0].state}</p>
 
                     <p className="pInfoloading"></p>
                   </Col>
@@ -96,14 +90,34 @@ export default function memberInfo(props) {
                   </Col>
 
                   <Col lg={8}>
-                    <Row>
+                    {/*  <Row>
                       <Col lg={6}>
                         <p className="pTitlesub">Phone Number</p>
                       </Col>
                       <Col lg={6}>
                         <p className="pTitlesub">Phone Type</p>
                       </Col>
-                    </Row>
+                    </Row>*/}
+                    {props.memberinfo[0].client_phones.map((event, i) => (
+                      <Row key={i}>
+                        <Col lg={6}>
+                          <p className="pTitlesub">Phone Number</p>
+                          <p className="pInfo">
+                            {event.phone_number !== "null"
+                              ? event.phone_number
+                              : ""}
+                          </p>
+                          <p className="pInfoloading"></p>
+                        </Col>
+                        <Col lg={6}>
+                          <p className="pTitlesub">Phone Type</p>
+                          <p className="pInfo">
+                            {event.type !== "null" ? event.type : ""}
+                          </p>
+                          <p className="pInfoloading"></p>
+                        </Col>
+                      </Row>
+                    ))}
                   </Col>
 
                   <Col lg={4}>

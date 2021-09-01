@@ -1,6 +1,7 @@
+import { statusType, instance, riskcategory } from "../../utils/validation";
 import React, { Component, useState, useEffect, useRef } from "react";
 import MembersInfo from "../../components/pages/Emr/memberInfo";
-import { statusType, instance } from "../../utils/validation";
+import Formpatient from "../../components/pages/Emr/formPatient";
 import MessageService from "../../services/api/api.message";
 import appglobal from "../../services/api/api.services";
 import { useMemberInfoStore } from "../../store/store";
@@ -26,16 +27,19 @@ const fetcher = (url) => instance.get(url).then((res) => res.data.data);
 export default function patient() {
   const stateMemberInfo = useMemberInfoStore((state) => state.memberInfo);
   const stateMemberId = useMemberInfoStore((state) => state.memberId);
+  const [action, setAction] = useState(true);
+  const [visible, setVisible] = useState(false);
   const router = useRouter();
   const patientId = router.query.patient;
   const url = appglobal.api.base_api + appglobal.api.get_members + patientId;
   const { data, error } = useSWR(url, fetcher);
   const [memberInfo, setMemberInfo] = useState([]);
   const [familyFilter, setFamilyFilter] = useState([]);
+  const [idFilter, setIdFilter] = useState("");
   const [member, setMembers] = useState([]);
-  var lookup = {};
   useEffect(() => {
     if (data) {
+      console.log(data);
       setMembers(data);
     }
   }, [data]);
@@ -47,13 +51,22 @@ export default function patient() {
         setMemberInfo(member[0].clients.filter((x) => x.id === stateMemberId));
       } else {
         setMemberInfo(member[0].clients.filter((x) => x.id === y));
-        console.log(member[0].clients.filter((x) => x.id === y))
       }
     }
   }, [member]);
 
-  function getMember() {
-    console.log("asdas");
+  function changeFilter(e) {
+    setFamilyFilter({ value: e.value, label: e.label });
+    setIdFilter(e.value);
+    var filter = e.value.split(" ").join("_");
+    if (filter === "All_Member") {
+      for (let el of document.querySelectorAll(".divList"))
+        el.style.display = "block";
+    } else {
+      for (let el of document.querySelectorAll(".divList"))
+        el.style.display = "block";
+      $(`.divList:not([data-relationship=${filter}])`).hide();
+    }
   }
 
   return (
@@ -71,9 +84,7 @@ export default function patient() {
                   styles={customStyles}
                   value={familyFilter}
                   instanceId="1"
-                  onChange={(e) => {
-                    setFamilyFilter({ value: e.value, label: e.label });
-                  }}
+                  onChange={changeFilter}
                 />
               </Col>
               <Col lg={4}>
@@ -81,7 +92,8 @@ export default function patient() {
                   <button
                     className="btnAdd"
                     onClick={() => {
-                      console.log();
+                      setAction(true);
+                      setVisible(true);
                     }}
                   >
                     <i>
@@ -101,10 +113,15 @@ export default function patient() {
                     {event.clients.map((event, i) => (
                       <div
                         className="divList"
+                        data-relationship={
+                          event.family_relationship
+                            ? event.family_relationship.split(" ").join("_")
+                            : null
+                        }
                         key={i}
                         onClick={() => {
                           const myArray = [];
-                          myArray.push(event)
+                          myArray.push(event);
                           setMemberInfo(myArray);
                         }}
                       >
@@ -112,11 +129,15 @@ export default function patient() {
                           {event.photo ? (
                             <Avatar
                               className="avatarImage"
+                              id={riskcategory(event.risk_category)}
                               alt="Remy Sharp"
                               src={appglobal.api.aws + event.photo}
                             />
                           ) : (
-                            <Avatar className="avatar">
+                            <Avatar
+                              className="avatar"
+                              id={riskcategory(event.risk_category)}
+                            >
                               {event.first_name.charAt(0) +
                                 event.last_name.charAt(0)}
                             </Avatar>
@@ -143,12 +164,20 @@ export default function patient() {
             <button
               className="btnBack"
               onClick={() => {
-                window.history.back();
+                setAction(false);
+                console.log(action);
               }}
             >
               <TiArrowBack />
             </button>
-            <button className="btnEdit">
+            <button
+              className="btnEdit"
+              onClick={() => {
+                setAction(false);
+                setVisible(true);
+                console.log("asds");
+              }}
+            >
               <RiEdit2Fill />
             </button>
             <Row>
@@ -159,11 +188,21 @@ export default function patient() {
                       try {
                         return (
                           <>
-                            <Avatar
-                              className="avatarProfile"
-                              alt={memberInfo[0].first_name}
-                              src={appglobal.api.aws + memberInfo[0].photo}
-                            />
+                            {memberInfo[0].photo ? (
+                              <Avatar
+                                className="avatarProfile"
+                                alt={memberInfo[0].first_name}
+                                src={appglobal.api.aws + memberInfo[0].photo}
+                              />
+                            ) : (
+                              <Avatar
+                                className="avatarProfile"
+                                id={riskcategory(event.risk_category)}
+                              >
+                                {memberInfo[0].first_name.charAt(0) +
+                                  memberInfo[0].last_name.charAt(0)}
+                              </Avatar>
+                            )}
                             <div>
                               <p className="pFullname">
                                 {memberInfo[0].first_name +
@@ -192,7 +231,19 @@ export default function patient() {
               </Col>
             </Row>
           </div>
-        <MembersInfo memberinfo={memberInfo} />
+
+          {(() => {
+            if (visible) {
+              return (
+                <Formpatient
+                  memberinfo={action ? "" : memberInfo}
+                  action={action}
+                />
+              );
+            } else {
+              return <MembersInfo memberinfo={memberInfo} />;
+            }
+          })()}
         </Col>
       </Row>
     </Container>

@@ -50,8 +50,8 @@ export const statusType = (value) => {
   switch (value) {
     case 1:
       return "pActive";
-    default: 
-    return "pDischarge"
+    default:
+      return "pDischarge";
   }
 };
 
@@ -60,3 +60,15 @@ export const instance = axios.create({
   headers: { Authorization: "Bearer " + Cookies.get("token") },
 });
 
+export const riskcategory = (value) => {
+  switch (value) {
+    case 1:
+      return "Low";
+    case 2:
+      return "Medium";
+    case 3:
+      return "High";
+    default:
+      return "Norisk";
+  }
+};

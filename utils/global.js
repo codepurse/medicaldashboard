@@ -50,6 +50,7 @@ export const options_risk = [
   { value: "1", label: "Low" },
   { value: "2", label: "Moderate" },
   { value: "3", label: "High Risk" },
+  { value: "4", label: "None" },
 ];
 
 export const options_status = [
@@ -103,7 +104,8 @@ export const customStyles = {
     border: "2px solid #EEEEEE",
     boxShadow: "none",
     borderRadius: "5px",
-    fontSize: "14px",
+    fontWeight: "500",
+    fontSize: "15px",
     width: "100%",
     padding: "1px",
     marginTop: "5px",
