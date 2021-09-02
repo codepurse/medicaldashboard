@@ -163,9 +163,16 @@ export default function memberInfo(props) {
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Status</p>
-                    <p className="pInfo">
-                      {event.status === 1 ? "Active" : "Discharge"}
-                    </p>
+
+                    {(() => {
+                      try {
+                        return (
+                          <p className="pInfo">
+                            {event.status === 1 ? "Active" : "Discharge"}
+                          </p>
+                        );
+                      } catch (error) {}
+                    })()}
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>

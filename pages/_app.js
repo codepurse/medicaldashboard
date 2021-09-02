@@ -4,10 +4,14 @@ import Layout from "../components/layout/layout";
 import NextNprogress from "nextjs-progressbar";
 import Header from "../components/header";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Snack from "../components/elements/snackbar";
+import Modal from "../components/modal/unsaved";
 function MyApp({ Component, pageProps }) {
   return (
     <Layout>
       <Header />
+      <Snack/>
+      <Modal />
       <NextNprogress color="#29D" height={3} />
       <Component {...pageProps} />
     </Layout>

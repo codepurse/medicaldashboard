@@ -6,6 +6,7 @@ import MessageService from "../../../services/api/api.message";
 import appglobal from "../../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
 import Snackbar from "@material-ui/core/Snackbar";
+import { useSnackStore } from "../../../store/store";
 import { AiOutlineDelete } from "react-icons/ai";
 import DateFnsUtils from "@date-io/date-fns";
 import Grid from "@material-ui/core/Grid";
@@ -29,7 +30,9 @@ import {
 } from "../../../utils/global";
 export default function formPatient(props) {
   const inputFileRef = useRef(null);
-  const [open, setOpen] = React.useState(false);
+  const setSnack = useSnackStore((state) => state.changeState);
+  const setSnackMessage = useSnackStore((state) => state.changeMessage);
+  const setSnackStyle = useSnackStore((state) => state.changeStyle);
   const [action, setAction] = useState(true); // true if add
   const [inputFields, setInputFields] = useState([
     { id: uuidv4(), phonenumber: "", type: "" },
@@ -45,17 +48,17 @@ export default function formPatient(props) {
     props.action ? "" : props.memberinfo[0].family_relationship
   );
   const [status, setStatus] = useState(
-    props.action ? "" : props.memberinfo[0].status
+    props.action ? 1 : props.memberinfo[0].status
   );
   const dateToday = new Date();
   const [bday, setBday] = React.useState(
-    props.action ? "" : props.memberinfo[0].date_of_birth
+    props.action ? null : props.memberinfo[0].date_of_birth
   );
   const [admission, setAdmission] = React.useState(
-    props.action ? "" : props.memberinfo[0].admission_date
+    props.action ? null : props.memberinfo[0].admission_date
   );
   const [discharge, setDischarge] = React.useState(
-    props.action ? "" : props.memberinfo[0].discharge_date
+    props.action ? null : props.memberinfo[0].discharge_date
   );
   const [gender, setGender] = useState(
     props.action ? "" : props.memberinfo[0].gender
@@ -101,6 +104,7 @@ export default function formPatient(props) {
       : props.memberinfo[0].pharmacy_contact_person,
     pharmacycontact: props.action ? "" : props.memberinfo[0].pharmacy_number,
     pharmacyaddress: props.action ? "" : props.memberinfo[0].pharmacy_address,
+    id: props.action ? "" : props.memberinfo[0].id,
   });
   const handleChange = (evt) => {
     setState({
@@ -108,6 +112,11 @@ export default function formPatient(props) {
       [evt.target.name]: evt.target.value,
     });
   };
+
+  useEffect(() => {
+    props.fullname(state.fname + " " + state.lname);
+  }, [state.fname, state.lname]);
+
   useEffect(() => {
     if (props.memberinfo.length !== 0) {
       setInfo(props);
@@ -133,7 +142,9 @@ export default function formPatient(props) {
     if (size > 4.0) {
       alert("Maximum size is 4mb.");
     } else {
-      reader.onloadend = function () {};
+      reader.onloadend = function () {
+        props.photo(reader.result);
+      };
       reader.readAsDataURL(file);
       setProfilepic(file);
     }
@@ -180,10 +191,16 @@ export default function formPatient(props) {
     const formData = new FormData();
     if (!state.fname) {
       setFnameError(true);
+      setSnackMessage("Fill up all the missing fields.");
+      setSnack(true);
+      setSnackStyle(false);
       clear = 1;
     }
     if (!state.lname) {
       setLnameError(true);
+      setSnackMessage("Fill up all the missing fields.");
+      setSnack(true);
+      setSnackStyle(false);
       clear = 1;
     }
     if (status === 0 && !discharge) {
@@ -265,15 +282,21 @@ export default function formPatient(props) {
       if (!props.action) {
         formData.append("_method", "PUT");
       }
-      MessageService.createPatient(formData, props.action, props.idfamily)
+      MessageService.createPatient(formData, props.action, state.id)
         .then((response) => {
+          setSnackMessage("Profile successfully updated.");
+          setSnack(true);
+          setSnackStyle(true);
           mutate(props.url);
           props.setAction();
-          setOpen(true);
         })
         .catch((error) => {
           console.log(error);
-          alert("Something went wrong.");
+          setSnackMessage("Could not apply changes.");
+          setSnack(true);
+          setSnackStyle(false);
+          mutate(props.url);
+          props.setAction();
         });
     }
   }
@@ -361,6 +384,7 @@ export default function formPatient(props) {
               <DateTimePicker
                 value={bday}
                 TextFieldComponent={renderInput}
+                format="dd/mm/yyyy"
                 onChange={(date) => {
                   setBday(date);
                 }}
@@ -472,6 +496,9 @@ export default function formPatient(props) {
                     label: inputField.type,
                     value: inputField.type,
                   }}
+                  onChange={(event) =>
+                    handleChangeInputselect(inputField.id, event)
+                  }
                 />
               </Col>
               <Col lg={2} className="align-self-end">
@@ -594,6 +621,7 @@ export default function formPatient(props) {
               <DateTimePicker
                 value={admission}
                 TextFieldComponent={renderInput}
+                format="dd/mm/yyyy"
                 onChange={(date) => {
                   setAdmission(date);
                 }}
@@ -609,6 +637,7 @@ export default function formPatient(props) {
                 value={discharge}
                 TextFieldComponent={renderInput}
                 invalid={dischargeError}
+                format="dd/mm/yyyy"
                 onChange={(date) => {
                   setDischarge(date);
                 }}
@@ -687,9 +716,13 @@ export default function formPatient(props) {
         <Col lg={4}>
           <p className="pTitlesub">Risk Category</p>
           <Select
-            value={options_risk.filter(
-              (option) => option.value === risk.toString()
-            )}
+            value={
+              risk
+                ? options_risk.filter(
+                    (option) => option.value === risk.toString()
+                  )
+                : 4
+            }
             options={options_risk}
             styles={customStyles}
             onChange={(e) => setRisk(e.value)}
@@ -776,18 +809,6 @@ export default function formPatient(props) {
           </div>
         </Col>
       </Row>
-      <Snackbar
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        open={open}
-        onClose  = {() => {
-          setOpen(close)
-        }}
-        autoHideDuration={2000}
-        message="Note archived"
-      />
     </div>
   );
 }

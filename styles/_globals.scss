@@ -63,6 +63,26 @@ img {
   }
 }
 
+.pSnack {
+  font-family: "Poppins";
+  color: #075641;
+  font-weight: 600;
+  i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+}
+
+.pSnackError {
+  font-family: "Poppins";
+  color: #e53e3e;
+  font-weight: 600;
+  i {
+    margin-right: 10px;
+    font-size: 1.2rem;
+  }
+}
+
 .btnBlue {
   color: white;
   border: 0px;

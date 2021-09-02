@@ -1,5 +1,6 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
+import { MdError} from "react-icons/md";
 
 let settingStore = (set) => ({
   people: [],
@@ -29,9 +30,35 @@ let stateMemberInfo = (set) => ({
   addMemberId: (id) => set((state) => ({ memberId: id })),
 });
 
-settingStore = persist(settingStore, { name: "user_info" });
+let modalInfo = (set) => ({
+  title: "Unsaved changes",
+  message: "Changes you made may not be saved, please confirm.",
+  state: false,
+  modal: "patient",
+  changeState: (action) => set((state) => ({ state: action })),
+});
 
+let snackInfo = (set) => ({
+  Message: "Sample Mesasge",
+  className: "",
+  state: false,
+  style: true,
+  changeState: (action) => set((state) => ({ state: action })),
+  changeMessage: (mess) => set((state) => ({ Message: mess })),
+  changeStyle: (style) => set((state) => ({ style: style })),
+});
+
+let patientInfo = (set) => ({
+  visible: false,
+  lastActivity: "",
+  changeVisible: (action) => set((state) => ({ visible: action })),
+});
+
+settingStore = persist(settingStore, { name: "user_info" });
 export const useSettingStore = create(settingStore);
 export const useAppointmentStore = create(stateAppointment);
 export const useTimeStore = create(stateTime);
 export const useMemberInfoStore = create(stateMemberInfo);
+export const useSnackStore = create(snackInfo);
+export const useModalStore = create(modalInfo);
+export const usePatientStore = create(patientInfo);

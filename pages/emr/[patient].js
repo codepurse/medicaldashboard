@@ -1,10 +1,9 @@
 import { statusType, instance, riskcategory } from "../../utils/validation";
 import React, { Component, useState, useEffect, useRef } from "react";
-import MembersInfo from "../../components/pages/Emr/memberInfo";
 import Formpatient from "../../components/pages/Emr/formPatient";
+import MembersInfo from "../../components/pages/Emr/memberInfo";
 import MessageService from "../../services/api/api.message";
 import appglobal from "../../services/api/api.services";
-import { useMemberInfoStore } from "../../store/store";
 import { Container, Row, Col } from "react-bootstrap";
 import Avatar from "@material-ui/core/Avatar";
 import { TiArrowBack } from "react-icons/ti";
@@ -18,6 +17,12 @@ import Cookies from "js-cookie";
 import moment from "moment";
 import axios from "axios";
 import {
+  useMemberInfoStore,
+  useSnackStore,
+  useModalStore,
+  usePatientStore,
+} from "../../store/store";
+import {
   customStyles,
   customStyles_error,
   options_relationship,
@@ -27,8 +32,12 @@ const fetcher = (url) => instance.get(url).then((res) => res.data.data);
 export default function patient() {
   const stateMemberInfo = useMemberInfoStore((state) => state.memberInfo);
   const stateMemberId = useMemberInfoStore((state) => state.memberId);
-  const [action, setAction] = useState(true);
+  const stateHide = useModalStore((state) => state.changeState);
+  const stateVisible = usePatientStore((state) => state.visible);
+  const changeVisible = usePatientStore((state) => state.changeVisible);
+  const [action, setAction] = useState(); // true if add false if edit
   const [visible, setVisible] = useState(false);
+  const [activitiy, setAcitivity] = useState(""); // last action made
   const router = useRouter();
   const patientId = router.query.patient;
   const url = appglobal.api.base_api + appglobal.api.get_members + patientId;
@@ -38,6 +47,9 @@ export default function patient() {
   const [idFilter, setIdFilter] = useState("");
   const [familyid, setFamilyId] = useState("");
   const [member, setMembers] = useState([]);
+  const [profilepic, setProfilepic] = useState("");
+  const [fullname, setFullname] = useState("");
+  const [lastid, setLastid] = useState(""); // last member click
   useEffect(() => {
     if (data) {
       console.log(data);
@@ -51,7 +63,17 @@ export default function patient() {
       if (stateMemberInfo.length !== 0) {
         setMemberInfo(member[0].clients.filter((x) => x.id === stateMemberId));
       } else {
-        setMemberInfo(member[0].clients.filter((x) => x.id === y));
+        if (activitiy === "edit") {
+          setMemberInfo(
+            member[0].clients.filter((x) => (x.id === lastid ? lastid : y))
+          );
+        } else if (activitiy === "add") {
+          var arr = member[0].clients.slice(-1)[0];
+          var idlast = arr.id;
+          setMemberInfo(member[0].clients.filter((x) => x.id === idlast));
+        } else {
+          setMemberInfo(member[0].clients.filter((x) => x.id === y));
+        }
       }
     }
   }, [member]);
@@ -59,6 +81,10 @@ export default function patient() {
   useEffect(() => {
     if (memberInfo.length !== 0) {
       setFamilyId(memberInfo[0].families_id);
+      setFullname(memberInfo[0].first_name + " " + memberInfo[0].last_name);
+      try {
+        setProfilepic(appglobal.api.aws + memberInfo[0].photo);
+      } catch {}
       console.log(memberInfo[0].families_id);
     }
   }, [memberInfo]);
@@ -79,7 +105,21 @@ export default function patient() {
 
   function changeAction() {
     setVisible(false);
+    setProfilepic(appglobal.api.aws + memberInfo[0].photo);
+    setFullname(memberInfo[0].first_name + " " + memberInfo[0].last_name);
   }
+
+  function changePhoto(val) {
+    setProfilepic(val);
+  }
+
+  function changeFullname(val) {
+    setFullname(val);
+  }
+
+  useEffect(() => {
+    setVisible(stateVisible);
+  }, [stateVisible]);
 
   return (
     <Container fluid className="conPages">
@@ -104,8 +144,16 @@ export default function patient() {
                   <button
                     className="btnAdd"
                     onClick={() => {
-                      setAction(true);
-                      setVisible(true);
+                      if (visible) {
+                        stateHide(true);
+                      } else {
+                        setProfilepic("");
+                        setAcitivity("add");
+                        setFullname("");
+                        setAction(true);
+                        setVisible(true);
+                        changeVisible(true);
+                      }
                     }}
                   >
                     <i>
@@ -133,9 +181,11 @@ export default function patient() {
                         key={i}
                         onClick={() => {
                           if (visible) {
-                            
+                            stateHide(true);
                           } else {
                             const myArray = [];
+
+                            setLastid(event.id);
                             myArray.push(event);
                             setMemberInfo(myArray);
                           }
@@ -188,9 +238,10 @@ export default function patient() {
             <button
               className="btnEdit"
               onClick={() => {
+                setAcitivity("edit");
                 setAction(false);
                 setVisible(true);
-                console.log("asds");
+                changeVisible(true);
               }}
             >
               <RiEdit2Fill />
@@ -203,31 +254,22 @@ export default function patient() {
                       try {
                         return (
                           <>
-                            {memberInfo[0].photo ? (
+                            {profilepic ? (
                               <Avatar
                                 className="avatarProfile"
-                                alt={memberInfo[0].first_name}
-                                src={
-                                  !visible
-                                    ? appglobal.api.aws + memberInfo[0].photo
-                                    : ""
-                                }
+                                alt=""
+                                src={profilepic}
                               />
                             ) : (
                               <Avatar
                                 className="avatarProfile"
                                 id={riskcategory(event.risk_category)}
                               >
-                                {memberInfo[0].first_name.charAt(0) +
-                                  memberInfo[0].last_name.charAt(0)}
+                                {fullname.charAt(0)}
                               </Avatar>
                             )}
                             <div>
-                              <p className="pFullname">
-                                {memberInfo[0].first_name +
-                                  " " +
-                                  memberInfo[0].last_name}
-                              </p>
+                              <p className="pFullname">{fullname}</p>
                               <p className="pEmail">{memberInfo[0].email}</p>
                             </div>
                           </>
@@ -259,6 +301,8 @@ export default function patient() {
                   setAction={changeAction}
                   url={url}
                   idfamily={familyid}
+                  photo={changePhoto}
+                  fullname={changeFullname} // trigger if the user edit the profile picture
                 />
               );
             } else {
