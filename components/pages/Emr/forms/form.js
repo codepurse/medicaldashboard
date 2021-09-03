@@ -16,7 +16,10 @@ import moment from "moment";
 import { instance } from "../../../../utils/validation";
 import { filetype } from "../../../../utils/global";
 import { HiPhotograph } from "react-icons/hi";
+import { useSnackStore } from "../../../../store/store";
+import MessageService from "../../../../services/api/api.message";
 import useSWR, { mutate } from "swr";
+import Modalupload from "./modalUpload";
 const fetcher = (url) => instance.get(url).then((res) => res.data.data);
 function form(props) {
   const url =
@@ -24,11 +27,35 @@ function form(props) {
   const { data, error } = useSWR(url, fetcher);
   console.log(data);
   console.log(error);
-
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [show, setShow] = useState(false);
   const [attachments, setAttachments] = useState([]);
+  const setSnack = useSnackStore((state) => state.changeState);
+  const setSnackMessage = useSnackStore((state) => state.changeMessage);
+  const setSnackStyle = useSnackStore((state) => state.changeStyle);
   useEffect(() => {
     setAttachments(data);
   }, [data]);
+  const viewFile = (e) => {
+    const file = `https://resurface-s3.s3.ap-southeast-1.amazonaws.com/${e.path}`;
+    window.open(file, "_blank");
+  };
+
+  const saveFile = (e) => {
+    var filepath = e.path;
+    MessageService.downloadFile(filepath)
+      .then((response) => {
+        window.open(response, "_blank");
+        console.log(response)
+      })
+      .catch((error) => {
+        setSnackMessage("Sorry something went wrong.");
+        setSnack(true);
+        setSnackStyle(false);
+        console.log(error)
+      });
+  };
 
   return (
     <>
@@ -38,7 +65,7 @@ function form(props) {
             <p className="pHeader">DOCUMENTS</p>
           </Col>
           <Col lg={6}>
-            <button className="btnAddnotes">
+            <button className="btnAddnotes" onClick={handleShow}>
               <GoPlus />
             </button>
           </Col>
@@ -59,6 +86,10 @@ function form(props) {
                   <tr>
                     <td>
                       <div className="form-inline">
+                        <img
+                          src={filetype(event.type)}
+                          style={{ marginRight: "10px" }}
+                        />
                         <p style={{ marginTop: "5px" }}>{event.filename}</p>
                       </div>
                     </td>
@@ -77,10 +108,14 @@ function form(props) {
                       </p>
                     </td>
                     <td>
-                      <i>
+                      <i
+                        onClick={() => {
+                          viewFile(event);
+                        }}
+                      >
                         <GrView />
                       </i>
-                      <i>
+                      <i onClick={() => saveFile(event)}>
                         <FiDownload />
                       </i>
                     </td>
@@ -91,6 +126,13 @@ function form(props) {
           </Col>
         </Row>
       </Container>
+      <Modal className="conModal" show={show} onHide={handleClose} centered>
+        <Modalupload
+          id={props.patientid}
+          onHide={handleClose}
+          mutateUrl={url}
+        />
+      </Modal>
     </>
   );
 }

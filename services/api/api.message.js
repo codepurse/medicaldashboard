@@ -214,7 +214,7 @@ function getFamily(familypage) {
 function createPatient(data, action, id) {
   return request({
     url:
-      action === "add"  || action
+      action === "add" || action
         ? appglobal.api.add_client
         : appglobal.api.edit_clients + id,
     method: "POST",
@@ -267,6 +267,34 @@ function addFamily(data) {
   });
 }
 
+function uploadFile(data) {
+  return request({
+    url: appglobal.api.add_document,
+    method: "POST",
+    data: data,
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+    },
+    onUploadProgress: (progressEvent) => {
+      let { loaded, total } = progressEvent;
+      console.log((loaded / total) * 100);
+    },
+  });
+}
+
+function downloadFile(data) {
+  return request({
+    url: appglobal.api.download_files + `?file=${data}`,
+    method: "GET",
+    data: data,
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Accept: "application/json",
+      Authorization: "Bearer " + Cookies.get("token"),
+    },
+  });
+}
+
 const MessageService = {
   getEvents,
   createPatient,
@@ -285,12 +313,14 @@ const MessageService = {
   getLocation,
   deleteEvent,
   getLocations,
+  downloadFile,
   goLogin,
   getParticipants,
   getClients,
   getMembers,
   getPatients,
   deleteTime,
+  uploadFile,
 };
 
 export default MessageService;

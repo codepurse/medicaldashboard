@@ -101,15 +101,17 @@ export const options_notes = [
 export const filetype = (value) => {
   switch (value) {
     case "docx":
-      return "Image/icon/file.png";
+      return "/Image/icon/file.png";
     case "pdf":
-      return "Image/icon/pdf.png";
+      return "/Image/icon/pdf.png";
     case "txt":
-      return "Image/icon/txt.png";
+      return "/Image/icon/txt.png";
     case "jpg":
-      return <HiPhotograph/>;
+      return "/Image/icon/jpg.png";
+    case "png":
+      return "/Image/icon/png.png";
     default:
-      return "Image/icon/file.png";
+      return "/Image/icon/file.png";
   }
 };
 

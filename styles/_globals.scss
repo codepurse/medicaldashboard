@@ -1041,3 +1041,40 @@ table {
     margin: 0px;
   }
 }
+
+.divUpload {
+  display: flex;
+  align-items: center; /* Vertical center alignment */
+  justify-content: center;
+  background-color: #f5f5f5;
+  border: 2px dashed lightgray;
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  padding: 5px;
+  cursor: pointer;
+  p {
+    font-family: "Poppins";
+    color: $font-color-gray;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 0px;
+    i {
+      font-size: 2rem;
+    }
+  }
+}
+
+
+.btnUploadFile {
+  font-size: 14px;
+  background-color: #1976d2;
+  border-radius: 5px;
+  border: 0px;
+  outline: none;
+  width: 100%;
+  margin-top: 25px;
+  padding: 10px;
+  color: white;
+  box-shadow: 0 2px 12px -6px #1976d2 !important;
+}
