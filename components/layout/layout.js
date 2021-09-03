@@ -12,7 +12,6 @@ const Layout = ({ children }) => {
   const showLayout = router.pathname === "/" ? false : true;
   return (
     <>
-
       {showLayout && <DynamicNavbar />}
       {showLayout && <Sidebar />}
       {children}

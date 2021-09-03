@@ -63,6 +63,7 @@ module.exports = appglobal = {
     update_notes: "/api/auth/clients/update-notes",
     delete_notes: "/api/auth/clients/",
     allClentBasedToLocation: "/api/auth/eager-load-clients",
+    get_notes: "/api/auth/clients/get-notes?clients_id=",
 
     // Documents Endpoint
     get_all_document: "/api/auth/documents?client_id=",

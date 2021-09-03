@@ -1,3 +1,5 @@
+import { HiPhotograph } from "react-icons/hi";
+
 export const option_page = [
   { value: "10", label: "10" },
   { value: "20", label: "20" },
@@ -33,7 +35,7 @@ export const options_marital = [
 ];
 
 export const options_relationship = [
-  {value: "All Member", label: "All Member"},
+  { value: "All Member", label: "All Member" },
   { value: "Identified Patient", label: "Identified Patient" },
   { value: "Mother", label: "Mother" },
   { value: "Father", label: "Father" },
@@ -95,6 +97,21 @@ export const options_notes = [
   { value: "Group Session", label: "Group Session" },
   { value: "Family Session", label: "Family Session" },
 ];
+
+export const filetype = (value) => {
+  switch (value) {
+    case "docx":
+      return "Image/icon/file.png";
+    case "pdf":
+      return "Image/icon/pdf.png";
+    case "txt":
+      return "Image/icon/txt.png";
+    case "jpg":
+      return <HiPhotograph/>;
+    default:
+      return "Image/icon/file.png";
+  }
+};
 
 export const customStyles = {
   control: (base, state) => ({

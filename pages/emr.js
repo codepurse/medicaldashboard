@@ -68,7 +68,7 @@ export default function emr() {
                     <tr
                       key={i}
                       onClick={() => {
-                        router.push(`/emr/${event.families.id}`);
+                        router.push(`/emr/${event.families.id}?tabs=demo`);
                         setInfo(event);
                         setId(event.id);
                       }}

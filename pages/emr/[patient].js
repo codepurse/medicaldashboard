@@ -1,7 +1,9 @@
 import { statusType, instance, riskcategory } from "../../utils/validation";
 import React, { Component, useState, useEffect, useRef } from "react";
+import Forms from "../../components/pages/Emr/forms/form.js";
 import Formpatient from "../../components/pages/Emr/formPatient";
 import MembersInfo from "../../components/pages/Emr/memberInfo";
+import Notes from "../../components/pages/Emr/notes/notes.js";
 import MessageService from "../../services/api/api.message";
 import appglobal from "../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
@@ -39,8 +41,10 @@ export default function patient() {
   const [visible, setVisible] = useState(false);
   const [activitiy, setAcitivity] = useState(""); // last action made
   const router = useRouter();
+  const [path, setPath] = useState("");
   const patientId = router.query.patient;
-  const url = appglobal.api.base_api + appglobal.api.get_members + patientId;
+  const tab = router.query.tabs;
+  const url = appglobal.api.base_api + appglobal.api.get_members + patientId; // patient id in uri
   const { data, error } = useSWR(url, fetcher);
   const [memberInfo, setMemberInfo] = useState([]);
   const [familyFilter, setFamilyFilter] = useState([]);
@@ -49,7 +53,9 @@ export default function patient() {
   const [member, setMembers] = useState([]);
   const [profilepic, setProfilepic] = useState("");
   const [fullname, setFullname] = useState("");
-  const [lastid, setLastid] = useState(""); // last member click
+  const [lastid, setLastid] = useState(); // last member click
+  const [id, setId] = useState(); // id of the selected patient
+  console.log(router.query);
   useEffect(() => {
     if (data) {
       console.log(data);
@@ -64,9 +70,12 @@ export default function patient() {
         setMemberInfo(member[0].clients.filter((x) => x.id === stateMemberId));
       } else {
         if (activitiy === "edit") {
-          setMemberInfo(
-            member[0].clients.filter((x) => (x.id === lastid ? lastid : y))
-          );
+          console.log(activitiy + " " + lastid);
+          if (lastid) {
+            setMemberInfo(member[0].clients.filter((x) => x.id === lastid));
+          } else {
+            setMemberInfo(member[0].clients.filter((x) => x.id === y));
+          }
         } else if (activitiy === "add") {
           var arr = member[0].clients.slice(-1)[0];
           var idlast = arr.id;
@@ -81,11 +90,11 @@ export default function patient() {
   useEffect(() => {
     if (memberInfo.length !== 0) {
       setFamilyId(memberInfo[0].families_id);
+      setId(memberInfo[0].id);
       setFullname(memberInfo[0].first_name + " " + memberInfo[0].last_name);
       try {
         setProfilepic(appglobal.api.aws + memberInfo[0].photo);
       } catch {}
-      console.log(memberInfo[0].families_id);
     }
   }, [memberInfo]);
 
@@ -184,7 +193,7 @@ export default function patient() {
                             stateHide(true);
                           } else {
                             const myArray = [];
-
+                            setId(event.id);
                             setLastid(event.id);
                             myArray.push(event);
                             setMemberInfo(myArray);
@@ -238,6 +247,7 @@ export default function patient() {
             <button
               className="btnEdit"
               onClick={() => {
+                console.log(tab);
                 setAcitivity("edit");
                 setAction(false);
                 setVisible(true);
@@ -283,17 +293,39 @@ export default function patient() {
             <Row>
               <Col lg={12} className="colList">
                 <ul className="ulDashboard">
-                  <li className="activeUl" id="ulDemo">
+                  <li
+                    className={tab === "demo" ? "activeUl" : ""}
+                    id="ulDemo"
+                    onClick={() => {
+                      router.push(`${patientId}?tabs=demo`);
+                    }}
+                  >
                     Demographics
                   </li>
-                  <li id="ulNotes">Notes</li>
-                  <li id="ulForms">Forms</li>
+                  <li
+                    className={tab === "notes" ? "activeUl" : ""}
+                    id="ulNotes"
+                    onClick={() => {
+                      router.push(`${patientId}?tabs=notes`);
+                    }}
+                  >
+                    Notes
+                  </li>
+                  <li
+                    className={tab === "forms" ? "activeUl" : ""}
+                    id="ulForms"
+                    onClick={() => {
+                      router.push(`${patientId}?tabs=forms`);
+                    }}
+                  >
+                    Forms
+                  </li>
                 </ul>
               </Col>
             </Row>
           </div>
           {(() => {
-            if (visible) {
+            if (tab === "demo" && visible) {
               return (
                 <Formpatient
                   memberinfo={action ? "" : memberInfo}
@@ -305,8 +337,14 @@ export default function patient() {
                   fullname={changeFullname} // trigger if the user edit the profile picture
                 />
               );
-            } else {
+            } else if (tab === "demo" && !visible) {
               return <MembersInfo memberinfo={memberInfo} />;
+            }
+            if (tab === "notes") {
+              return <Notes patientid={id} />;
+            }
+            if (tab === "forms") {
+              return <Forms patientid={id} />;
             }
           })()}
         </Col>

@@ -4,10 +4,13 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
 import MessageService from "../services/api/api.message";
 import { isEmail } from "../utils/validation";
-import {useSettingStore}from "../store/store";
+import { useSettingStore, useSnackStore } from "../store/store";
 import Cookies from "js-cookie";
 
 export default function Login() {
+  const setSnack = useSnackStore((state) => state.changeState);
+  const setSnackMessage = useSnackStore((state) => state.changeMessage);
+  const setSnackStyle = useSnackStore((state) => state.changeStyle);
   const setInfo = useSettingStore((state) => state.addInfo);
   const router = useRouter();
   const goHide = useRef();
@@ -35,7 +38,6 @@ export default function Login() {
       setPassworderror(false);
     }
     if (!isEmail(state.email)) {
-      alert(state.email);
       setEmailerror(false);
       pErroremail.current.style.display = "block";
     }
@@ -52,7 +54,9 @@ export default function Login() {
           router.push("/dashboard");
         })
         .catch((error) => {
-          goHide.current.style.display = "block";
+          setSnackMessage("Invalid username or password.");
+          setSnack(true);
+          setSnackStyle(false);
         });
     }
   };
