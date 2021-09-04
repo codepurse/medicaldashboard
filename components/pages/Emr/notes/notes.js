@@ -82,7 +82,7 @@ export default function notes(props) {
           </Col>
         </Row>
       </Container>
-      <Container className = {showAdd ? "" : "d-none"}>
+      <Container style = {{padding: "0px"}} className = {showAdd ? "" : "d-none"}>
          <NoSSREditor/>
       </Container>
     </>
