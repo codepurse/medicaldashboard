@@ -93,9 +93,12 @@ export const options_gender = [
 ];
 
 export const options_notes = [
-  { value: "Individual Session", label: "Individual Session" },
-  { value: "Group Session", label: "Group Session" },
+  { value: "Crisis Note", label: "Crisis Notes" },
+  { value: "Collaboration Note", label: "Collaboration Note" },
   { value: "Family Session", label: "Family Session" },
+  { value: "Group Session", label: "Group Session" },
+  { value: "Individual Session", label: "Individual Session" },
+  { value: "Shift Report", label: "Shift Report" },
 ];
 
 export const filetype = (value) => {
@@ -140,6 +143,32 @@ export const customStyles = {
     color: "#212121",
   }),
 };
+
+export const customStylesnotes = {
+  control: (base, state) => ({
+    ...base,
+    color: "#212121",
+    border: "0px",
+    boxShadow: "none",
+    fontWeight: "500",
+    fontSize: "15px",
+    width: "220px",
+    padding: "1px",
+    marginTop: "5px",
+    fontFamily: "Poppins",
+    marginBottom: "0px",
+    zIndex: "10000",
+    boxShadow: state.isFocused ? "#003171" : null,
+    "&:hover": {
+      borderColor: state.isFocused ? "#003171" : "",
+    },
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "#212121",
+  }),
+};
+
 
 export const customStyles_error = {
   control: (base, state) => ({

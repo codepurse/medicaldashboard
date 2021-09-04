@@ -8,9 +8,9 @@ export default function sidebar() {
     <Container className="divSidebar">
       <Row>
         <Col lg={12}>
-          <img src="Image/logosmall.png" className="img-fluid imgLogo" />
+          <img src="Image/resurface_Logo.webp" className="img-fluid imgLogo" />
         </Col>
-        <Col lg={12} className="colUl">
+        <Col lg={12} className="colUl" style = {{marginTop: "10px"}}>
           <p className="pHeader">ANALYTICS</p>
           <ul>
             {Analytics.map((item, index) => (
@@ -25,7 +25,7 @@ export default function sidebar() {
             ))}
           </ul>
         </Col>
-        <Col lg={12} className="colUl">
+        <Col lg={12} className="colUl" style = {{marginTop: "-10px"}}>
           <p className="pHeader">DIRECTORY</p>
           <ul>
             {Directory.map((item, index) => (

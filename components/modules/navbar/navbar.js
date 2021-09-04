@@ -4,13 +4,19 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Image from "react-bootstrap/Image";
 import { RiNotification3Line } from "react-icons/ri";
 import appglobal from "../../../services/api/api.services";
-import {useSettingStore} from "../../../store/store";
+import { useSettingStore } from "../../../store/store";
 export default function navbar() {
   const people = useSettingStore((state) => state.people);
   return (
     <Container fluid className="conNavbar">
       <Row>
-        <Col lg={12}>
+        <Col lg={3}>
+        <img src="Image/resurface_Logo.webp" className="img-fluid imgLogoNav" />
+        </Col>
+        <Col lg = {6} md = {6}>
+
+        </Col>
+        <Col lg={3} md = {3}>
           <div>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic-button">
@@ -31,12 +37,7 @@ export default function navbar() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <Image
-              fluid
-              src=""
-              width={35}
-              id="imgProfile"
-            />
+            <Image fluid src="" width={35} id="imgProfile" />
             <div className="divHorizontal"></div>
             <div className="divBell">
               <div className="numberCircle"></div>

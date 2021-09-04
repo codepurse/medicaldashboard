@@ -16,20 +16,30 @@ export default function notes(props) {
 
   const [notes, setNotes] = useState([]);
   const [showAdd, setShowAdd] = useState(false);
+  const [notesInfo, setNotesInfo] = useState([]);
+  const [action, setAction] = useState(false);
 
   useEffect(() => {
     setNotes(data);
   }, [data]);
 
+  function goBack() {
+    setShowAdd(false);
+  }
+
   return (
     <>
-      <Container className= {!showAdd ? "divNoteslist" : "d-none"}>
+      <Container className={!showAdd ? "divNoteslist" : "d-none"}>
         <Row className="rowHeader">
           <Col lg={6}>
             <p className="pHeader">All NOTES</p>
           </Col>
           <Col lg={6}>
-            <button className="btnAddnotes" onClick = {() => setShowAdd(true)}>
+            <button className="btnAddnotes" onClick={() => {
+              setShowAdd(true)
+              setAction(false)
+              setNotesInfo([]);
+            }}>
               <GoPlus />
             </button>
           </Col>
@@ -46,8 +56,15 @@ export default function notes(props) {
                 </tr>
               </thead>
               <tbody>
-                {notes?.map((event) => (
-                  <tr id={event.text} name={event.id} data-title={event.title}>
+                {notes?.map((event, i) => (
+                  <tr
+                    key={i}
+                    onClick={() => {
+                      setNotesInfo(event);
+                      setShowAdd(true);
+                      setAction(true);
+                    }}
+                  >
                     <td>
                       <p className="pDate">
                         {moment(event.created_at).format("ll")}
@@ -82,9 +99,22 @@ export default function notes(props) {
           </Col>
         </Row>
       </Container>
-      <Container style = {{padding: "0px"}} className = {showAdd ? "" : "d-none"}>
-         <NoSSREditor/>
-      </Container>
+
+      {(() => {
+        if (showAdd) {
+          try {
+            return (
+              <Container style={{ padding: "0px", backgroundColor: "white" }}>
+                <NoSSREditor
+                  goback={goBack}
+                  notesinfo={notesInfo}
+                  action={action}
+                />
+              </Container>
+            );
+          } catch (error) {}
+        }
+      })()}
     </>
   );
 }
