@@ -12,6 +12,7 @@ export default function withSnackbar() {
   const message = useModalStore((state) => state.message);
   const modalPage = useModalStore((state) => state.modal);
   const changeVisible = usePatientStore((state) => state.changeVisible);
+  const changeCancelPatient = usePatientStore((state) => state.changeCancelPatient);
   useEffect(() => {}, [stateShow]);
 
   function closeModal() {
@@ -19,8 +20,9 @@ export default function withSnackbar() {
   }
 
   function discard() {
-    stateHide(false);
+    stateHide(false); 
     changeVisible(false);
+    changeCancelPatient(true);
   }
 
   return (

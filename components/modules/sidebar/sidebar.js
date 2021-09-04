@@ -7,8 +7,8 @@ export default function sidebar() {
   return (
     <Container className="divSidebar">
       <Row>
-        <Col lg={12}>
-          <img src="Image/resurface_Logo.webp" className="img-fluid imgLogo" />
+        <Col lg={12} className = "d-none">
+          <img src="Image/Resurface_Logo.webp" className="img-fluid imgLogo" />
         </Col>
         <Col lg={12} className="colUl" style = {{marginTop: "10px"}}>
           <p className="pHeader">ANALYTICS</p>

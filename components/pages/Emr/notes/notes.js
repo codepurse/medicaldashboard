@@ -18,6 +18,8 @@ export default function notes(props) {
   const [showAdd, setShowAdd] = useState(false);
   const [notesInfo, setNotesInfo] = useState([]);
   const [action, setAction] = useState(false);
+  const [notesId ,setNotesId] = useState("");
+
 
   useEffect(() => {
     setNotes(data);
@@ -63,6 +65,7 @@ export default function notes(props) {
                       setNotesInfo(event);
                       setShowAdd(true);
                       setAction(true);
+                      setNotesId(event.id)
                     }}
                   >
                     <td>
@@ -109,6 +112,9 @@ export default function notes(props) {
                   goback={goBack}
                   notesinfo={notesInfo}
                   action={action}
+                  id = {props.patientid}
+                  url = {url}
+                  notesid = {notesId}
                 />
               </Container>
             );

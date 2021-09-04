@@ -267,6 +267,19 @@ function addFamily(data) {
   });
 }
 
+function createNotes(data, id, action) {
+  return request({
+    url: action
+      ? appglobal.api.update_notes
+      : appglobal.api.create_notes + id + "/create-notes",
+    method: "POST",
+    data: data,
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+    },
+  });
+}
+
 function uploadFile(data) {
   return request({
     url: appglobal.api.add_document,
@@ -321,6 +334,7 @@ const MessageService = {
   getPatients,
   deleteTime,
   uploadFile,
+  createNotes,
 };
 
 export default MessageService;

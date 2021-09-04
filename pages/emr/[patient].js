@@ -37,6 +37,10 @@ export default function patient() {
   const stateHide = useModalStore((state) => state.changeState);
   const stateVisible = usePatientStore((state) => state.visible);
   const changeVisible = usePatientStore((state) => state.changeVisible);
+  const cancelPatient = usePatientStore((state) => state.cancelPatient);
+  const changeCancelPatient = usePatientStore(
+    (state) => state.changeCancelPatient
+  );
   const [action, setAction] = useState(); // true if add false if edit
   const [visible, setVisible] = useState(false);
   const [activitiy, setAcitivity] = useState(""); // last action made
@@ -113,6 +117,7 @@ export default function patient() {
   }
 
   function changeAction() {
+    setAction();
     setVisible(false);
     setProfilepic(appglobal.api.aws + memberInfo[0].photo);
     setFullname(memberInfo[0].first_name + " " + memberInfo[0].last_name);
@@ -127,6 +132,11 @@ export default function patient() {
   }
 
   useEffect(() => {
+    if (cancelPatient) {
+      setProfilepic(appglobal.api.aws + memberInfo[0].photo);
+      setFullname(memberInfo[0].first_name + " " + memberInfo[0].last_name);
+      changeCancelPatient(false)
+    }
     setVisible(stateVisible);
   }, [stateVisible]);
 
@@ -162,6 +172,7 @@ export default function patient() {
                         setAction(true);
                         setVisible(true);
                         changeVisible(true);
+                        router.push(`${patientId}?tabs=demo`);
                       }
                     }}
                   >
@@ -252,6 +263,7 @@ export default function patient() {
                 setAction(false);
                 setVisible(true);
                 changeVisible(true);
+                router.push(`${patientId}?tabs=demo`);
               }}
             >
               <RiEdit2Fill />
@@ -306,7 +318,11 @@ export default function patient() {
                     className={tab === "notes" ? "activeUl" : ""}
                     id="ulNotes"
                     onClick={() => {
-                      router.push(`${patientId}?tabs=notes`);
+                      if (visible) {
+                        stateHide(true);
+                      } else {
+                        router.push(`${patientId}?tabs=notes`);
+                      }
                     }}
                   >
                     Notes

@@ -34,23 +34,36 @@ export default function modalUpload(props) {
   }
 
   function goUpload() {
-    let formData = new FormData();
-    formData.append("clinician_id", Cookies.get("clinician_id"));
-    formData.append("client_id", props.id);
-    formData.append("path", path);
-    formData.append("type", type);
-    formData.append("filename", filename);
-    MessageService.uploadFile(formData)
-      .then((response) => {
-        props.onHide();
-        setSnackMessage("File successfully uoloaded.");
-        setSnack(true);
-        setSnackStyle(true);
-        mutate(props.mutateUrl)
-      })
-      .catch((error) => {
-        props.onHide();
-      });
+    if (!path) {
+      setSnackMessage("Please choose a file.");
+      setSnack(true);
+      setSnackStyle(false);
+    } else if (!filename) {
+      setSnackMessage("File name is required.");
+      setSnack(true);
+      setSnackStyle(false);
+    } else {
+      let formData = new FormData();
+      formData.append("clinician_id", Cookies.get("clinician_id"));
+      formData.append("client_id", props.id);
+      formData.append("path", path);
+      formData.append("type", type);
+      formData.append("filename", filename);
+      MessageService.uploadFile(formData)
+        .then((response) => {
+          props.onHide();
+          setSnackMessage("File successfully uoloaded.");
+          setSnack(true);
+          setSnackStyle(true);
+          mutate(props.mutateUrl);
+        })
+        .catch((error) => {
+          setSnackMessage("Sorry something went wrong.");
+          setSnack(true);
+          setSnackStyle(false);
+          props.onHide();
+        });
+    }
   }
 
   return (

@@ -23,19 +23,26 @@ import { TiArrowBack } from "react-icons/ti";
 import { Container, Row, Col } from "react-bootstrap";
 import { handleNewLine, insertNewUnstyledBlock } from "draftjs-utils";
 import Modal from "react-bootstrap/Modal";
+import { useSnackStore } from "../../../../store/store";
 import Dropdown from "react-bootstrap/Dropdown";
 import moment from "moment";
+import useSWR, { mutate } from "swr";
 import Select from "react-select";
+import MessageService from "../../../../services/api/api.message";
 import {
   options_notes,
   customStylesnotes,
-  customStyles_error,
+  customStylesErrornotes,
 } from "../../../../utils/global";
 
 export default function addnotes(props) {
+  const setSnack = useSnackStore((state) => state.changeState);
+  const setSnackMessage = useSnackStore((state) => state.changeMessage);
+  const setSnackStyle = useSnackStore((state) => state.changeStyle);
   const target = useRef(null);
   const editor = React.useRef(null);
   const [title, setTitle] = useState();
+  const [titleError, setTitleError] = useState(false);
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
@@ -53,7 +60,7 @@ export default function addnotes(props) {
   useEffect(() => {
     console.log(props.notesinfo.title);
     if (props.action) {
-      console.log("ghahahah")
+      console.log("ghahahah");
       setTitle(props.notesinfo.title);
       setEditorState(
         EditorState.createWithContent(
@@ -62,6 +69,41 @@ export default function addnotes(props) {
       );
     }
   }, []);
+
+  function goSave() {
+    if (!title) {
+      setSnackMessage("Note title is required.");
+      setSnack(true);
+      setSnackStyle(false);
+      setTitleError(true);
+    } else {
+      const requestBody = JSON.stringify(
+        convertToRaw(editorState.getCurrentContent())
+      );
+      let formData = new FormData();
+      formData.append("text", requestBody);
+      formData.append("title", title);
+      if (props.action) {
+        formData.append("notes_id", props.notesid);
+      }
+      MessageService.createNotes(formData, props.id, props.action)
+        .then((response) => {
+          console.log(response);
+          setSnackMessage("Note succesfully created.");
+          setSnack(true);
+          setSnackStyle(true);
+          mutate(props.url);
+          props.goback();
+        })
+        .catch((error) => {
+          console.log(error);
+          setSnackMessage("Something went wrong.");
+          setSnack(true);
+          setSnackStyle(false);
+        });
+    }
+  }
+
   return (
     <>
       <Container className="conTexteditorWrapper">
@@ -76,10 +118,11 @@ export default function addnotes(props) {
                 className="react-select--inline"
                 value={options_notes.filter((option) => option.label === title)}
                 onChange={(e) => {
+                  setTitleError(false);
                   setTitle(e.value);
                 }}
                 options={options_notes}
-                styles={customStylesnotes}
+                styles={titleError ? customStylesErrornotes : customStylesnotes}
                 placeholder="Select title.."
               />
             </div>
@@ -120,7 +163,7 @@ export default function addnotes(props) {
         </Row>
         <Row className="rowFooter">
           <Col lg={12}>
-            <button className="btnSave">
+            <button className="btnSave" onClick={goSave}>
               <i>
                 {" "}
                 <FaSave />

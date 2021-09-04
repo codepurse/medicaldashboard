@@ -169,6 +169,32 @@ export const customStylesnotes = {
   }),
 };
 
+export const customStylesErrornotes = {
+  control: (base, state) => ({
+    ...base,
+    color: "#212121",
+    border: "0px",
+    borderBottom: "2px solid red",
+    boxShadow: "none",
+    borderRadius: "0px",
+    fontWeight: "500",
+    fontSize: "15px",
+    width: "220px",
+    padding: "1px",
+    marginTop: "5px",
+    fontFamily: "Poppins",
+    marginBottom: "0px",
+    zIndex: "10000",
+    boxShadow: state.isFocused ? "#003171" : null,
+    "&:hover": {
+      borderColor: state.isFocused ? "#003171" : "",
+    },
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "#212121",
+  }),
+};
 
 export const customStyles_error = {
   control: (base, state) => ({

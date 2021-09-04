@@ -11,7 +11,7 @@ export default function navbar() {
     <Container fluid className="conNavbar">
       <Row>
         <Col lg={3}>
-        <img src="Image/resurface_Logo.webp" className="img-fluid imgLogoNav" />
+        <img src="/Image/black.webp" className="img-fluid imgLogoNav" />
         </Col>
         <Col lg = {6} md = {6}>
 

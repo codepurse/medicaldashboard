@@ -1,6 +1,6 @@
 import create from "zustand";
 import { persist } from "zustand/middleware";
-import { MdError} from "react-icons/md";
+import { MdError } from "react-icons/md";
 
 let settingStore = (set) => ({
   people: [],
@@ -51,7 +51,9 @@ let snackInfo = (set) => ({
 let patientInfo = (set) => ({
   visible: false,
   lastActivity: "",
+  cancelPatient: false,
   changeVisible: (action) => set((state) => ({ visible: action })),
+  changeCancelPatient: (action) => set((state) => ({ cancelPatient: action })),
 });
 
 settingStore = persist(settingStore, { name: "user_info" });
