@@ -38,24 +38,22 @@ function form(props) {
     setAttachments(data);
   }, [data]);
   const viewFile = (e) => {
-    const file = `https://resurface-s3.s3.ap-southeast-1.amazonaws.com/${e.path}`;
+    const file = appglobal.api.aws + e.path;
     window.open(file, "_blank");
   };
 
-  const saveFile = (e) => {
-    var filepath = e.path;
-    MessageService.downloadFile(filepath)
-      .then((response) => {
-        window.open(response, "_blank");
-        console.log(response)
-      })
-      .catch((error) => {
-        setSnackMessage("Sorry something went wrong.");
-        setSnack(true);
-        setSnackStyle(false);
-        console.log(error)
-      });
-  };
+  function saveFile(e) {
+    try {
+      window.open(
+        appglobal.api.base_api + appglobal.api.download_files +e.path
+      );
+    } catch (error) {
+      console.log(error);
+      setSnackMessage("Sorry something went wrong.");
+      setSnack(true);
+      setSnackStyle(false);
+    }
+  }
 
   return (
     <>

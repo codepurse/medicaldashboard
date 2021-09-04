@@ -3,8 +3,10 @@ import { Container, Row, Col } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import useSWR, { mutate } from "swr";
 import { GoPlus } from "react-icons/go";
+import dynamic from "next/dynamic";
 const fetcher = (url) => instance.get(url).then((res) => res.data.data);
 import { instance } from "../../../../utils/validation";
+const NoSSREditor = dynamic(() => import("./addnotes"), { ssr: false });
 export default function notes(props) {
   const url =
     appglobal.api.base_api + appglobal.api.get_notes + props.patientid;
@@ -13,6 +15,7 @@ export default function notes(props) {
   console.log(error);
 
   const [notes, setNotes] = useState([]);
+  const [showAdd, setShowAdd] = useState(false);
 
   useEffect(() => {
     setNotes(data);
@@ -20,13 +23,13 @@ export default function notes(props) {
 
   return (
     <>
-      <Container className="divNoteslist">
+      <Container className= {!showAdd ? "divNoteslist" : "d-none"}>
         <Row className="rowHeader">
           <Col lg={6}>
             <p className="pHeader">All NOTES</p>
           </Col>
           <Col lg={6}>
-            <button className="btnAddnotes">
+            <button className="btnAddnotes" onClick = {() => setShowAdd(true)}>
               <GoPlus />
             </button>
           </Col>
@@ -78,6 +81,9 @@ export default function notes(props) {
             </Table>
           </Col>
         </Row>
+      </Container>
+      <Container className = {showAdd ? "" : "d-none"}>
+         <NoSSREditor/>
       </Container>
     </>
   );
