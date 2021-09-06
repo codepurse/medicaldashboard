@@ -122,6 +122,19 @@ function getMembers(id) {
   });
 }
 
+function getClinicians() {
+  return request({
+    url: appglobal.api.get_all_clinicians,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
 function getLocation(page, sizePerPage) {
   return request({
     url:

@@ -3,7 +3,7 @@ import React, { Component, useState, useEffect, useRef } from "react";
 import Pagination from "../components/modules/pagination/pagination";
 const fetcher = (url) => instance.get(url).then((res) => res.data);
 import MessageService from "../services/api/api.message";
-import Search from "../components/pages/Emr/emrSearch";
+import Search from "../components/modules/search/search";
 import { Container, Row, Col } from "react-bootstrap";
 import appglobal from "../services/api/api.services";
 import { useMemberInfoStore } from "../store/store";
@@ -54,7 +54,7 @@ export default function emr() {
           <Search getdata={setData} />
           <Col lg={12}>
             <div className="conTable">
-              <Table>
+              <Table responsive>
                 <thead>
                   <tr>
                     <th>Identified Patient</th>

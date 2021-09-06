@@ -2,21 +2,29 @@ import React, { Component, useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Analytics, Directory } from "./sidebardata";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function sidebar() {
+  const router = useRouter();
+  const urlPath = router.pathname;
+  const [pathUrl, setPathUrl] = useState("");
+  useEffect(() => {
+    console.log(urlPath.split("/")[1]);
+    setPathUrl(urlPath.split("/")[1]);
+  }, [urlPath]);
   return (
     <Container className="divSidebar">
       <Row>
-        <Col lg={12} className = "d-none">
+        <Col lg={12} className="d-none">
           <img src="Image/Resurface_Logo.webp" className="img-fluid imgLogo" />
         </Col>
-        <Col lg={12} className="colUl" style = {{marginTop: "10px"}}>
+        <Col lg={12} className="colUl" style={{ marginTop: "10px" }}>
           <p className="pHeader">ANALYTICS</p>
           <ul>
             {Analytics.map((item, index) => (
               <Link key={index} href={item.path}>
-                <li>
-                  <div className="centered-label">
+                <li className = {pathUrl === item.id ? "activeSide" : ""}>
+                  <div className= "centered-label">
                     <i> {item.icon}</i>
                     <span>{item.title}</span>
                   </div>
@@ -25,13 +33,13 @@ export default function sidebar() {
             ))}
           </ul>
         </Col>
-        <Col lg={12} className="colUl" style = {{marginTop: "-10px"}}>
+        <Col lg={12} className="colUl" style={{ marginTop: "-10px" }}>
           <p className="pHeader">DIRECTORY</p>
           <ul>
             {Directory.map((item, index) => (
               <Link key={index} href={item.path}>
-                <li key={index}>
-                  <div className="centered-label">
+                <li key={index} className = {pathUrl === item.id ? "activeSide" : ""}>
+                  <div className= "centered-label">
                     <i> {item.icon}</i>
                     <span>{item.title}</span>
                   </div>

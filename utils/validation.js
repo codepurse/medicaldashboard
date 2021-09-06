@@ -55,6 +55,15 @@ export const statusType = (value) => {
   }
 };
 
+export const clinicianType = (value) => {
+  switch (value) {
+    case "clinician":
+      return "pClinician";
+    default:
+      return "pAdmin";
+  }
+};
+
 // validation for axios
 export const instance = axios.create({
   headers: { Authorization: "Bearer " + Cookies.get("token") },

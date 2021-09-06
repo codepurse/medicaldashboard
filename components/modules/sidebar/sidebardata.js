@@ -11,20 +11,24 @@ export const Analytics = [
   {
     title: "Dashboard",
     path: "/dashboard",
+    id: "dashboard",
     icon: <RiDashboardLine />,
-    cname: "nav-text",
+    cname: "centered-label",
   },
   {
     title: "Event Calendar",
-    path: "/dashboard",
+    path: "/calendar",
+    id: "calendar",
     icon: <RiCalendarEventFill />,
-    cname: "nav-text",
+    cname: "centered-label",
   },
   {
     title: "Time Reporting",
-    path: "/dashboard",
+    path: "/time_reporting",
+    id: "time_reporting",
     icon: <BiTimeFive />,
-    cname: "nav-text",
+
+    cname: "centered-label",
   },
 ];
 
@@ -32,19 +36,22 @@ export const Directory = [
   {
     title: "Medical Records",
     path: "/emr",
+    id: "emr",
     icon: <FaLaptopMedical />,
-    cname: "nav-text",
+    cname: "centered-label",
   },
   {
     title: "Clinician Directory",
-    path: "/dashboard",
+    path: "/clinician_directory",
+    id: "clinician_directory",
     icon: <VscFileSymlinkDirectory />,
-    cname: "nav-text",
+    cname: "centered-label",
   },
   {
     title: "Location Directory",
-    path: "/dashboard",
+    path: "/location_directory",
+    id: "location_directory",
     icon: <GoLocation />,
-    cname: "nav-text",
+    cname: "centered-label",
   },
 ];

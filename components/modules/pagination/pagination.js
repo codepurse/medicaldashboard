@@ -15,7 +15,6 @@ export default function pagination(props) {
   const [page,setPage] = useState(1);
 
   const handleChange = (event, value) => {
-      mutate("Patients")
       props.page(value)
       setPage(value)
   };

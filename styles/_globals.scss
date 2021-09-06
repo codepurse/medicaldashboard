@@ -121,7 +121,7 @@ img {
   }
 }
 
-.pSession,
+.pSession,.pAdmin,
 .pActive {
   color: #02b176 !important;
   background-color: #f1f8e9 !important;
@@ -155,7 +155,7 @@ img {
   width: max-content;
 }
 
-.pMeeting {
+.pMeeting, .pClinician {
   color: #6f51ed !important;
   background-color: #f4f3fb !important;
   padding: 4px 10px;

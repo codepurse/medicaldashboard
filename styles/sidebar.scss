@@ -38,6 +38,7 @@
       border-radius: 5px;
       padding: 6px;
       transition: all 0.1s;
+      
       .centered-label {
         display: flex;
         align-items: center;
@@ -51,8 +52,7 @@
         }
       }
       &:hover {
-        background-color: #1976d2;
-        color: white !important;
+        color: #1976d2;
       }
     }
   }
@@ -60,4 +60,9 @@
     padding: 8px;
     margin-top: 20px;
   }
+}
+
+.activeSide {
+  background-color: #1976d2 !important;
+  color: white !important;
 }
