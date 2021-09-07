@@ -1,21 +1,17 @@
 import { statusType, instance, riskcategory } from "../utils/validation";
-import React, { Component, useState, useEffect, useRef } from "react";
 import Pagination from "../components/modules/pagination/pagination";
 const fetcher = (url) => instance.get(url).then((res) => res.data);
-import MessageService from "../services/api/api.message";
 import Search from "../components/modules/search/search";
 import { Container, Row, Col } from "react-bootstrap";
 import appglobal from "../services/api/api.services";
 import { useMemberInfoStore } from "../store/store";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Table from "react-bootstrap/Table";
 import Header from "../components/header";
-import Modal from "react-bootstrap/Modal";
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
-import Cookies from "js-cookie";
 import moment from "moment";
-import axios from "axios";
 
 export default function emr() {
   const setInfo = useMemberInfoStore((state) => state.addInfo);

@@ -3,7 +3,8 @@ import appglobal from "../../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { HiOutlineFilter } from "react-icons/hi";
-import ModalAddPatient from "../../../components/pages/Emr/addPatient"
+import ModalAddPatient from "../../../components/pages/Emr/addPatient";
+import ModalAddClinician from "../../../components/pages/clinician/addClinician";
 import Modal from "react-bootstrap/Modal";
 import { GoPlus } from "react-icons/go";
 import { useRouter } from "next/router";
@@ -94,7 +95,13 @@ export default function emrSearch(props) {
         </div>
       </Col>
       <Modal show={show} onHide={handleClose} centered className="modalNormal">
-        <ModalAddPatient closeModal={handleClose} />
+        {(() => {
+          if (pathUrl === "emr") {
+            return <ModalAddPatient closeModal={handleClose} />;
+          } else if (pathUrl === "clinician_directory") {
+            return <ModalAddClinician closeModal={handleClose} />;
+          }
+        })()}
       </Modal>
     </>
   );

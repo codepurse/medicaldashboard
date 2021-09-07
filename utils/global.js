@@ -25,6 +25,11 @@ export const options_phone = [
   { value: "Other", label: "Other" },
 ];
 
+export const options_type = [
+  { value: "Clinician", label: "Clinician" },
+  { value: "Admin", label: "Admin" },
+];
+
 export const options_marital = [
   { value: "Single", label: "Single" },
   { value: "Married", label: "Married" },

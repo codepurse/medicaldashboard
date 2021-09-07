@@ -7,17 +7,17 @@ import appglobal from "../services/api/api.services";
 import Avatar from "@material-ui/core/Avatar";
 import Table from "react-bootstrap/Table";
 import Header from "../components/header";
+import AddClinician from "../components/pages/clinician/addClinician";
 import Search from "../components/modules/search/search";
 import { GrView } from "react-icons/gr";
 import { FiEdit2 } from "react-icons/fi";
 import Modal from "react-bootstrap/Modal";
-import { useRouter } from "next/router";
-import useSWR, { mutate } from "swr";
-import Cookies from "js-cookie";
-import moment from "moment";
-import axios from "axios";
+import useSWR from "swr";
 
 export default function clinician() {
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   const [clinician, setClinician] = useState([]);
   const [pagecount, setPageCount] = useState();
   const [page, setPage] = useState(1);
@@ -183,6 +183,9 @@ export default function clinician() {
           </Col>
         </Row>
       </Container>
+      <Modal show={show} onHide={handleClose} centered className="modalNormal">
+        <AddClinician />
+      </Modal>
     </>
   );
 }
