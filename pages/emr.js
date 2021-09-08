@@ -8,7 +8,7 @@ import { useMemberInfoStore } from "../store/store";
 import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Table from "react-bootstrap/Table";
-import Header from "../components/header";
+
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import moment from "moment";
@@ -44,7 +44,7 @@ export default function emr() {
   };
   return (
     <>
-      <Header />
+     
       <Container fluid className="conDashboard conPages">
         <Row>
           <Search getdata={setData} />

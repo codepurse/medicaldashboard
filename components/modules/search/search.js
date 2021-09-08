@@ -4,6 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { HiOutlineFilter } from "react-icons/hi";
 import ModalAddPatient from "../../../components/pages/Emr/addPatient";
+import Header from "../../../components/header";
 import ModalAddClinician from "../../../components/pages/clinician/addClinician";
 import Modal from "react-bootstrap/Modal";
 import { GoPlus } from "react-icons/go";
@@ -32,6 +33,7 @@ export default function emrSearch(props) {
   }, [urlPath]);
   return (
     <>
+     <Header />
       <Col lg={5}>
         <div className="input-group mb-3">
           <div className="dropdownFilter input-group-prepend">

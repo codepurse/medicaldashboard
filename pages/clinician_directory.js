@@ -17,19 +17,19 @@ import useSWR from "swr";
 export default function clinician() {
   const [show, setShow] = useState(false);
   const handleClose = () => {
-    setShow(false)
-    alert("adas")
+    setShow(false);
+    alert("adas");
   };
+  const [page, setPage] = useState(1);
+  const url =
+    appglobal.api.base_api +
+    appglobal.api.get_all_clinicians +
+    `?&page=${page}`;
+  const { data, error } = useSWR(url, fetcher);
+
   const handleShow = () => setShow(true);
   const [clinician, setClinician] = useState([]);
   const [pagecount, setPageCount] = useState();
-  const [page, setPage] = useState(1);
-  const { data, error } = useSWR(
-    appglobal.api.base_api +
-      appglobal.api.get_all_clinicians +
-      `?&page=${page}`,
-    fetcher
-  );
 
   console.log(data);
   console.log(error);
@@ -58,7 +58,7 @@ export default function clinician() {
       <Header />
       <Container fluid className="conPages">
         <Row>
-          <Search getdata={setData} />
+          <Search getdata={setData} url={url} />
           <Col lg={12}>
             <div className="conTable">
               <Table responsive>

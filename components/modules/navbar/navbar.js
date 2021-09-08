@@ -3,20 +3,32 @@ import { Container, Row, Col } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import Image from "react-bootstrap/Image";
 import { RiNotification3Line } from "react-icons/ri";
-import appglobal from "../../../services/api/api.services";
 import { useSettingStore } from "../../../store/store";
+import MessageService from "../../../services/api/api.message";
+import useSWR from "swr";
+import moment from "moment";
+import { MdClose } from "react-icons/md";
+import Cookies from "js-cookie";
+const fetcher = (url) =>
+  MessageService.getNotif(Cookies.get("clinician_id")).then(
+    (response) => response.data
+  );
 export default function navbar() {
   const people = useSettingStore((state) => state.people);
+  const [show, setShow] = useState(false);
+  const [showEvents, setShowEvents] = useState(true);
+  const [showMessages, setShowMessages] = useState(false);
+  const { data, error } = useSWR("Notification", fetcher);
+  console.log(data);
+  console.log(error);
   return (
     <Container fluid className="conNavbar">
       <Row>
         <Col lg={3}>
-        <img src="/Image/black.webp" className="img-fluid imgLogoNav" />
+          <img src="/Image/black.webp" className="img-fluid imgLogoNav" />
         </Col>
-        <Col lg = {6} md = {6}>
-
-        </Col>
-        <Col lg={3} md = {3}>
+        <Col lg={6} md={6}></Col>
+        <Col lg={3} md={3}>
           <div>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic-button">
@@ -39,11 +51,67 @@ export default function navbar() {
             </Dropdown>
             <Image fluid src="" width={35} id="imgProfile" />
             <div className="divHorizontal"></div>
-            <div className="divBell">
-              <div className="numberCircle"></div>
+            <div className="divBell" onClick={() => setShow((prev) => !prev)}>
+              <div className="numberCircle">{data ? data.length : "0"}</div>
               <i>
                 <RiNotification3Line />
               </i>
+              <Container className={show ? "conNotif" : "d-none"}>
+                <Row className="align-items-center">
+                  <Col lg={8}>
+                    <p className="pHeader">Notifications</p>
+                  </Col>
+                  <Col lg={4}>
+                    <i onClick={() => setShow(false)}>
+                      <MdClose />
+                    </i>
+                  </Col>
+                </Row>
+                <Row className="rowNotif">
+                  <Col lg={12}>
+                    <ul className="ulDashboard">
+                      <li
+                        id="ulAppointment"
+                        className={showEvents ? "activeUl" : ""}
+                        onClick={() => {
+                          setShowEvents(true);
+                          setShowMessages(false);
+                        }}
+                      >
+                        Events
+                      </li>
+                      <li
+                        id="ulTime"
+                        className={showMessages ? "activeUl" : ""}
+                        onClick={() => {
+                          setShowMessages(true);
+                          setShowEvents(false);
+                        }}
+                      >
+                        Messages
+                      </li>
+                    </ul>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={12}>
+                    {data?.map((event, i) => (
+                      <Row key = {i} className = "rowEvents">
+                        <Col lg={7}>
+                          <p className="pEventname">{event.subject}</p>
+                          <p className="pTime">
+                            {moment(event.date_from).format("hh:mm a")} -{" "}
+                            {moment(event.date_to).format("hh:mm a")}
+                          </p>
+                        </Col>
+                        <Col lg={5}>
+                          <p className="pType">{event.event_type}</p>
+                        </Col>
+                      </Row>
+                    ))}
+                  </Col>
+                </Row>
+              </Container>
             </div>
           </div>
         </Col>

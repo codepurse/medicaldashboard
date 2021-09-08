@@ -2,7 +2,7 @@ import Header from "../components/header";
 import React, { Component, useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
-import {useSettingStore} from "../store/store";
+import { useSettingStore } from "../store/store";
 import useSWR from "swr";
 import Appointment from "../components/pages/dashboard/appointment";
 import TimeEntry from "../components/pages/dashboard/timeEntry";
@@ -12,16 +12,19 @@ export default function dashboard() {
   const [fullname, setFullname] = useState("");
   const [showAppointment, setShowAppointment] = useState(true);
   const [showTimeentry, setShowTimeentry] = useState(false);
+  const date = new Date();
+  let hours = date.getHours();
+  let status =
+    hours < 12 ? "Morning" : hours <= 18 && hours >= 12 ? "Afternoon" : "Evening";
   useEffect(() => {
     setFullname(people[0].user.full_name);
   }, []);
   return (
-    
     <Container fluid className="conDashboard conPages">
       <Row>
         <Col lg={12}>
           <p className="pHeader">
-            <span>Good Morning</span> {fullname}!
+            <span>Good {status}</span> {fullname}!
           </p>
           <p className="pHeadersub">This is what we've got for you today.</p>
           <ul className="ulDashboard">

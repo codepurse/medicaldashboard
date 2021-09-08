@@ -1,10 +1,12 @@
 import { Container, Row, Col } from "react-bootstrap";
 import React, { useState, useEffect, useRef } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import { IoMdAddCircleOutline, IoMdCloudUpload } from "react-icons/io";
+import { IoMdAddCircleOutline } from "react-icons/io";
+import { useSnackStore } from "../../../store/store";
 import MessageService from "../../../services/api/api.message";
 import { v4 as uuidv4 } from "uuid";
 import Select from "react-select";
+import useSWR, { mutate } from "swr";
 import {
   customStyles,
   customStyles_error,
@@ -14,6 +16,9 @@ import {
 } from "../../../utils/global";
 
 export default function addClinician(props) {
+  const setSnack = useSnackStore((state) => state.changeState);
+  const setSnackMessage = useSnackStore((state) => state.changeMessage);
+  const setSnackStyle = useSnackStore((state) => state.changeStyle);
   const inputFileRef = useRef(null);
   const [errorLocation, setErrorLocation] = useState("");
   const [errorFname, setErrorFname] = useState("");
@@ -159,9 +164,18 @@ export default function addClinician(props) {
       MessageService.createClinicians(formData)
         .then((response) => {
           console.log(response);
+          setSnackMessage("Clinician added succesfully.");
+          setSnack(true);
+          setSnackStyle(true);
+          mutate(appglobal.api.base_api + appglobal.api.get_all_clinician);
+          props.closeModal();
         })
         .catch(function (error) {
           console.log(error);
+          setSnackMessage("Something went wrong.");
+          setSnack(true);
+          setSnackStyle(false);
+          props.closeModal();
         });
     }
   }
