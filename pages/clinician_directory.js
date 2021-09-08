@@ -16,7 +16,10 @@ import useSWR from "swr";
 
 export default function clinician() {
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false)
+    alert("adas")
+  };
   const handleShow = () => setShow(true);
   const [clinician, setClinician] = useState([]);
   const [pagecount, setPageCount] = useState();
@@ -184,7 +187,7 @@ export default function clinician() {
         </Row>
       </Container>
       <Modal show={show} onHide={handleClose} centered className="modalNormal">
-        <AddClinician />
+        <AddClinician onHide={handleClose} />
       </Modal>
     </>
   );

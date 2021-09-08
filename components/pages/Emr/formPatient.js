@@ -1,21 +1,16 @@
-import { statusType, instance, riskcategory } from "../../../utils/validation";
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import { IoMdAddCircleOutline, IoMdCloudUpload } from "react-icons/io";
-import React, { Component, useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import MessageService from "../../../services/api/api.message";
-import appglobal from "../../../services/api/api.services";
-import { Container, Row, Col } from "react-bootstrap";
-import Snackbar from "@material-ui/core/Snackbar";
+import { Row, Col } from "react-bootstrap";
 import { useSnackStore } from "../../../store/store";
 import { AiOutlineDelete } from "react-icons/ai";
 import DateFnsUtils from "@date-io/date-fns";
 import Grid from "@material-ui/core/Grid";
-import useSWR, { mutate } from "swr";
+import { mutate } from "swr";
 import { v4 as uuidv4 } from "uuid";
 import Select from "react-select";
-import Cookies from "js-cookie";
 import moment from "moment";
-import axios from "axios";
 import {
   customStyles,
   customStyles_error,

@@ -135,6 +135,20 @@ function getClinicians() {
   });
 }
 
+function createClinicians(data) {
+  return request({
+    url: appglobal.api.add_clinician,
+    method: "POST",
+    data: data,
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
 function getLocation(page, sizePerPage) {
   return request({
     url:
@@ -328,6 +342,7 @@ const MessageService = {
   createEvent,
   createTime,
   addFamily,
+  createClinicians,
   getTime,
   getLocation,
   filterLocation,
