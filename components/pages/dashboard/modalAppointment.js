@@ -146,6 +146,7 @@ export default function modal(props) {
         }
         props.closeModal();
         mutate("Appointment");
+        mutate("Notification");
       });
     }
   }

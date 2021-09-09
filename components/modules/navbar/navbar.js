@@ -19,8 +19,15 @@ export default function navbar() {
   const [showEvents, setShowEvents] = useState(true);
   const [showMessages, setShowMessages] = useState(false);
   const { data, error } = useSWR("Notification", fetcher);
+  const [count, setCount] = useState();
   console.log(data);
   console.log(error);
+
+  useEffect(() => {
+    try {
+      setCount(data.length);
+    } catch (error) {}
+  }, [data]);
   return (
     <Container fluid className="conNavbar">
       <Row>
@@ -52,7 +59,7 @@ export default function navbar() {
             <Image fluid src="" width={35} id="imgProfile" />
             <div className="divHorizontal"></div>
             <div className="divBell" onClick={() => setShow((prev) => !prev)}>
-              <div className="numberCircle">{data ? data.length : "0"}</div>
+              <div className={count ? "numberCircle" : "d-none"}>{data ? data.length : ""}</div>
               <i>
                 <RiNotification3Line />
               </i>

@@ -2,7 +2,7 @@ import Header from "../../../components/header";
 import React, { Component, useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
-import useSWR from "swr";
+import useSWR , {mutate} from "swr";
 import axios from "axios";
 import moment from "moment";
 import Cookies from "js-cookie";
@@ -17,7 +17,6 @@ import Modal from "react-bootstrap/Modal";
 import Modaldelete from "../../../components/modal/deleteModal";
 import ModalAppointment from "../../../components/pages/dashboard/modalAppointment";
 import ModalInfo from "../../../components/pages/dashboard/modalInfoEvent";
-import { setIn } from "draft-js/lib/DefaultDraftBlockRenderMap";
 const fetcher = (url) =>
   MessageService.getEvents(Cookies.get("clinician_id")).then(
     (response) => response.data

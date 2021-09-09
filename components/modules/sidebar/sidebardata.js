@@ -49,7 +49,7 @@ export const Directory = [
   },
   {
     title: "Location Directory",
-    path: "/location_directory",
+    path: "/location?tabs=location",
     id: "location_directory",
     icon: <GoLocation />,
     cname: "centered-label",

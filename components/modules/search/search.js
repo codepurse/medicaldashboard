@@ -17,18 +17,26 @@ export default function emrSearch(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const router = useRouter();
+  const tab = router.query.tabs;
   const urlPath = router.pathname;
   const [pathUrl, setPathUrl] = useState("");
   const [buttonName, setButtonName] = useState("");
   useEffect(() => {
     console.log(urlPath.split("/")[1]);
     const path = urlPath.split("/")[1];
+    console.log(tab)
     setPathUrl(path);
     if (path === "clinician_directory") {
       setButtonName("Add Clinician");
     } else if (path === "emr") {
       setButtonName("Add Patient");
-    } else {
+    } else if (path === "location") {
+      if (tab === "location") {
+        setButtonName("Add Location")
+      }else {
+        setButtonName("Add Business")
+      }
+    }else {
     }
   }, [urlPath]);
   return (

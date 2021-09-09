@@ -1272,7 +1272,7 @@ table {
   i {
     margin-right: 15px;
     font-size: 1.1rem;
-    color: #BDBDBD;
+    color: #bdbdbd;
   }
   .pTitle {
     font-size: 1.2rem;
@@ -1286,23 +1286,44 @@ table {
   }
   .pDate {
     font-size: 14px;
-    color: $font-color-gray;
+    color: #5b677f;
     margin-left: 35px;
   }
   .pEventInfo {
     font-size: 14px;
     color: $font-color-black;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
+    label {
+      margin-left: 32px;
+      color: #5b677f;
+      font-size: 13px;
+      margin-top: -8px !important;
+      display: block;
+      margin-bottom: 10px;
+    }
   }
   .pEventInfoType {
     font-size: 14px;
     color: #6f51ed;
-    margin-bottom: 2px;
+    margin-bottom: 8px;
   }
   .rowCreate {
+    padding-top: 10px;
+    padding-bottom: 10px;
     border-top: 1px solid rgba(28, 39, 60, 0.12);
     border-bottom: 1px solid rgba(28, 39, 60, 0.12);
-    margin-top: 10px;
-
-  } 
+    .divHost {
+      p {
+        margin-bottom: 2px;
+      }
+      .p1 {
+        font-size: 13px;
+        color: $font-color-gray;
+      }
+      .p2 {
+        font-size: 14px;
+        color: $font-color-black;
+      }
+    }
+  }
 }

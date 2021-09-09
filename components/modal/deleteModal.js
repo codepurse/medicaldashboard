@@ -11,6 +11,7 @@ export default function modal(props) {
       MessageService.deleteEvent(props.id).then((response) => {
         props.closeModal();
         mutate("Appointment");
+        mutate("Notification")
       });
     } else {
       MessageService.deleteTime(props.id).then((response) => {
