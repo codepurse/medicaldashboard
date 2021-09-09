@@ -834,7 +834,7 @@ table {
           box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         }
         &:hover {
-          background-color: #E3F2FD;
+          background-color: #e3f2fd;
         }
       }
     }
@@ -1259,4 +1259,50 @@ table {
   padding: 10px;
   color: white;
   box-shadow: 0 2px 12px -6px #1976d2 !important;
+}
+
+.modalInfo {
+  .modal-dialog {
+    max-width: 350px !important;
+  }
+}
+
+.conInfoEvent {
+  padding: 20px 25px !important;
+  i {
+    margin-right: 15px;
+    font-size: 1.1rem;
+    color: #BDBDBD;
+  }
+  .pTitle {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: $font-color-black;
+    margin-bottom: 0px;
+    i {
+      font-size: 1.3rem;
+      color: #6f51ed;
+    }
+  }
+  .pDate {
+    font-size: 14px;
+    color: $font-color-gray;
+    margin-left: 35px;
+  }
+  .pEventInfo {
+    font-size: 14px;
+    color: $font-color-black;
+    margin-bottom: 5px;
+  }
+  .pEventInfoType {
+    font-size: 14px;
+    color: #6f51ed;
+    margin-bottom: 2px;
+  }
+  .rowCreate {
+    border-top: 1px solid rgba(28, 39, 60, 0.12);
+    border-bottom: 1px solid rgba(28, 39, 60, 0.12);
+    margin-top: 10px;
+
+  } 
 }

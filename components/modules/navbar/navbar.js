@@ -56,7 +56,10 @@ export default function navbar() {
               <i>
                 <RiNotification3Line />
               </i>
-              <Container className={show ? "conNotif" : "d-none"}>
+              <Container
+                className={show ? "conNotif" : "d-none"}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <Row className="align-items-center">
                   <Col lg={8}>
                     <p className="pHeader">Notifications</p>
@@ -73,7 +76,8 @@ export default function navbar() {
                       <li
                         id="ulAppointment"
                         className={showEvents ? "activeUl" : ""}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setShowEvents(true);
                           setShowMessages(false);
                         }}
@@ -83,7 +87,8 @@ export default function navbar() {
                       <li
                         id="ulTime"
                         className={showMessages ? "activeUl" : ""}
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
                           setShowMessages(true);
                           setShowEvents(false);
                         }}
@@ -96,7 +101,7 @@ export default function navbar() {
                 <Row>
                   <Col lg={12}>
                     {data?.map((event, i) => (
-                      <Row key = {i} className = "rowEvents">
+                      <Row key={i} className="rowEvents">
                         <Col lg={7}>
                           <p className="pEventname">{event.subject}</p>
                           <p className="pTime">

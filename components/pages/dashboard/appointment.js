@@ -16,6 +16,8 @@ import { useAppointmentStore } from "../../../store/store";
 import Modal from "react-bootstrap/Modal";
 import Modaldelete from "../../../components/modal/deleteModal";
 import ModalAppointment from "../../../components/pages/dashboard/modalAppointment";
+import ModalInfo from "../../../components/pages/dashboard/modalInfoEvent";
+import { setIn } from "draft-js/lib/DefaultDraftBlockRenderMap";
 const fetcher = (url) =>
   MessageService.getEvents(Cookies.get("clinician_id")).then(
     (response) => response.data
@@ -27,15 +29,18 @@ export default function appointment() {
   const [appointment, setAppointment] = useState([]);
   const [id, setId] = useState("");
   const [show, setShow] = useState(false);
+  const [showInfo, setShowInfo] = useState(false);
+  const [info, setInfoEvent] = useState([]);
   const [showAppointment, setShowAppointment] = useState(false);
   const handleClose = () => setShow(false);
   const handleCloseAppointment = () => setShowAppointment(false);
   const handleShow = () => setShow(true);
   const handleShowAppointment = () => setShowAppointment(true);
-
+  const handleShowEvent = () => setShowInfo(true);
+  const handleCloseEvent = () => setShowInfo(false);
   useEffect(() => {
     setAppointment(data);
-    console.log(data)
+    console.log(data);
   }, [data]);
 
   return (
@@ -59,9 +64,10 @@ export default function appointment() {
                     className="form-control txtInput"
                     placeholder="Search events.."
                     onChange={(e) => {
-                      searchPota(Cookies.get("clinician_id"), e.currentTarget.value).then((res) =>
-                        setAppointment(res)
-                      );
+                      searchPota(
+                        Cookies.get("clinician_id"),
+                        e.currentTarget.value
+                      ).then((res) => setAppointment(res));
                     }}
                   />
                 </div>
@@ -71,7 +77,7 @@ export default function appointment() {
                   className="btnBlue float-right "
                   onClick={() => {
                     setAction("Add");
-                    handleShowAppointment()
+                    handleShowAppointment();
                   }}
                 >
                   <i>
@@ -96,7 +102,13 @@ export default function appointment() {
                 <tbody>
                   {appointment
                     ? appointment.map((event, i) => (
-                        <tr key={i}>
+                        <tr
+                          key={i}
+                          onClick={() => {
+                            setInfoEvent(event);
+                            setShowInfo(true);
+                          }}
+                        >
                           <td>
                             <p className="pDate">
                               {moment(event.date_from).format("lll")}
@@ -181,7 +193,8 @@ export default function appointment() {
                           </td>
                           <td>
                             <i
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 setInfo(event);
                                 setAction("Edit");
                                 handleShowAppointment();
@@ -190,7 +203,8 @@ export default function appointment() {
                               <FiEdit2 />
                             </i>
                             <i
-                              onClick={() => {
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 handleShow();
                                 setId(event.id);
                               }}
@@ -232,6 +246,14 @@ export default function appointment() {
           id={id}
           mutatedata={fetcher}
         />
+      </Modal>
+      <Modal
+        centered
+        className="modalInfo"
+        show={showInfo}
+        onHide={handleCloseEvent}
+      >
+        <ModalInfo infoevent={info} />
       </Modal>
     </>
   );
