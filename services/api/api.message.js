@@ -149,14 +149,15 @@ function createClinicians(data) {
   });
 }
 
-function getLocation(page, sizePerPage) {
+function getLocation(page) {
   return request({
-    url:
-      appglobal.api.get_all_location +
-      +`?page=${page}&sizePerPage=${sizePerPage}`,
+    url: appglobal.api.get_all_location + `?page=${page}`,
     method: "GET",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
     },
   });
 }
@@ -167,6 +168,19 @@ function getLocations() {
     method: "GET",
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
+}
+
+function getBusiness(page) {
+  return request({
+    url: appglobal.api.get_all_business + `?page=${page}`,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
     },
   });
 }
@@ -363,6 +377,7 @@ const MessageService = {
   getClients,
   getMembers,
   getPatients,
+  getBusiness,
   deleteTime,
   uploadFile,
   createNotes,

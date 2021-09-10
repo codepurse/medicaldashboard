@@ -96,3 +96,24 @@ export const searchClinician = async (id, query) => {
     .catch((error) => {});
   return result;
 };
+
+export const searchLocation = async (query) => {
+  var config = {
+    method: "get",
+    url:
+      appglobal.api.base_api +
+      appglobal.api.get_all_location +
+      `?&q=${query}`,
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Authorization: "Bearer " + Cookies.get("token"),
+    },
+  };
+
+  await once(config)
+    .then((response) => {
+      result = response.data;
+    })
+    .catch((error) => {});
+  return result;
+};

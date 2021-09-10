@@ -20,9 +20,6 @@ export default function navbar() {
   const [showMessages, setShowMessages] = useState(false);
   const { data, error } = useSWR("Notification", fetcher);
   const [count, setCount] = useState();
-  console.log(data);
-  console.log(error);
-
   useEffect(() => {
     try {
       setCount(data.length);

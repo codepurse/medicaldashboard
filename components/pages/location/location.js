@@ -1,0 +1,82 @@
+import Header from "../../../components/header";
+import React, { Component, useState, useEffect, useRef } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import Table from "react-bootstrap/Table";
+import useSWR, { mutate } from "swr";
+import moment from "moment";
+import { statusType } from "../../../utils/validation";
+import Cookies from "js-cookie";
+import MessageService from "../../../services/api/api.message";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FiEdit2, FiPlus } from "react-icons/fi";
+import { GoSearch, GoPlus } from "react-icons/go";
+const fetcher = (url) =>
+  MessageService.getLocation(1).then((response) => response.data);
+export default function locationTable() {
+  const { data, error } = useSWR("LocationDirectory", fetcher);
+
+  return (
+    <div className="conTable">
+      <Table responsive>
+        <thead>
+          <tr>
+            <th>Location Name</th>
+            <th>Business Name</th>
+            <th>City</th>
+            <th>Country</th>
+            <th>State</th>
+            <th>Timezone</th>
+            <th>Status</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {data?.map((event, i) => (
+            <tr key={i}>
+              <td>
+                <p>{event.name}</p>
+              </td>
+              <td>
+                <p>{event.business.business_name}</p>
+              </td>
+              <td>
+                <p>{event.city}</p>
+              </td>
+              <td>
+                <p>{event.county}</p>
+              </td>
+              <td>
+                <p>{event.state_name}</p>
+              </td>
+              <td>
+                <p>{event.timezone}</p>
+              </td>
+              <td>
+                <p className={statusType(event.status)}>
+                  {" "}
+                  {event.status == 1 ? "Active" : "Suspend"}
+                </p>
+              </td>
+              <td>
+                <i
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <FiEdit2 />
+                </i>
+                <i
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                >
+                  <AiOutlineDelete />
+                </i>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </div>
+  );
+}
