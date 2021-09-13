@@ -14,7 +14,6 @@ const fetcher = (url) =>
   MessageService.getLocation(1).then((response) => response.data);
 export default function locationTable() {
   const { data, error } = useSWR("LocationDirectory", fetcher);
-
   return (
     <div className="conTable">
       <Table responsive>

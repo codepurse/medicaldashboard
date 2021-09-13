@@ -1,5 +1,4 @@
 import { searchClinician, searchEmr } from "../../../utils/dashboardSearch";
-import appglobal from "../../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { HiOutlineFilter } from "react-icons/hi";
@@ -8,10 +7,11 @@ import Header from "../../../components/header";
 import ModalAddClinician from "../../../components/pages/clinician/addClinician";
 import Modal from "react-bootstrap/Modal";
 import { GoPlus } from "react-icons/go";
+import MessageService from "../../../services/api/api.message";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
-import axios from "axios";
 import Select from "react-select";
+import { useBussinessStore } from "../../../store/store";
 import { customStyles } from "../../../utils/global";
 
 export default function emrSearch(props) {
@@ -23,6 +23,9 @@ export default function emrSearch(props) {
   const urlPath = router.pathname;
   const [pathUrl, setPathUrl] = useState("");
   const [buttonName, setButtonName] = useState("");
+  const bussInfo = useBussinessStore((state) => state.business);
+  const [optionsBusiness, setOptionsBusiness] = useState([]);
+  const [businessid, setBusinessId] = useState();
   useEffect(() => {
     const path = urlPath.split("/")[1];
     console.log(path);
@@ -39,14 +42,45 @@ export default function emrSearch(props) {
       }
     } else {
     }
+    console.log(bussInfo);
+    setOptionsBusiness(
+      bussInfo.map((event) => ({
+        value: event.id,
+        label: event.business_name,
+      }))
+    );
   }, [router]);
+
+  const filterLocation = (id) => {
+    MessageService.filterLocation(1, 15, id)
+      .then((response) => {
+        console.log(response.data);
+        setOptionsBusiness(
+          response.data.map((event) => ({
+            value: event.id,
+            label: event.business_name,
+          }))
+        );
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <Header />
       <Col lg={5}>
         {(() => {
           if (tab === "location") {
-            return <Select styles={customStyles} instanceId="1" />;
+            return (
+              <Select
+                styles={customStyles}
+                options={optionsBusiness}
+                instanceId="1"
+                onChange={(e) => filterLocation(e.value)}
+              />
+            );
           } else {
             return (
               <div className="input-group mb-3">

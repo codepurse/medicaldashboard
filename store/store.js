@@ -56,6 +56,12 @@ let patientInfo = (set) => ({
   changeCancelPatient: (action) => set((state) => ({ cancelPatient: action })),
 });
 
+let businessInfo = (set) => ({
+  business: [],
+  addBusiness: (action) => set((state) => ({ business: action })),
+});
+
+
 settingStore = persist(settingStore, { name: "user_info" });
 export const useSettingStore = create(settingStore);
 export const useAppointmentStore = create(stateAppointment);
@@ -64,3 +70,4 @@ export const useMemberInfoStore = create(stateMemberInfo);
 export const useSnackStore = create(snackInfo);
 export const useModalStore = create(modalInfo);
 export const usePatientStore = create(patientInfo);
+export const useBussinessStore = create(businessInfo);

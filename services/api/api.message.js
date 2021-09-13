@@ -174,6 +174,19 @@ function getLocations() {
 
 function getBusiness(page) {
   return request({
+    url: appglobal.api.get_all_business,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function getAllBusiness(page) {
+  return request({
     url: appglobal.api.get_all_business + `?page=${page}`,
     method: "GET",
     headers: {
@@ -217,7 +230,10 @@ function filterLocation(page, sizePerPage, businessId) {
       `?page=${page}&business_id=${businessId}&sizePerPage=${sizePerPage}`,
     method: "GET",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
     },
   });
 }
@@ -378,6 +394,7 @@ const MessageService = {
   getMembers,
   getPatients,
   getBusiness,
+  getAllBusiness,
   deleteTime,
   uploadFile,
   createNotes,
