@@ -1,19 +1,25 @@
-import Header from "../../../components/header";
 import React, { Component, useState, useEffect, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
 import useSWR, { mutate } from "swr";
-import moment from "moment";
 import { statusType } from "../../../utils/validation";
-import Cookies from "js-cookie";
 import MessageService from "../../../services/api/api.message";
 import { AiOutlineDelete } from "react-icons/ai";
-import { FiEdit2, FiPlus } from "react-icons/fi";
-import { GoSearch, GoPlus } from "react-icons/go";
+import { FiEdit2 } from "react-icons/fi";
+import { useRouter } from "next/router";
 const fetcher = (url) =>
   MessageService.getLocation(1).then((response) => response.data);
-export default function locationTable() {
+export default function locationTable(props) {
   const { data, error } = useSWR("LocationDirectory", fetcher);
+  const router = useRouter();
+  const [location, setLocation] = useState([]);
+  useEffect(() => {
+    setLocation(data);
+  }, [data,router]);
+
+  useEffect(() => {
+    setLocation(props.filterlocation);
+  }, [props]);
+
   return (
     <div className="conTable">
       <Table responsive>
@@ -30,7 +36,7 @@ export default function locationTable() {
           </tr>
         </thead>
         <tbody>
-          {data?.map((event, i) => (
+          {location?.map((event, i) => (
             <tr key={i}>
               <td>
                 <p>{event.name}</p>

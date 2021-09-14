@@ -28,7 +28,6 @@ export default function emrSearch(props) {
   const [businessid, setBusinessId] = useState();
   useEffect(() => {
     const path = urlPath.split("/")[1];
-    console.log(path);
     setPathUrl(path);
     if (path === "clinician_directory") {
       setButtonName("Add Clinician");
@@ -42,7 +41,6 @@ export default function emrSearch(props) {
       }
     } else {
     }
-    console.log(bussInfo);
     setOptionsBusiness(
       bussInfo.map((event) => ({
         value: event.id,
@@ -54,13 +52,13 @@ export default function emrSearch(props) {
   const filterLocation = (id) => {
     MessageService.filterLocation(1, 15, id)
       .then((response) => {
-        console.log(response.data);
         setOptionsBusiness(
           response.data.map((event) => ({
             value: event.id,
             label: event.business_name,
           }))
         );
+        props.locationFilter(response.data)
       })
       .catch((error) => {
         console.log(error);
@@ -78,7 +76,10 @@ export default function emrSearch(props) {
                 styles={customStyles}
                 options={optionsBusiness}
                 instanceId="1"
-                onChange={(e) => filterLocation(e.value)}
+                onChange={(e) => {
+                  filterLocation(e.value)
+                 
+                }}
               />
             );
           } else {

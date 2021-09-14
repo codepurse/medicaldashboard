@@ -12,6 +12,8 @@ export default function location() {
   const [showLocation, setShowlocation] = useState(false);
   const [showBuss, setShowBuss] = useState(false);
   const tab = router.asPath.split("=").pop();
+  const [filterLocation, setFilterLocation] = useState([]);
+
   useEffect(() => {
     if (tab === "location") {
       setShowlocation(true);
@@ -24,6 +26,15 @@ export default function location() {
       setShowBuss(false);
     }
   }, [router]);
+
+  useEffect(() => {
+
+  }, [filterLocation])
+
+  function putFilterLocation(e) {
+   setFilterLocation(e)
+  }
+
   return (
     <>
       <Container fluid className="conPages">
@@ -50,13 +61,13 @@ export default function location() {
               </li>
             </ul>
           </Col>
-          <Search />
+          <Search  locationFilter = {putFilterLocation} />
         </Row>
         <Row>
           <Col lg={12}>
             {(() => {
               if (showLocation) {
-                return <Location />;
+                return <Location filterlocation = {filterLocation}/>;
               } else {
                 return <Business />;
               }
