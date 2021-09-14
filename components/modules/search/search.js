@@ -5,6 +5,7 @@ import { HiOutlineFilter } from "react-icons/hi";
 import ModalAddPatient from "../../../components/pages/Emr/addPatient";
 import Header from "../../../components/header";
 import ModalAddClinician from "../../../components/pages/clinician/addClinician";
+import ModalAddLocation from "../../../components/pages/location/addLocation";
 import Modal from "react-bootstrap/Modal";
 import { GoPlus } from "react-icons/go";
 import MessageService from "../../../services/api/api.message";
@@ -58,7 +59,7 @@ export default function emrSearch(props) {
             label: event.business_name,
           }))
         );
-        props.locationFilter(response.data)
+        props.locationFilter(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -77,8 +78,7 @@ export default function emrSearch(props) {
                 options={optionsBusiness}
                 instanceId="1"
                 onChange={(e) => {
-                  filterLocation(e.value)
-                 
+                  filterLocation(e.value);
                 }}
               />
             );
@@ -158,6 +158,8 @@ export default function emrSearch(props) {
             return <ModalAddPatient closeModal={handleClose} />;
           } else if (pathUrl === "clinician_directory") {
             return <ModalAddClinician closeModal={handleClose} />;
+          } else if (pathUrl === "location") {
+            return <ModalAddLocation closeModal={handleClose} />;
           }
         })()}
       </Modal>

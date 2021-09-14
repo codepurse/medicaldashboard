@@ -46,6 +46,7 @@ export default function location() {
                 id="ulAppointment"
                 onClick={() => {
                   router.replace("/location?tabs=location");
+                  setFilterLocation(null)
                 }}
               >
                 Location

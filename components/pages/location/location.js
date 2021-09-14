@@ -12,12 +12,17 @@ export default function locationTable(props) {
   const { data, error } = useSWR("LocationDirectory", fetcher);
   const router = useRouter();
   const [location, setLocation] = useState([]);
+  const tab = router.asPath.split("=").pop();
   useEffect(() => {
+    console.log(tab)
     setLocation(data);
-  }, [data,router]);
+  }, [data,tab]);
 
   useEffect(() => {
-    setLocation(props.filterlocation);
+    console.log(props)
+    if (props.filterlocation) {
+      setLocation(props.filterlocation);
+    }
   }, [props]);
 
   return (
