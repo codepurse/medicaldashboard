@@ -6,6 +6,8 @@ import MessageService from "../../../services/api/api.message";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import { useRouter } from "next/router";
+import Modal from "react-bootstrap/Modal";
+import Modaldelete from "../../../components/modal/deleteModal";
 const fetcher = (url) =>
   MessageService.getLocation(1).then((response) => response.data);
 export default function locationTable(props) {
@@ -13,13 +15,16 @@ export default function locationTable(props) {
   const router = useRouter();
   const [location, setLocation] = useState([]);
   const tab = router.asPath.split("=").pop();
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
   useEffect(() => {
-    console.log(tab)
+    console.log(tab);
     setLocation(data);
-  }, [data,tab]);
+  }, [data, tab]);
 
   useEffect(() => {
-    console.log(props)
+    console.log(props);
     if (props.filterlocation) {
       setLocation(props.filterlocation);
     }
@@ -78,6 +83,7 @@ export default function locationTable(props) {
                 <i
                   onClick={(e) => {
                     e.stopPropagation();
+                    handleShow();
                   }}
                 >
                   <AiOutlineDelete />
@@ -87,6 +93,15 @@ export default function locationTable(props) {
           ))}
         </tbody>
       </Table>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        size="sm"
+        centered
+        className="modalDelete"
+      >
+        <Modaldelete closeModal={handleClose} type="event" />
+      </Modal>
     </div>
   );
 }
