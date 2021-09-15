@@ -238,6 +238,20 @@ function filterLocation(page, sizePerPage, businessId) {
   });
 }
 
+function createLocation(data) {
+  return request({
+    url: appglobal.api.add_location,
+    method: "POST",
+    data: data,
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
 function getProfile(id) {
   return request({
     url: appglobal.api.get_profile + id,
@@ -374,6 +388,7 @@ const MessageService = {
   createInstantfamily,
   createEvent,
   createTime,
+  createLocation,
   addFamily,
   createClinicians,
   getTime,
