@@ -16,19 +16,24 @@ export default function addLocation(props) {
   const setSnackMessage = useSnackStore((state) => state.changeMessage);
   const setSnackStyle = useSnackStore((state) => state.changeStyle);
   const [business, setBusiness] = useState();
-  const [timezone, setTimezone] = useState();
+  const [timezone, setTimezone] = useState(
+    props.action ? props.info.timezone : ""
+  );
   const [errorName, setErrorName] = useState(false);
   const [errorCity, setErrorCity] = useState(false);
   const [errorBuss, setErrorBuss] = useState(false);
   const [errorState, setErrorState] = useState(false);
   const [errorCountry, setErrorCountry] = useState(false);
   const [errorTimezone, setErroTimezone] = useState(false);
+  const [locationId, setLocationId] = useState(
+    props.action ? props.info.id : ""
+  );
   const bussInfo = useBussinessStore((state) => state.business);
   const [state, setState] = useState({
-    name: "",
-    city: "",
-    state: "",
-    country: "",
+    name: props.action ? props.info.name : "",
+    city: props.action ? props.info.city : "",
+    state: props.action ? props.info.state_name : "",
+    country: props.action ? props.info.county : "",
   });
   const handleChange = (evt) => {
     setState({
@@ -40,6 +45,18 @@ export default function addLocation(props) {
     value: timezone.text,
     label: timezone.text,
   }));
+
+  const buss_option = bussInfo.map((event) => ({
+    value: event.id,
+    label: event.business_name,
+  }));
+
+  useEffect(() => {
+    if (props.action) {
+      setBusiness(props.info.business_id);
+      console.log(props.info.business_id);
+    }
+  }, []);
 
   function goSave() {
     var clear = 0;
@@ -76,7 +93,10 @@ export default function addLocation(props) {
       formData.append("county", state.county);
       formData.append("timezone", timezone);
       formData.append("status", 1);
-      MessageService.createLocation(formData)
+      if (props.action) {
+        formData.append("_method", "PUT");
+      }
+      MessageService.createLocation(formData, props.action, locationId)
         .then((response) => {
           mutate("LocationDirectory");
           setSnackMessage("Location sucessfully created.");
@@ -116,10 +136,12 @@ export default function addLocation(props) {
           <p className="pTitleInput">Business</p>
           <Select
             styles={errorBuss ? customStyles_error : customStyles}
-            options={bussInfo.map((event) => ({
-              value: event.id,
-              label: event.business_name,
-            }))}
+            options={buss_option}
+            value={
+              business
+                ? buss_option.filter((option) => option.value === business)
+                : ""
+            }
             onChange={(e) => {
               setBusiness(e.value);
             }}
@@ -160,6 +182,13 @@ export default function addLocation(props) {
           <Select
             styles={errorTimezone ? customStyles_error : customStyles}
             options={timezone_option}
+            value={
+              timezone
+                ? timezone_option.filter(
+                    (option) => option.value === timezone.toString()
+                  )
+                : ""
+            }
             onChange={(e) => {
               setTimezone(e.value);
             }}

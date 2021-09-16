@@ -59,9 +59,10 @@ export default function appointment() {
                     className="form-control txtInput"
                     placeholder="Search time entry.."
                     onChange={(e) => {
-                      searchTime(Cookies.get("clinician_id"), e.currentTarget.value).then((res) =>
-                        setTimeentry(res)
-                      );
+                      searchTime(
+                        Cookies.get("clinician_id"),
+                        e.currentTarget.value
+                      ).then((res) => setTimeentry(res));
                     }}
                   />
                 </div>
@@ -155,7 +156,7 @@ export default function appointment() {
         <Modaldelete
           closeModal={handleClose}
           id={id}
-          type="time entry"
+          type="timeEntry"
           mutatedata={fetcher}
         />
       </Modal>

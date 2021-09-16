@@ -238,9 +238,25 @@ function filterLocation(page, sizePerPage, businessId) {
   });
 }
 
-function createLocation(data) {
+function createLocation(data, action, id) {
   return request({
-    url: appglobal.api.add_location,
+    url: action
+      ? appglobal.api.update_location + id
+      : appglobal.api.add_location,
+    method: "POST",
+    data: data,
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function updateLocation(data, id) {
+  return request({
+    url: appglobal.api.update_location + id,
     method: "POST",
     data: data,
     headers: {
@@ -412,6 +428,7 @@ const MessageService = {
   getAllBusiness,
   deleteTime,
   uploadFile,
+  updateLocation,
   createNotes,
 };
 

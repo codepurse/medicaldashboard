@@ -11,13 +11,16 @@ export default function modal(props) {
       MessageService.deleteEvent(props.id).then((response) => {
         props.closeModal();
         mutate("Appointment");
-        mutate("Notification")
+        mutate("Notification");
       });
-    } else {
+    } else if (props.type === "timeEntry") {
       MessageService.deleteTime(props.id).then((response) => {
         props.closeModal();
         mutate("TimeEntry");
       });
+    } else if (props.type === "location") {
+      props.action();
+      props.closeModal();
     }
   };
 
