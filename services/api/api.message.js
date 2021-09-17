@@ -135,9 +135,11 @@ function getClinicians() {
   });
 }
 
-function createClinicians(data) {
+function createClinicians(data, action, id) {
   return request({
-    url: appglobal.api.add_clinician,
+    url: action
+      ? appglobal.api.update_clinician + id
+      : appglobal.api.add_clinician,
     method: "POST",
     data: data,
     headers: {
@@ -257,6 +259,22 @@ function createLocation(data, action, id) {
 function updateLocation(data, id) {
   return request({
     url: appglobal.api.update_location + id,
+    method: "POST",
+    data: data,
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function createBusiness(data, action, id) {
+  return request({
+    url: action
+      ? appglobal.api.update_business + id
+      : appglobal.api.add_business,
     method: "POST",
     data: data,
     headers: {
@@ -429,6 +447,7 @@ const MessageService = {
   deleteTime,
   uploadFile,
   updateLocation,
+  createBusiness,
   createNotes,
 };
 

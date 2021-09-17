@@ -291,6 +291,14 @@ img {
   margin-bottom: 40px !important;
 }
 
+.conCalendar {
+  height: 100vh;
+}
+
+.conProfile {
+  max-width: 800px !important;
+}
+
 .txtInput {
   padding: 8px !important;
   border-radius: 5px;
@@ -1325,5 +1333,44 @@ table {
         color: $font-color-black;
       }
     }
+  }
+}
+
+.conViewClinician {
+  .imgProfile {
+    margin-right: 15px;
+    box-shadow: 0 0 30px rgb(28 39 60 / 8%) !important;
+  }
+  .pFullname {
+    font-family: "Poppins";
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: $font-color-black;
+    margin-bottom: -3px;
+    word-break: break-all !important;
+  }
+  .pTitle {
+    font-size: 14px !important;
+    font-weight: 500;
+    margin-bottom: -10px;
+  }
+  .pEmail {
+    font-family: "Poppins";
+    font-size: 14px;
+    font-weight: 500;
+    color: $font-color-gray;
+  }
+  .pTitlesub {
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 2px;
+    margin-top: 10px;
+  }
+  .pInfo {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  hr {
+    margin-bottom: 0px;
   }
 }

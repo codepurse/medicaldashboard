@@ -10,10 +10,45 @@ import MessageService from "../../../services/api/api.message";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2, FiPlus } from "react-icons/fi";
 import { GoSearch, GoPlus } from "react-icons/go";
+import Modal from "react-bootstrap/Modal";
+import ModalAddBusiness from "../../../components/pages/location/addBusiness";
+import { useSnackStore } from "../../../store/store";
+import Modaldelete from "../../../components/modal/deleteModal";
 const fetcher = (url) =>
   MessageService.getBusiness(1).then((response) => response.data);
 export default function businessTable() {
+  const setSnack = useSnackStore((state) => state.changeState);
+  const setSnackMessage = useSnackStore((state) => state.changeMessage);
+  const setSnackStyle = useSnackStore((state) => state.changeStyle);
   const { data, error } = useSWR("BusinessDirectory", fetcher);
+  const [selectedBuss, setSelectedBuss] = useState([]);
+  const [show, setShow] = useState(false);
+  const action = true;
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [showBusiness, setShowBusiness] = useState(false);
+  const handleCloseBusiness = () => setShowBusiness(false);
+  const handleShowBusiness = () => setShowBusiness(true);
+
+  function goDelete() {
+    const formData = new FormData();
+    formData.append("business_name", selectedBuss.bussName);
+    formData.append("business_address", selectedBuss.bussAdd);
+    formData.append("status", 2);
+    formData.append("_method", "PUT");
+    MessageService.createBusiness(formData, action, selectedBuss.id)
+      .then((response) => {
+        mutate("BusinessDirectory");
+        setSnackMessage("Business sucessfully suspended.");
+        setSnack(true);
+        setSnackStyle(true);
+      })
+      .catch((error) => {
+        setSnackMessage("Something went wrong");
+        setSnack(true);
+        setSnackStyle(false);
+      });
+  }
   return (
     <div className="conTable">
       <Table responsive>
@@ -43,6 +78,8 @@ export default function businessTable() {
                 <i
                   onClick={(e) => {
                     e.stopPropagation();
+                    handleShowBusiness();
+                    setSelectedBuss(event);
                   }}
                 >
                   <FiEdit2 />
@@ -50,6 +87,8 @@ export default function businessTable() {
                 <i
                   onClick={(e) => {
                     e.stopPropagation();
+                    handleShow();
+                    setSelectedBuss(event);
                   }}
                 >
                   <AiOutlineDelete />
@@ -59,6 +98,31 @@ export default function businessTable() {
           ))}
         </tbody>
       </Table>
+      <Modal
+        show={show}
+        onHide={handleClose}
+        size="sm"
+        centered
+        className="modalDelete"
+      >
+        <Modaldelete
+          closeModal={handleClose}
+          action={goDelete}
+          type="business"
+        />
+      </Modal>
+      <Modal
+        centered
+        className="modalNormal"
+        closeModal={handleCloseBusiness}
+        show={showBusiness}
+      >
+        <ModalAddBusiness
+          info={selectedBuss}
+          closeModal={handleCloseBusiness}
+          action={true}
+        />
+      </Modal>
     </div>
   );
 }

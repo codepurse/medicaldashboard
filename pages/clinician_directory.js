@@ -7,18 +7,19 @@ import appglobal from "../services/api/api.services";
 import Avatar from "@material-ui/core/Avatar";
 import Table from "react-bootstrap/Table";
 import Header from "../components/header";
-import AddClinician from "../components/pages/clinician/addClinician";
+import ViewClinician from "../components/pages/clinician/modalViewClinician";
 import Search from "../components/modules/search/search";
 import { GrView } from "react-icons/gr";
 import { FiEdit2 } from "react-icons/fi";
 import Modal from "react-bootstrap/Modal";
+import { useRouter } from "next/router";
 import useSWR from "swr";
 
 export default function clinician() {
   const [show, setShow] = useState(false);
+  const router = useRouter();
   const handleClose = () => {
     setShow(false);
-    alert("adas");
   };
   const [page, setPage] = useState(1);
   const url =
@@ -30,6 +31,9 @@ export default function clinician() {
   const handleShow = () => setShow(true);
   const [clinician, setClinician] = useState([]);
   const [pagecount, setPageCount] = useState();
+  const [info, setInfo] = useState([]);
+  const [action, setAction] = useState();
+  const [selectedClinician, setSelectedClinician] = useState([]);
 
   console.log(data);
   console.log(error);
@@ -74,7 +78,14 @@ export default function clinician() {
                 </thead>
                 <tbody>
                   {clinician.data?.map((event, i) => (
-                    <tr key={i}>
+                    <tr
+                      key={i}
+                      onClick={() => {
+                        router.push(`/clinician/${event.user_id}?tabs=demo`);
+                        console.log(event);
+                        setAction(true);
+                      }}
+                    >
                       <td>
                         <div className="form-inline">
                           {event.photo ? (
@@ -161,17 +172,19 @@ export default function clinician() {
                       </td>
                       <td>
                         <i
-                          onClick={() => {
-                            viewFile(event);
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setInfo(event);
+                            setAction(true);
+                            handleShow();
                           }}
                         >
                           <GrView />
                         </i>
                         <i
-                          onClick={() => {
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setInfo(event);
-                            setAction("Edit");
-                            handleShowAppointment();
                           }}
                         >
                           <FiEdit2 />
@@ -187,7 +200,12 @@ export default function clinician() {
         </Row>
       </Container>
       <Modal show={show} onHide={handleClose} centered className="modalNormal">
-        <AddClinician onHide={handleClose} />
+        <ViewClinician
+          onHide={handleClose}
+          action={action}
+          closeModal={handleClose}
+          info={info}
+        />
       </Modal>
     </>
   );

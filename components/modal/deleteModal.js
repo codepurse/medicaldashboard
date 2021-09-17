@@ -21,6 +21,9 @@ export default function modal(props) {
     } else if (props.type === "location") {
       props.action();
       props.closeModal();
+    } else if (props.type === "business") {
+      props.action();
+      props.closeModal();
     }
   };
 

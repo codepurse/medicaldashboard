@@ -42,6 +42,7 @@ export default function emr() {
       setPatients(value);
     } catch (error) {}
   };
+
   return (
     <>
      

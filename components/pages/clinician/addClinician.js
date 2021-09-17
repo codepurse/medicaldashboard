@@ -6,6 +6,7 @@ import { useSnackStore } from "../../../store/store";
 import MessageService from "../../../services/api/api.message";
 import { v4 as uuidv4 } from "uuid";
 import Select from "react-select";
+import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import {
   customStyles,
@@ -16,6 +17,7 @@ import {
 } from "../../../utils/global";
 
 export default function addClinician(props) {
+  const router = useRouter();
   const setSnack = useSnackStore((state) => state.changeState);
   const setSnackMessage = useSnackStore((state) => state.changeMessage);
   const setSnackStyle = useSnackStore((state) => state.changeStyle);
@@ -27,7 +29,7 @@ export default function addClinician(props) {
   const [errorPassword, setErrorPassword] = useState("");
   const [profilepic, setProfilepic] = useState("");
   const [photo, setPhoto] = useState(null);
-  const [type, setType] = useState({ value: "Admin", label: "Admin" });
+  const [type, setType] = useState("Admin");
   const [userstatus, setUserstatus] = useState({ value: 1, label: "Active" });
   const [locationlist, setLocationlist] = useState([]);
   const [location, setLocation] = useState([]);
@@ -37,6 +39,7 @@ export default function addClinician(props) {
   const [lname, setLname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpass, setConfirmpass] = useState("");
+  const [userId, setUserId] = useState();
   const [inputFields, setInputFields] = useState([
     { id: uuidv4(), phonenumber: "", type: "" },
   ]);
@@ -95,6 +98,10 @@ export default function addClinician(props) {
       setPhoto(file);
     }
   }
+  const capitalizeFirstLetter = (
+    [first, ...rest],
+    locale = navigator.language
+  ) => first.toLocaleUpperCase(locale) + rest.join("");
 
   useEffect(() => {
     MessageService.getLocationNoPage().then((response) => {
@@ -107,6 +114,33 @@ export default function addClinician(props) {
       );
     });
   }, []);
+
+  useEffect(() => {
+    if (props.infoClinician) {
+      setFname(props.infoClinician.first_name);
+      setLname(props.infoClinician.last_name);
+      setMname(props.infoClinician.middle_name);
+      setEmail(props.infoClinician.user.email);
+      setType(capitalizeFirstLetter(props.infoClinician.user.roles[0].name));
+      for (let i = 0; i < props.infoClinician.clinician_location.length; i++) {
+        location.push({
+          value: props.infoClinician.clinician_location[i].location.id,
+          label: props.infoClinician.clinician_location[i].location.name,
+        });
+      }
+      const data_number = [];
+      for (var i = 0; i < props.infoClinician.phones.length; i++) {
+        data_number.push({
+          id: props.infoClinician.phones[i].id,
+          phonenumber: props.infoClinician.phones[i].phone_number,
+          type: props.infoClinician.phones[i].type,
+        });
+      }
+      setInputFields(data_number);
+      setUserId(props.infoClinician.user_id);
+      console.log(props.infoClinician.clinician_location);
+    }
+  }, [props]);
 
   function goSave() {
     var clear = 0;
@@ -122,9 +156,11 @@ export default function addClinician(props) {
       setErrorEmail(true);
       clear = 1;
     }
-    if (!password) {
-      setErrorPassword(true);
-      clear = 1;
+    if (!props.action) {
+      if (!password) {
+        setErrorPassword(true);
+        clear = 1;
+      }
     }
     if (!location) {
       setErrorLocation(true);
@@ -135,11 +171,12 @@ export default function addClinician(props) {
       clear = 1;
     }
     if (clear === 0) {
+      var action = false;
       const formData = new FormData();
       const locationValue = location.map((locationId) => locationId.value);
       console.log(location);
       console.log(locationValue);
-      formData.append("role", type.value);
+      formData.append("role", type);
       formData.append("status", userstatus.value);
       formData.append("first_name", fname);
       formData.append("last_name", lname);
@@ -161,29 +198,41 @@ export default function addClinician(props) {
       for (let i = 0; i < phoneType.length; i++) {
         formData.append(`phones[${i}][type]`, phoneType[i]);
       }
-      MessageService.createClinicians(formData)
+      if (props.infoClinician) {
+        formData.append("_method", "PUT");
+        action = true;
+      }
+      MessageService.createClinicians(formData, action, userId)
         .then((response) => {
           console.log(response);
           setSnackMessage("Clinician added succesfully.");
           setSnack(true);
           setSnackStyle(true);
           mutate(appglobal.api.base_api + appglobal.api.get_all_clinician);
-          props.closeModal();
+          if (action) {
+            router.push("/clinician_directory");
+          } else {
+            props.closeModal();
+          }
         })
         .catch(function (error) {
           console.log(error);
           setSnackMessage("Something went wrong.");
           setSnack(true);
           setSnackStyle(false);
-          props.closeModal();
+          if (action) {
+            router.push("/clinician_directory");
+          } else {
+            props.closeModal();
+          }
         });
     }
   }
 
   return (
-    <Container className="conModal">
+    <Container className={props.action ? "conModal conProfile" : "conModal"}>
       <Row>
-        <Col lg={12}>
+        <Col lg={12} className={props.action ? "d-none" : ""}>
           <p className="pHeader">Add clinician</p>
           <p className="pHeadersub">
             This section contains the basic details of the clinician.
@@ -204,7 +253,7 @@ export default function addClinician(props) {
             className="d-none"
           />
           <img
-            src={profilepic ? profilepic : "Image/userprofile.png"}
+            src={profilepic ? profilepic : "/Image/userprofile.png"}
             className="imgProfile img-fluid"
           ></img>
         </Col>
@@ -231,9 +280,10 @@ export default function addClinician(props) {
           <Select
             styles={customStyles}
             options={options_type}
-            value={type}
+            value={options_type.filter((option) => option.value === type)}
             onChange={(e) => {
-              setType(e);
+              setType(e.value);
+              console.log(e.value);
             }}
             isLoading={false}
           />
@@ -267,6 +317,7 @@ export default function addClinician(props) {
             type="text"
             className={errorEmail ? "txtError" : "txtInput"}
             name="locations"
+            value={email}
             onChange={(e) => {
               setEmail(e.currentTarget.value);
             }}
@@ -277,6 +328,7 @@ export default function addClinician(props) {
           <input
             type="text"
             className={errorFname ? "txtError" : "txtInput"}
+            value={fname}
             onChange={(e) => {
               setFname(e.currentTarget.value);
             }}
@@ -287,6 +339,7 @@ export default function addClinician(props) {
           <input
             type="text"
             className="txtInput"
+            value={mname}
             onChange={(e) => {
               setMname(e.currentTarget.value);
             }}
@@ -297,6 +350,7 @@ export default function addClinician(props) {
           <input
             type="text"
             className={errorLname ? "txtError" : "txtInput"}
+            value={lname}
             onChange={(e) => {
               setLname(e.currentTarget.value);
             }}
@@ -333,6 +387,11 @@ export default function addClinician(props) {
                   onChange={(event) =>
                     handleChangeInputselect(inputField.id, event)
                   }
+                  inputProps={{
+                    autoComplete: "nope",
+                    autoCorrect: "off",
+                    spellCheck: "off",
+                  }}
                 />
               </Col>
               <Col lg={2} className="align-self-end">
@@ -388,7 +447,11 @@ export default function addClinician(props) {
             <button
               className="btnCancel"
               onClick={() => {
-                props.closeModal();
+                if (props.action) {
+                  router.push("/clinician_directory");
+                } else {
+                  props.closeModal();
+                }
               }}
             >
               Cancel

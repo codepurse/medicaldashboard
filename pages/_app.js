@@ -5,6 +5,7 @@ import MessageService from "../services/api/api.message";
 import NextNprogress from "nextjs-progressbar";
 import Header from "../components/header";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import Snack from "../components/elements/snackbar";
 import Modal from "../components/modal/unsaved";
 import { useBussinessStore} from "../store/store";

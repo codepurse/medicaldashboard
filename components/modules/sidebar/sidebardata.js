@@ -50,7 +50,7 @@ export const Directory = [
   {
     title: "Location Directory",
     path: "/location?tabs=location",
-    id: "location_directory",
+    id: "location",
     icon: <GoLocation />,
     cname: "centered-label",
   },

@@ -6,6 +6,7 @@ import ModalAddPatient from "../../../components/pages/Emr/addPatient";
 import Header from "../../../components/header";
 import ModalAddClinician from "../../../components/pages/clinician/addClinician";
 import ModalAddLocation from "../../../components/pages/location/addLocation";
+import ModalAddBusiness from "../../../components/pages/location/addBusiness";
 import Modal from "react-bootstrap/Modal";
 import { GoPlus } from "react-icons/go";
 import MessageService from "../../../services/api/api.message";
@@ -120,7 +121,9 @@ export default function emrSearch(props) {
                 </div>
                 <input
                   type="text"
-                  className="form-control txtForm"
+                  className={
+                    pathUrl === "location" ? "d-none" : "form-control txtForm"
+                  }
                   placeholder="Search by first or last name.."
                   aria-label="Text input with dropdown button"
                   onChange={(e) => {
@@ -130,7 +133,8 @@ export default function emrSearch(props) {
                             Cookies.get("clinician_id"),
                             e.currentTarget.value
                           ).then((res) => props.getdata(res))
-                        : searchEmr(
+                        : pathUrl ===
+                          "emr"(
                             Cookies.get("clinician_id"),
                             e.currentTarget.value
                           ).then((res) => props.getdata(res));
@@ -158,8 +162,10 @@ export default function emrSearch(props) {
             return <ModalAddPatient closeModal={handleClose} />;
           } else if (pathUrl === "clinician_directory") {
             return <ModalAddClinician closeModal={handleClose} />;
-          } else if (pathUrl === "location") {
+          } else if (pathUrl === "location" && tab === "location") {
             return <ModalAddLocation closeModal={handleClose} />;
+          } else if (pathUrl === "location" && tab === "business") {
+            return <ModalAddBusiness closeModal={handleClose} />;
           }
         })()}
       </Modal>
