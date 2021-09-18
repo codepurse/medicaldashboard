@@ -52,7 +52,7 @@ export default function emr({ results }) {
   const setData = (value) => {
     try {
       setPagecount(value.last_page);
-      setPatients(value);
+      setPatients(value.data);
     } catch (error) {}
   };
 

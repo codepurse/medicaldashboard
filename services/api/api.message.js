@@ -149,12 +149,12 @@ function getMembers(id) {
   });
 }
 
-function getCliniciansSSR() {
+function getCliniciansSSR(cookieSWR) {
   return request({
     url: appglobal.api.get_all_clinicians,
     method: "GET",
     headers: {
-      Authorization: "Bearer " + Cookies.get("token"),
+      Authorization: "Bearer " + cookieSWR,
       xsrfCookieName: "token",
       xsrfHeaderName: "X-XSRF-TOKEN",
       withCredentials: true,

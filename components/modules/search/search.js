@@ -134,10 +134,10 @@ export default function emrSearch(props) {
                             e.currentTarget.value
                           ).then((res) => props.getdata(res))
                         : pathUrl ===
-                          "emr"(
+                          "emr" ? searchEmr(
                             Cookies.get("clinician_id"),
                             e.currentTarget.value
-                          ).then((res) => props.getdata(res));
+                          ).then((res) => props.getdata(res)) : ""
                     }
                   }}
                 />

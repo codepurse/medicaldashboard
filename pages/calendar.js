@@ -24,7 +24,7 @@ export async function getServerSideProps(context) {
 
 export default function calendar({ results }) {
   const localizer = momentLocalizer(moment);
-  const [myEventsList, setMyEventList] = useState([]);
+  const [myEventsList, setMyEventList] = useState(results);
   const { data, error } = useSWR("Appointment", fetcher, {
     fallbackData: results,
   });

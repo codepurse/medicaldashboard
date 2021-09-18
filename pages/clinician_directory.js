@@ -28,7 +28,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function clinician() {
+export default function clinician({results}) {
   const [show, setShow] = useState(false);
   const router = useRouter();
   const handleClose = () => {
@@ -42,7 +42,7 @@ export default function clinician() {
   const { data, error } = useSWR(url, fetcher);
 
   const handleShow = () => setShow(true);
-  const [clinician, setClinician] = useState([]);
+  const [clinician, setClinician] = useState(results);
   const [pagecount, setPageCount] = useState();
   const [info, setInfo] = useState([]);
   const [action, setAction] = useState();
@@ -53,7 +53,8 @@ export default function clinician() {
 
   useEffect(() => {
     if (data) {
-      setClinician(data);
+      console.log(data)
+      setClinician(data.data);
       setPageCount(data.last_page);
     }
   }, [data]);
@@ -64,7 +65,7 @@ export default function clinician() {
   const setData = (value) => {
     try {
       setPageCount(value.last_page);
-      setClinician(value);
+      setClinician(value.data);
     } catch (error) {
       console.log(error);
     }
@@ -90,7 +91,7 @@ export default function clinician() {
                   </tr>
                 </thead>
                 <tbody>
-                  {clinician.data?.map((event, i) => (
+                  {clinician?.map((event, i) => (
                     <tr
                       key={i}
                       onClick={() => {
