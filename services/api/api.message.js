@@ -16,6 +16,19 @@ function getEvents(id, cookieSWR) {
     url: appglobal.api.get_events + "?clinician_id=" + `${id}`,
     method: "GET",
     headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function getEventsSSR(id, cookieSWR) {
+  return request({
+    url: appglobal.api.get_events + "?clinician_id=" + `${id}`,
+    method: "GET",
+    headers: {
       Authorization: "Bearer " + cookieSWR,
       xsrfCookieName: "token",
       xsrfHeaderName: "X-XSRF-TOKEN",
@@ -103,6 +116,19 @@ function getPatients(page) {
     method: "GET",
     headers: {
       Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function getPatientsSSR(page, cookieSSR) {
+  return request({
+    url: appglobal.api.get_patient + `?&page=${page}`,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + cookieSSR,
       xsrfCookieName: "token",
       xsrfHeaderName: "X-XSRF-TOKEN",
       withCredentials: true,
@@ -419,6 +445,7 @@ function downloadFile(data) {
 
 const MessageService = {
   getEvents,
+  getEventsSSR,
   createPatient,
   createInstantfamily,
   createEvent,
@@ -443,6 +470,7 @@ const MessageService = {
   getClients,
   getMembers,
   getPatients,
+  getPatientsSSR,
   getBusiness,
   getAllBusiness,
   deleteTime,

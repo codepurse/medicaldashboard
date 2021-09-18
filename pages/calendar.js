@@ -12,7 +12,7 @@ const fetcher = (url) =>
 export async function getServerSideProps(context) {
   const lang = context.req.cookies["clinician_id"];
   const cookieSWR = context.req.cookies["token"];
-  const dataSSR = await MessageService.getEvents(lang, cookieSWR).then(
+  const dataSSR = await MessageService.getEventsSSR(lang, cookieSWR).then(
     (response) => response.data
   );
   return {
@@ -29,11 +29,12 @@ export default function calendar({ results }) {
     fallbackData: results,
   });
   console.log(data);
+  console.log(error)
 
   useEffect(() => {
     if (data) {
       console.log(data);
-      setMyEventList(data)
+      setMyEventList(data);
     }
   }, [data]);
 
