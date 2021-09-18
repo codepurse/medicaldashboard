@@ -1406,3 +1406,41 @@ table {
   margin-top: 7px;
   position: relative;
 }
+.rbc-event {
+  background-color: transparent !important;
+  border-radius: 2px;
+  font-size: 15px;
+  border-radius: 0px !important;
+  padding: 4px !important;
+  text-transform: capitalize !important;
+}
+
+.spanSession {
+  color: #7659d3 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+.spanMeeting {
+  color: #4ca6a8 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+.spanTitle {
+  color: #262e4a !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+}
+
+.eventSession {
+  background-color: #f2f1ff !important;
+  border-left: 2px solid #676dff !important;
+  padding: 10px;
+}
+
+.eventMeeting {
+  background-color: #e9f4f5 !important;
+  border-left: 2px solid #4ca6a8 !important;
+  padding: 10px;
+}

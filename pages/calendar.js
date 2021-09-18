@@ -29,7 +29,7 @@ export default function calendar({ results }) {
     fallbackData: results,
   });
   console.log(data);
-  console.log(error)
+  console.log(error);
 
   useEffect(() => {
     if (data) {
@@ -37,6 +37,29 @@ export default function calendar({ results }) {
       setMyEventList(data);
     }
   }, [data]);
+
+  const EventT = ({ event }) => {
+    return (
+      <div
+        className={event.type === "Session" ? "eventSession" : "eventMeeting"}
+      >
+        <span className = "spanTitle">
+          {event.title}
+          <br />
+          <span  className={event.type === "Session" ? "spanSession" : "spanMeeting"}>
+            {timeNow(event.start)} -{" "}
+            {timeNow(moment(event.end).add(moment.duration(-1, "hours")))}
+          </span>
+        </span>
+      </div>
+    );
+  };
+  function timeNow(timestart) {
+    return new Date(timestart).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
 
   return (
     <Container fluid className="conCalendar conPages">
@@ -49,10 +72,15 @@ export default function calendar({ results }) {
               start: moment(ev.date_from).toDate(),
               end: moment(ev.date_to).add(moment.duration(1, "hours")).toDate(),
               data: ev,
+              type: ev.event_type,
             }))}
             startAccessor="start"
             endAccessor="end"
+            components={{
+              event: EventT,
+            }}
             style={{ height: 800 }}
+            tooltipAccessor={null}
           />
         </Col>
       </Row>
