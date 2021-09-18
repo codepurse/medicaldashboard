@@ -149,7 +149,7 @@ function getMembers(id) {
   });
 }
 
-function getClinicians() {
+function getCliniciansSSR() {
   return request({
     url: appglobal.api.get_all_clinicians,
     method: "GET",
@@ -446,6 +446,7 @@ function downloadFile(data) {
 const MessageService = {
   getEvents,
   getEventsSSR,
+  getCliniciansSSR,
   createPatient,
   createInstantfamily,
   createEvent,

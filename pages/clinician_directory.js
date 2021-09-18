@@ -4,6 +4,7 @@ import Pagination from "../components/modules/pagination/pagination";
 const fetcher = (url) => instance.get(url).then((res) => res.data);
 import { Container, Row, Col } from "react-bootstrap";
 import appglobal from "../services/api/api.services";
+import MessageService from "../services/api/api.message";
 import Avatar from "@material-ui/core/Avatar";
 import Table from "react-bootstrap/Table";
 import Header from "../components/header";
@@ -14,6 +15,18 @@ import { FiEdit2 } from "react-icons/fi";
 import Modal from "react-bootstrap/Modal";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+
+export async function getServerSideProps(context) {
+  const cookieSWR = context.req.cookies["token"];
+  const dataSSR = await MessageService.getCliniciansSSR(cookieSWR).then(
+    (response) => response.data
+  );
+  return {
+    props: {
+      results: JSON.parse(JSON.stringify(dataSSR)),
+    },
+  };
+}
 
 export default function clinician() {
   const [show, setShow] = useState(false);
