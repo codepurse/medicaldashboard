@@ -1374,3 +1374,35 @@ table {
     margin-bottom: 0px;
   }
 }
+
+// calendar
+
+.conCalendar {
+  height: 100vh;
+}
+.rbc-header {
+  font-size: 15px;
+  color: $font-color-gray;
+  padding: 10px;
+  font-weight: 600;
+  height: 50px;
+  a {
+    span {
+      padding-bottom: 10px !important;
+    }
+  }
+}
+.rbc-off-range-bg {
+  background-color: #f5f8fa !important;
+}
+.rbc-today {
+  background-color: transparent !important;
+}
+
+.rbc-date-cell {
+  text-align: center;
+  font-size: 13px;
+  color: #424242;
+  margin-top: 7px;
+  position: relative;
+}

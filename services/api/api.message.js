@@ -1,6 +1,7 @@
 import request from "../../services/api/api.request";
 import appglobal from "../../services/api/api.services";
 import Cookies from "js-cookie";
+import * as cookie from "cookie";
 
 function goLogin(data) {
   return request({
@@ -10,12 +11,12 @@ function goLogin(data) {
   });
 }
 
-function getEvents(id) {
+function getEvents(id, cookieSWR) {
   return request({
     url: appglobal.api.get_events + "?clinician_id=" + `${id}`,
     method: "GET",
     headers: {
-      Authorization: "Bearer " + Cookies.get("token"),
+      Authorization: "Bearer " + cookieSWR,
       xsrfCookieName: "token",
       xsrfHeaderName: "X-XSRF-TOKEN",
       withCredentials: true,
