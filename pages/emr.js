@@ -34,21 +34,18 @@ export default function emr({ results }) {
     appglobal.api.base_api +
       appglobal.api.get_all_identified_patient +
       `?&page=${page}`,
-    fetcher,
-    {
-      fallbackData: results,
-    }
+    fetcher
   );
   const [pagecount, setPagecount] = useState(1);
-  const [patients, setPatients] = useState([]);
+  const [patients, setPatients] = useState(results);
   const router = useRouter();
   const getPage = (value) => {
     setPage(value);
   };
   useEffect(() => {
-    console.log(results);
     if (data) {
-      setPatients(data);
+      setPatients(data.data)
+      console.log(data);
       setPagecount(data.last_page);
     }
   }, [data]);
@@ -68,7 +65,7 @@ export default function emr({ results }) {
             <div className="conTable">
               <Table responsive>
                 <thead>
-                  <tr>
+                  <tr onClick={() => console.log(patients)}>
                     <th>Identified Patient</th>
                     <th>Location</th>
                     <th>Admission Date</th>
@@ -76,7 +73,7 @@ export default function emr({ results }) {
                   </tr>
                 </thead>
                 <tbody>
-                  {patients.data?.map((event, i) => (
+                  {patients?.map((event, i) => (
                     <tr
                       key={i}
                       onClick={() => {
