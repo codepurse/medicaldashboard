@@ -4,8 +4,10 @@ import { Container, Row, Col } from "react-bootstrap";
 import MessageService from "../services/api/api.message";
 import Cookies from "js-cookie";
 import moment from "moment";
+import Modal from "react-bootstrap/Modal";
 import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
 import useSWR, { mutate } from "swr";
+import ModalInfo from "../components/modal/modalInfoEvent";
 const fetcher = (url) =>
   MessageService.getEvents(Cookies.get("clinician_id")).then(
     (response) => response.data
@@ -26,6 +28,10 @@ export async function getServerSideProps(context) {
 export default function calendar({ results }) {
   const date = new Date();
   const localizer = momentLocalizer(moment);
+  const [showInfo, setShowInfo] = useState(false);
+  const [info, setInfoEvent] = useState([]);
+  const handleShowEvent = () => setShowInfo(true);
+  const handleCloseEvent = () => setShowInfo(false);
   const [myEventsList, setMyEventList] = useState(results);
   const [selectedView, setSelectedview] = useState("day");
   const [month, setMonth] = useState(
@@ -108,11 +114,11 @@ export default function calendar({ results }) {
                 {month}
                 <span> {year}</span>
               </p>
-              <i onClick = {goToBack}>
+              <i onClick={goToBack}>
                 <HiArrowNarrowLeft />
               </i>
               <i>
-                <HiArrowNarrowRight onClick = {goToNext}/>
+                <HiArrowNarrowRight onClick={goToNext} />
               </i>
             </div>
           </Col>
@@ -126,6 +132,7 @@ export default function calendar({ results }) {
                 <button
                   type="button"
                   className="btn btn-secondary btnmonth"
+                  id={selectedView === "month" ? "eventActive" : ""}
                   onClick={(e) => {
                     setSelectedview("month");
                   }}
@@ -135,6 +142,7 @@ export default function calendar({ results }) {
                 <button
                   type="button"
                   className="btn btn-secondary btnweek"
+                  id={selectedView === "week" ? "eventActive" : ""}
                   onClick={(e) => {
                     setSelectedview("week");
                   }}
@@ -144,6 +152,7 @@ export default function calendar({ results }) {
                 <button
                   type="button"
                   className="btn btn-secondary btnday"
+                  id={selectedView === "day" ? "eventActive" : ""}
                   onClick={(e) => {
                     setSelectedview("day");
                   }}
@@ -179,11 +188,23 @@ export default function calendar({ results }) {
             }}
             style={{ height: 845 }}
             tooltipAccessor={null}
-            popupOffset={{ x: 30, y: 20 }}
+            onSelectEvent={(event) => {
+              setInfoEvent(event.data)
+              console.log(event.data)
+              handleShowEvent(true)
+            }}
             view={selectedView}
           />
         </Col>
       </Row>
+      <Modal
+        centered
+        className="modalInfo"
+        show={showInfo}
+        onHide={handleCloseEvent}
+      >
+        <ModalInfo infoevent={info} />
+      </Modal>
     </Container>
   );
 }

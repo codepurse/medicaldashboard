@@ -184,9 +184,26 @@ img {
   margin-right: 10px;
 }
 
+.avatarImageEvent {
+  width: 30px !important;
+  height: 30px !important;
+}
+
 .avatarImage {
   margin-right: 10px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+}
+
+.avatarEvent {
+  width: 30px !important;
+  height: 30px !important;
+  background-color: #0952b1 !important;
+  color: white;
+  font-size: 13px !important;
+  font-weight: 500;
+  text-transform: uppercase;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
+  margin-right: 10px;
 }
 
 #Low {
@@ -1283,10 +1300,11 @@ table {
     color: #bdbdbd;
   }
   .pTitle {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 500;
     color: $font-color-black;
     margin-bottom: 0px;
+    text-transform: capitalize;
     i {
       font-size: 1.3rem;
       color: #6f51ed;
@@ -1314,6 +1332,11 @@ table {
     font-size: 14px;
     color: #6f51ed;
     margin-bottom: 8px;
+  }
+  .pParticipants {
+    font-size: 13px;
+    color: $font-color-black;
+    margin-top: 10px;
   }
   .rowCreate {
     padding-top: 10px;
@@ -1452,7 +1475,7 @@ table {
 }
 
 .conToolbar {
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   padding: 0px !important;
   .form-inline {
     p {
@@ -1501,7 +1524,13 @@ table {
 
       &:focus {
         box-shadow: none !important;
+        background-color: transparent !important;
+        color: $font-color-black !important;
       }
+    }
+    #eventActive {
+      font-weight: 600 !important;
+      color: $font-color-blue !important;
     }
   }
 }

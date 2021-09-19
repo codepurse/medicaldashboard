@@ -59,13 +59,43 @@ export default function modalInfo(props) {
             </i>
             Participants
           </p>
-          <p className="pEventInfo">
-            {props.infoevent.events_participants?.map((event, i) => (
-              <label key={i}>
-                {event.clinicians.first_name} {event.clinicians.last_name}
-              </label>
-            ))}
-          </p>
+
+          {(() => {
+            try {
+              return (
+                <>
+                  {props.infoevent.events_participants?.map((event, i) => (
+                    <div
+                      className="form-inline"
+                      key={i}
+                      style={{ marginLeft: "28px",marginTop: "-10px" }}
+                    >
+                      {event.clinicians.photo ? (
+                        <Avatar
+                          className="avatarImageEvent avatar"
+                          alt="Remy Sharp"
+                          src={appglobal.api.aws + event.clinicians.photo}
+                        />
+                      ) : (
+                        <Avatar className="avatarEvent">
+                          {event.clinicians.first_name.charAt(0) +
+                            event.clinicians.last_name.charAt(0)}
+                        </Avatar>
+                      )}
+                      <div>
+                        <p className="pParticipants">
+                          {event.clinicians.first_name}{" "}
+                          {event.clinicians.last_name}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              );
+            } catch (error) {
+              console.log(error);
+            }
+          })()}
         </Col>
       </Row>
       <Row>

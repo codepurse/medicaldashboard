@@ -16,7 +16,7 @@ import { useAppointmentStore } from "../../../store/store";
 import Modal from "react-bootstrap/Modal";
 import Modaldelete from "../../../components/modal/deleteModal";
 import ModalAppointment from "../../../components/pages/dashboard/modalAppointment";
-import ModalInfo from "../../../components/pages/dashboard/modalInfoEvent";
+import ModalInfo from "../../../components/modal/modalInfoEvent";
 const fetcher = (url) =>
   MessageService.getEvents(Cookies.get("clinician_id")).then(
     (response) => response.data
