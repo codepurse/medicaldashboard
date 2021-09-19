@@ -2,7 +2,7 @@ import Header from "../../../components/header";
 import React, { Component, useState, useEffect, useRef } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Table from "react-bootstrap/Table";
-import useSWR , {mutate} from "swr";
+import useSWR, { mutate } from "swr";
 import axios from "axios";
 import moment from "moment";
 import Cookies from "js-cookie";
@@ -13,6 +13,7 @@ import { GoSearch, GoPlus } from "react-icons/go";
 import { searchTable, searchPota } from "../../../utils/dashboardSearch";
 import { permission } from "../../../utils/validation";
 import { useAppointmentStore } from "../../../store/store";
+import Avatar from "@material-ui/core/Avatar";
 import Modal from "react-bootstrap/Modal";
 import Modaldelete from "../../../components/modal/deleteModal";
 import ModalAppointment from "../../../components/pages/dashboard/modalAppointment";
@@ -139,54 +140,41 @@ export default function appointment() {
                                   return (
                                     <>
                                       <div className="form-inline">
-                                        {event.events_participants[0]
-                                          .clinicians !== null &&
-                                        event.events_participants[0].clinicians
+                                        {event.events_participants[0].clinicians
                                           .photo ? (
-                                          <img
+                                          <Avatar
+                                            className="avatarImage"
                                             src={
-                                              "https://resurface-s3.s3.ap-southeast-1.amazonaws.com/" +
+                                              appglobal.api.aws +
                                               event.events_participants[0]
                                                 .clinicians.photo
                                             }
-                                            className="imgProfile"
-                                          ></img>
+                                          />
                                         ) : (
-                                          <p className="profileImage">
-                                            {event.events_participants[0]
-                                              .clinicians !== null &&
-                                              event.events_participants[0].clinicians.first_name.charAt(
-                                                0
-                                              )}{" "}
-                                            {event.events_participants[0]
-                                              .clinicians !== null &&
+                                          <Avatar className="avatar">
+                                            {event.events_participants[0].clinicians.first_name.charAt(
+                                              0
+                                            ) +
                                               event.events_participants[0].clinicians.last_name.charAt(
                                                 0
                                               )}
-                                          </p>
+                                          </Avatar>
                                         )}
                                         <div>
-                                          <p className="pNamelist">
-                                            {event.events_participants[0]
-                                              .clinicians !== null &&
-                                              event.events_participants[0]
-                                                .clinicians.first_name}{" "}
-                                            {event.events_participants[0]
-                                              .clinicians !== null &&
-                                              event.events_participants[0]
-                                                .clinicians.last_name}
-                                          </p>
                                           <p>
                                             {event.events_participants[0]
-                                              .clinicians !== null &&
+                                              .clinicians.first_name +
+                                              " " +
                                               event.events_participants[0]
-                                                .clinicians.email}
+                                                .clinicians.last_name}
                                           </p>
                                         </div>
                                       </div>
                                     </>
                                   );
-                                } catch (error) {}
+                                } catch (error) {
+                                  console.log(error)
+                                }
                               })()}
                             </div>
                           </td>
