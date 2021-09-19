@@ -1415,6 +1415,12 @@ table {
   text-transform: capitalize !important;
 }
 
+.rbc-show-more {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  padding-bottom: 10px !important;
+}
+
 .spanSession {
   color: #7659d3 !important;
   font-size: 13px !important;
@@ -1429,18 +1435,73 @@ table {
 
 .spanTitle {
   color: #262e4a !important;
-  font-size: 15px !important;
+  font-size: 14px !important;
   font-weight: 500 !important;
 }
 
 .eventSession {
   background-color: #f2f1ff !important;
   border-left: 2px solid #676dff !important;
-  padding: 10px;
+  padding-left: 10px;
 }
 
 .eventMeeting {
   background-color: #e9f4f5 !important;
   border-left: 2px solid #4ca6a8 !important;
-  padding: 10px;
+  padding-left: 10px;
+}
+
+.conToolbar {
+  margin-bottom: 5px;
+  padding: 0px !important;
+  .form-inline {
+    p {
+      font-size: 22px;
+      font-weight: 600;
+      margin-right: 7px;
+      margin-bottom: 0px;
+      span {
+        margin-left: 3px;
+        font-weight: 400 !important;
+      }
+    }
+    i {
+      margin-right: 10px;
+      cursor: pointer;
+      &:hover {
+        color: $font-color-blue;
+      }
+    }
+  }
+
+  .btn-group {
+    border: 1px solid #e0e0e0;
+    border-radius: 5px;
+    margin-top: -2px;
+    outline: none !important;
+
+    &:focus {
+      box-shadow: none !important;
+    }
+
+    button {
+      background-color: transparent;
+      font-size: 14px;
+      font-family: "Inter";
+      color: $font-color-gray;
+      padding: 8px;
+      width: 100px;
+      border: 0px;
+      outline: none !important;
+
+      &:hover {
+        color: $font-color-blue;
+        background-color: $bg-color-hover-white;
+      }
+
+      &:focus {
+        box-shadow: none !important;
+      }
+    }
+  }
 }

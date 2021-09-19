@@ -4,6 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import MessageService from "../services/api/api.message";
 import Cookies from "js-cookie";
 import moment from "moment";
+import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
 import useSWR, { mutate } from "swr";
 const fetcher = (url) =>
   MessageService.getEvents(Cookies.get("clinician_id")).then(
@@ -23,8 +24,14 @@ export async function getServerSideProps(context) {
 }
 
 export default function calendar({ results }) {
+  const date = new Date();
   const localizer = momentLocalizer(moment);
   const [myEventsList, setMyEventList] = useState(results);
+  const [selectedView, setSelectedview] = useState("day");
+  const [month, setMonth] = useState(
+    date.toLocaleString("default", { month: "long" })
+  );
+  const [year, setYear] = useState(date.getFullYear());
   const { data, error } = useSWR("Appointment", fetcher, {
     fallbackData: results,
   });
@@ -40,18 +47,24 @@ export default function calendar({ results }) {
 
   const EventT = ({ event }) => {
     return (
-      <div
-        className={event.type === "Session" ? "eventSession" : "eventMeeting"}
-      >
-        <span className = "spanTitle">
-          {event.title}
-          <br />
-          <span  className={event.type === "Session" ? "spanSession" : "spanMeeting"}>
-            {timeNow(event.start)} -{" "}
-            {timeNow(moment(event.end).add(moment.duration(-1, "hours")))}
+      <span>
+        <div
+          className={event.type === "Session" ? "eventSession" : "eventMeeting"}
+        >
+          <span className="spanTitle">
+            {event.title}
+            <br />
+            <span
+              className={
+                event.type === "Session" ? "spanSession" : "spanMeeting"
+              }
+            >
+              {timeNow(event.start)} -{" "}
+              {timeNow(moment(event.end).add(moment.duration(-1, "hours")))}
+            </span>
           </span>
-        </span>
-      </div>
+        </div>
+      </span>
     );
   };
   function timeNow(timestart) {
@@ -59,6 +72,90 @@ export default function calendar({ results }) {
       hour: "2-digit",
       minute: "2-digit",
     });
+  }
+
+  function customToolbar(toolbar) {
+    const goToBack = () => {
+      let mDate = toolbar.date;
+      let newDate;
+      newDate = new Date(mDate.getFullYear(), mDate.getMonth() - 1, 1);
+      setMonth(moment(newDate).format("MMMM"));
+      if (month == "January") {
+        setYear(year - 1);
+      }
+
+      toolbar.onNavigate("prev", newDate);
+    };
+
+    const goToNext = () => {
+      let mDate = toolbar.date;
+      let newDate;
+      newDate = new Date(mDate.getFullYear(), mDate.getMonth() + 1, 1);
+      setMonth(moment(newDate).format("MMMM"));
+      if (month == "December") {
+        setYear(year + 1);
+      }
+
+      toolbar.onNavigate("next", newDate);
+    };
+
+    return (
+      <Container fluid className="conToolbar">
+        <Row className="align-items-center">
+          <Col lg={6}>
+            <div className="form-inline">
+              <p>
+                {month}
+                <span> {year}</span>
+              </p>
+              <i onClick = {goToBack}>
+                <HiArrowNarrowLeft />
+              </i>
+              <i>
+                <HiArrowNarrowRight onClick = {goToNext}/>
+              </i>
+            </div>
+          </Col>
+          <Col lg={6}>
+            <div className="float-right">
+              <div
+                className="btn-group"
+                role="group"
+                aria-label="Basic example"
+              >
+                <button
+                  type="button"
+                  className="btn btn-secondary btnmonth"
+                  onClick={(e) => {
+                    setSelectedview("month");
+                  }}
+                >
+                  Month
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary btnweek"
+                  onClick={(e) => {
+                    setSelectedview("week");
+                  }}
+                >
+                  Week
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-secondary btnday"
+                  onClick={(e) => {
+                    setSelectedview("day");
+                  }}
+                >
+                  Day
+                </button>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    );
   }
 
   return (
@@ -77,10 +174,13 @@ export default function calendar({ results }) {
             startAccessor="start"
             endAccessor="end"
             components={{
+              toolbar: customToolbar,
               event: EventT,
             }}
-            style={{ height: 800 }}
+            style={{ height: 845 }}
             tooltipAccessor={null}
+            popupOffset={{ x: 30, y: 20 }}
+            view={selectedView}
           />
         </Col>
       </Row>
