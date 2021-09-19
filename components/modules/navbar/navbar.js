@@ -8,6 +8,7 @@ import MessageService from "../../../services/api/api.message";
 import useSWR from "swr";
 import moment from "moment";
 import { MdClose } from "react-icons/md";
+import Avatar from "@material-ui/core/Avatar";
 import Cookies from "js-cookie";
 const fetcher = (url) =>
   MessageService.getNotif(Cookies.get("clinician_id")).then(
@@ -19,20 +20,25 @@ export default function navbar() {
   const [showEvents, setShowEvents] = useState(true);
   const [showMessages, setShowMessages] = useState(false);
   const { data, error } = useSWR("Notification", fetcher);
+  const [photo, setPhoto] = useState();
   const [count, setCount] = useState();
   useEffect(() => {
     try {
       setCount(data.length);
     } catch (error) {}
   }, [data]);
+
+  useEffect(() => {
+    console.log(people[0]);
+    setPhoto(people[0].user.photo);
+  }, []);
   return (
     <Container fluid className="conNavbar">
       <Row>
-        <Col lg={3}>
+        <Col lg={3} sm={3} md={3} sx={0}>
           <img src="/Image/black.webp" className="img-fluid imgLogoNav" />
         </Col>
-        <Col lg={6} md={6}></Col>
-        <Col lg={3} md={3}>
+        <Col lg={9} md={9} sm={9} xs={12}>
           <div>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic-button">
@@ -53,10 +59,22 @@ export default function navbar() {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-            <Image fluid src="" width={35} id="imgProfile" />
+            {photo ? (
+              <Avatar
+                className="imgProfile"
+                id="imgProfile"
+                src={appglobal.api.aws + photo}
+              />
+            ) : (
+              <Avatar className="avatar" id="imgProfile">
+                {people[0].user.full_name.charAt(0)}
+              </Avatar>
+            )}
             <div className="divHorizontal"></div>
             <div className="divBell" onClick={() => setShow((prev) => !prev)}>
-              <div className={count ? "numberCircle" : "d-none"}>{data ? data.length : ""}</div>
+              <div className={count ? "numberCircle" : "d-none"}>
+                {data ? data.length : ""}
+              </div>
               <i>
                 <RiNotification3Line />
               </i>
@@ -65,10 +83,10 @@ export default function navbar() {
                 onClick={(e) => e.stopPropagation()}
               >
                 <Row className="align-items-center">
-                  <Col lg={8}>
+                  <Col lg={8} md={6} sm={8} xs={8}>
                     <p className="pHeader">Notifications</p>
                   </Col>
-                  <Col lg={4}>
+                  <Col lg={4} md={6} sm={4} xs={4}>
                     <i onClick={() => setShow(false)}>
                       <MdClose />
                     </i>
@@ -106,14 +124,14 @@ export default function navbar() {
                   <Col lg={12}>
                     {data?.map((event, i) => (
                       <Row key={i} className="rowEvents">
-                        <Col lg={7}>
+                        <Col lg={7} md={7} sm={6} xs={6}>
                           <p className="pEventname">{event.subject}</p>
                           <p className="pTime">
                             {moment(event.date_from).format("hh:mm a")} -{" "}
                             {moment(event.date_to).format("hh:mm a")}
                           </p>
                         </Col>
-                        <Col lg={5}>
+                        <Col lg={5} md={5} sm={6} xs={6}>
                           <p className="pType">{event.event_type}</p>
                         </Col>
                       </Row>

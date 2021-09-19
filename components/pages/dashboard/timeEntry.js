@@ -44,7 +44,7 @@ export default function appointment() {
         <Row>
           <Col lg={12} className="p-3 ">
             <Row>
-              <Col lg={4}>
+              <Col lg={4} md={9} sm={8} xs={10}>
                 <br />
                 <div className="input-group mb-3">
                   <div className="input-group-prepend">
@@ -67,7 +67,7 @@ export default function appointment() {
                   />
                 </div>
               </Col>
-              <Col lg={8} className="align-self-center">
+              <Col lg={8} md={3} sm={4} xs={2} className="align-self-center">
                 <button
                   className="btnBlue float-right "
                   onClick={() => {
@@ -77,12 +77,12 @@ export default function appointment() {
                   <i>
                     <GoPlus />
                   </i>
-                  New Time Entry
+                  <span> New Time Entry</span>
                 </button>
               </Col>
             </Row>
-            <div className="conTable">
-              <Table responsive>
+            <div className="conTable" id="no-more-tables">
+              <Table className="table-condensed cf">
                 <thead>
                   <tr>
                     <th>Date</th>
@@ -96,7 +96,7 @@ export default function appointment() {
                   {timeentry
                     ? timeentry.map((event, i) => (
                         <tr key={i}>
-                          <td>
+                          <td data-title="Date">
                             <p className="pDate">
                               {moment(event.date_from).format("MMMM do, YYYY")}
                             </p>
@@ -104,18 +104,18 @@ export default function appointment() {
                               {moment(event.date_from).format("dddd")}
                             </p>
                           </td>
-                          <td>
+                          <td data-title="Clients">
                             <p>
                               {event.clients.first_name}{" "}
                               {event.clients.last_name}
                             </p>
                           </td>
-                          <td>
+                          <td data-title="Activity Type">
                             <p className={timeType(event.activity_type)}>
                               {event.activity_type}
                             </p>
                           </td>
-                          <td>
+                          <td data-title="Duration">
                             <p>{converter(event.date_from, event.date_to)}</p>
                           </td>
                           <td>

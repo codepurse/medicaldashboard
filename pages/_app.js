@@ -1,5 +1,6 @@
 import "../styles/_globals.scss";
 import "../styles/sidebar.scss";
+import "../styles/mediaQuery.scss";
 import Layout from "../components/layout/layout";
 import MessageService from "../services/api/api.message";
 import NextNprogress from "nextjs-progressbar";

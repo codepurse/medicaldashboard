@@ -68,9 +68,9 @@ export default function Login() {
     <>
       <Header></Header>
       <Container fluid className="conLogin">
-        <img src="Image/Logo-white.png" className="img-fluid" />
+        <img src="Image/Logo-white.png" className="img-fluid imgLogoNav" />
         <Row className="align-items-center rowLogin">
-          <Col lg={6} className="colVideo">
+          <Col lg={6} md = {4} className="colVideo">
             <div className="bgOverlay align-items-center">
               <div className="childOverlay mx-auto">
                 <p className="pOverlayHeader">
@@ -90,7 +90,7 @@ export default function Login() {
               ></source>
             </video>
           </Col>
-          <Col lg={6}>
+          <Col lg={6} md = {8}>
             <div className="divLogin mx-auto">
               <p className="pHeader">Log in.</p>
               <p className="pHeadersub">

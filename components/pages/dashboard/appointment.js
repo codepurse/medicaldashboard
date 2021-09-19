@@ -47,9 +47,9 @@ export default function appointment() {
     <>
       <Container fluid className="conAppointment p-0">
         <Row>
-          <Col lg={12} className="p-3 ">
+          <Col lg={12} className="p-3">
             <Row>
-              <Col lg={4}>
+              <Col lg={4} md={9} sm={8} xs={10}>
                 <br />
                 <div className="input-group mb-3">
                   <div className="input-group-prepend">
@@ -72,7 +72,7 @@ export default function appointment() {
                   />
                 </div>
               </Col>
-              <Col lg={8} className="align-self-center">
+              <Col lg={8} md={3} sm={4} xs={2} className="align-self-center">
                 <button
                   className="btnBlue float-right "
                   onClick={() => {
@@ -83,13 +83,13 @@ export default function appointment() {
                   <i>
                     <GoPlus />
                   </i>
-                  New Event
+                  <span> New Event</span>
                 </button>
               </Col>
             </Row>
-            <div className="conTable">
-              <Table responsive>
-                <thead>
+            <div className="conTable" id="no-more-tables">
+              <Table className="table-condensed cf">
+                <thead class="cf">
                   <tr>
                     <th>Start</th>
                     <th>End</th>
@@ -109,7 +109,7 @@ export default function appointment() {
                             setShowInfo(true);
                           }}
                         >
-                          <td>
+                          <td data-title="Start">
                             <p className="pDate">
                               {moment(event.date_from).format("lll")}
                             </p>
@@ -117,7 +117,7 @@ export default function appointment() {
                               {moment(event.date_from).format("dddd")}
                             </p>
                           </td>
-                          <td>
+                          <td data-title="End">
                             <p className="pDate">
                               {moment(event.date_to).format("lll")}
                             </p>
@@ -125,15 +125,15 @@ export default function appointment() {
                               {moment(event.date_to).format("dddd")}
                             </p>
                           </td>
-                          <td>
+                          <td data-title="Event Name">
                             <p className="pEtype">{event.subject}</p>
                           </td>
-                          <td>
+                          <td data-title="Event Type">
                             <p className={permission(event.event_type)}>
                               {event.event_type}
                             </p>
                           </td>
-                          <td>
+                          <td data-title="Participants">
                             <div className="form-inline">
                               {(() => {
                                 try {
@@ -173,7 +173,7 @@ export default function appointment() {
                                     </>
                                   );
                                 } catch (error) {
-                                  console.log(error)
+                                  console.log(error);
                                 }
                               })()}
                             </div>

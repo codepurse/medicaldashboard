@@ -13,6 +13,8 @@ $font-color-gray: rgb(78, 81, 103);
 $font-color-white: #e0e0e0;
 $font-color-red: #fc4444;
 
+
+
 html,
 body {
   position: relative;
@@ -302,7 +304,7 @@ img {
 }
 
 .conPages {
-  padding-left: 250px !important;
+  padding-left: 250px;
   padding-top: 90px;
   padding-right: 25px !important;
   margin-bottom: 40px !important;
@@ -799,10 +801,14 @@ table {
       }
     }
     .conNotif {
-      position: absolute;
+      position: fixed;
+      top: 55px;
       background-color: white;
-      width: 300px;
-      margin-left: -40px;
+      width: max-content;
+      max-height: 400px;
+      right: 0px;
+      overflow-y: auto;
+      height: max-content;
       border-radius: 5px;
       margin-top: 15px;
       padding-top: 15px;
@@ -940,12 +946,13 @@ table {
         display: flex;
         align-items: center;
         position: relative;
+        padding: 15px;
         .childOverlay {
           max-width: 500px;
           .pOverlayHeader {
             color: white;
             font-weight: 600;
-            font-size: 2.5rem;
+            font-size: 2.2vw;
             margin-bottom: 0px;
             line-height: 1.2em;
           }
