@@ -1,10 +1,20 @@
-@media only screen and (min-width: 801px) {
+@media only screen and (min-width: 1201px) {
+  .divHamburger {
+    display: none !important;
+  }
   .conPages {
     padding-left: 250px !important;
   }
 }
 
-
+@media only screen and (max-width: 1200px) {
+  .divSidebar {
+    display: none !important;
+  }
+  .conPages {
+    padding-left: 20px !important;
+  }
+}
 
 @media only screen and (max-width: 570px) {
   .imgLogoNav,
@@ -13,10 +23,22 @@
   .dropdown-basic-button {
     display: none !important;
   }
+  .divPagination {
+    float: none !important;
+    div {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      -ms-transform: translateX(-50%) translateY(-50%);
+      -webkit-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+    }
+  }
 }
 
 @media only screen and (max-width: 574px) {
-  .btnBlue {
+  .btnBlue,
+  .btnFilter {
     margin-top: 2px !important;
     span {
       font-size: 0px !important;
@@ -28,7 +50,7 @@
 }
 
 @media only screen and (max-width: 800px) {
-  .divSidebar, .colVideo {
+  .colVideo {
     display: none;
   }
   #no-more-tables table,

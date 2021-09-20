@@ -70,7 +70,7 @@ export default function emrSearch(props) {
   return (
     <>
       <Header />
-      <Col lg={5}>
+      <Col lg={5} md={6} sm={9} xs = {10}>
         {(() => {
           if (tab === "location") {
             return (
@@ -101,7 +101,7 @@ export default function emrSearch(props) {
                     <i>
                       <HiOutlineFilter />
                     </i>
-                    Filter
+                   <span> Filter</span>
                   </button>
                   <div className="dropdown-menu">
                     <a className="dropdown-item" href="#">
@@ -133,11 +133,12 @@ export default function emrSearch(props) {
                             Cookies.get("clinician_id"),
                             e.currentTarget.value
                           ).then((res) => props.getdata(res))
-                        : pathUrl ===
-                          "emr" ? searchEmr(
+                        : pathUrl === "emr"
+                        ? searchEmr(
                             Cookies.get("clinician_id"),
                             e.currentTarget.value
-                          ).then((res) => props.getdata(res)) : ""
+                          ).then((res) => props.getdata(res))
+                        : "";
                     }
                   }}
                 />
@@ -146,13 +147,13 @@ export default function emrSearch(props) {
           }
         })()}
       </Col>
-      <Col lg={7}>
+      <Col lg={7} md={6} sm={3} xs = {2}>
         <div className="float-right">
           <button className="btnBlue" onClick={handleShow}>
             <i>
               <GoPlus />
             </i>
-            {buttonName}
+            <span>{buttonName}</span>
           </button>
         </div>
       </Col>

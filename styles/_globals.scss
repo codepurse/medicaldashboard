@@ -13,8 +13,6 @@ $font-color-gray: rgb(78, 81, 103);
 $font-color-white: #e0e0e0;
 $font-color-red: #fc4444;
 
-
-
 html,
 body {
   position: relative;
@@ -184,6 +182,10 @@ img {
   text-transform: uppercase;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px !important;
   margin-right: 10px;
+}
+
+.divPagination {
+  float: right;
 }
 
 .avatarImageEvent {
@@ -556,6 +558,8 @@ img {
   box-shadow: 0 0 30px rgb(28 39 60 / 8%);
   border: 1px solid rgba(28, 39, 60, 0.12);
   padding: 15px 0px !important;
+  max-height: 60px;
+  min-height: 60px;
 }
 
 .conLayout {
@@ -705,6 +709,9 @@ table {
   box-shadow: 0 0 30px rgb(28 39 60 / 8%);
   border-bottom: 1px solid rgba(28, 39, 60, 0.12);
   z-index: 3;
+  .divHamburger {
+    margin-top: 10px;
+  }
   .imgLogoNav {
     width: 180px;
     margin-top: 20px;
@@ -806,7 +813,7 @@ table {
       background-color: white;
       width: max-content;
       max-height: 400px;
-      right: 0px;
+      right: 10px;
       overflow-y: auto;
       height: max-content;
       border-radius: 5px;

@@ -63,7 +63,7 @@ export default function emr({ results }) {
           <Search getdata={setData} />
           <Col lg={12}>
             <div className="conTable">
-              <Table responsive>
+              <Table id="no-more-tables">
                 <thead>
                   <tr onClick={() => console.log(patients)}>
                     <th>Identified Patient</th>
@@ -82,7 +82,7 @@ export default function emr({ results }) {
                         setId(event.id);
                       }}
                     >
-                      <td>
+                      <td data-title = "Identifiend Patient">
                         <div className="form-inline">
                           {event.photo ? (
                             <Avatar
@@ -105,7 +105,7 @@ export default function emr({ results }) {
                           </div>
                         </div>
                       </td>
-                      <td>
+                      <td data-title  = "Location">
                         {(() => {
                           try {
                             return <p>{event.families.location.name}</p>;
@@ -114,13 +114,13 @@ export default function emr({ results }) {
                           }
                         })()}
                       </td>
-                      <td>
+                      <td data-title = "Admission Date">
                         <p>{moment(event.created_at).format("LL")}</p>
                         <p className="pDay">
                           {moment(event.admission_date).format("dddd")}
                         </p>
                       </td>
-                      <td>
+                      <td data-title = "Status">
                         <p className={statusType(event.status)}>
                           {event.status == 1 ? "Active" : "Discharged"}
                         </p>

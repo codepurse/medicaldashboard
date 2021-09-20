@@ -6,6 +6,7 @@ import { RiNotification3Line } from "react-icons/ri";
 import { useSettingStore } from "../../../store/store";
 import MessageService from "../../../services/api/api.message";
 import useSWR from "swr";
+import Hamburger from "hamburger-react";
 import moment from "moment";
 import { MdClose } from "react-icons/md";
 import Avatar from "@material-ui/core/Avatar";
@@ -17,6 +18,7 @@ const fetcher = (url) =>
 export default function navbar() {
   const people = useSettingStore((state) => state.people);
   const [show, setShow] = useState(false);
+  const [isOpen, setOpen] = useState(false);
   const [showEvents, setShowEvents] = useState(true);
   const [showMessages, setShowMessages] = useState(false);
   const { data, error } = useSWR("Notification", fetcher);
@@ -35,10 +37,15 @@ export default function navbar() {
   return (
     <Container fluid className="conNavbar">
       <Row>
-        <Col lg={3} sm={3} md={3} sx={0}>
-          <img src="/Image/black.webp" className="img-fluid imgLogoNav" />
+        <Col lg={6} sm={3} md={6} sm = {3} xs={3}>
+          <div className="form-inline">
+            <div className="divHamburger">
+              <Hamburger toggled={isOpen} toggle={setOpen} size={20} />
+            </div>
+            <img src="/Image/black.webp" className="img-fluid imgLogoNav" />
+          </div>
         </Col>
-        <Col lg={9} md={9} sm={9} xs={12}>
+        <Col lg={6} md={6} sm={9} xs={9}>
           <div>
             <Dropdown>
               <Dropdown.Toggle variant="success" id="dropdown-basic-button">

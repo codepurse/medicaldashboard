@@ -28,7 +28,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function clinician({results}) {
+export default function clinician({ results }) {
   const [show, setShow] = useState(false);
   const router = useRouter();
   const handleClose = () => {
@@ -53,7 +53,7 @@ export default function clinician({results}) {
 
   useEffect(() => {
     if (data) {
-      console.log(data)
+      console.log(data);
       setClinician(data.data);
       setPageCount(data.last_page);
     }
@@ -79,7 +79,7 @@ export default function clinician({results}) {
           <Search getdata={setData} url={url} />
           <Col lg={12}>
             <div className="conTable">
-              <Table responsive>
+              <Table id="no-more-tables">
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -100,7 +100,7 @@ export default function clinician({results}) {
                         setAction(true);
                       }}
                     >
-                      <td>
+                      <td data-title = "Name">
                         <div className="form-inline">
                           {event.photo ? (
                             <Avatar
@@ -119,7 +119,7 @@ export default function clinician({results}) {
                           </div>
                         </div>
                       </td>
-                      <td>
+                      <td data-title = "Mobile">
                         {(() => {
                           try {
                             return (
@@ -135,7 +135,7 @@ export default function clinician({results}) {
                           }
                         })()}
                       </td>
-                      <td>
+                      <td data-title = "Email">
                         {(() => {
                           try {
                             return (
@@ -146,7 +146,7 @@ export default function clinician({results}) {
                           }
                         })()}
                       </td>
-                      <td>
+                      <td data-title = "Permission">
                         {(() => {
                           try {
                             return (
@@ -167,7 +167,7 @@ export default function clinician({results}) {
                           }
                         })()}
                       </td>
-                      <td>
+                      <td data-title = "Status">
                         {(() => {
                           try {
                             return (
