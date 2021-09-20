@@ -18,14 +18,21 @@ import Modal from "react-bootstrap/Modal";
 import Modaldelete from "../../../components/modal/deleteModal";
 import ModalAppointment from "../../../components/pages/dashboard/modalAppointment";
 import ModalInfo from "../../../components/modal/modalInfoEvent";
+import { useRouter } from "next/router";
+
 const fetcher = (url) =>
   MessageService.getEvents(Cookies.get("clinician_id")).then(
     (response) => response.data
   );
 export default function appointment() {
+  const router = useRouter();
   const setInfo = useAppointmentStore((state) => state.addInfo);
   const setAction = useAppointmentStore((state) => state.addAction);
-  const { data, error } = useSWR("Appointment", fetcher);
+  const [search, setSearch] = useState(null);
+  const { data, error } = useSWR(!search ? "Appointment" : null, fetcher, {
+    refreshInterval: 1000,
+  });
+  console.log(error);
   const [appointment, setAppointment] = useState([]);
   const [id, setId] = useState("");
   const [show, setShow] = useState(false);
@@ -48,7 +55,7 @@ export default function appointment() {
       <Container fluid className="conAppointment p-0">
         <Row>
           <Col lg={12} className="p-3">
-            <Row>
+            <Row className={router.pathname !== "/dashboard" ? "d-none" : ""}>
               <Col lg={4} md={9} sm={8} xs={10}>
                 <br />
                 <div className="input-group mb-3">
@@ -64,6 +71,7 @@ export default function appointment() {
                     className="form-control txtInput"
                     placeholder="Search events.."
                     onChange={(e) => {
+                      setSearch(e.currentTarget.value);
                       searchPota(
                         Cookies.get("clinician_id"),
                         e.currentTarget.value
@@ -96,7 +104,11 @@ export default function appointment() {
                     <th>Event Name</th>
                     <th>Event Type</th>
                     <th>Participants</th>
-                    <th></th>
+                    <th
+                      className={
+                        router.pathname !== "/dashboard" ? "d-none" : ""
+                      }
+                    ></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -178,7 +190,11 @@ export default function appointment() {
                               })()}
                             </div>
                           </td>
-                          <td>
+                          <td
+                            className={
+                              router.pathname !== "/dashboard" ? "d-none" : ""
+                            }
+                          >
                             <i
                               onClick={(e) => {
                                 e.stopPropagation();

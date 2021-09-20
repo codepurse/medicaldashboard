@@ -1,35 +1,12 @@
 import { statusType, instance, riskcategory } from "../../utils/validation";
 import React, { Component, useState, useEffect, useRef } from "react";
-import Forms from "../../components/pages/Emr/forms/form.js";
-import Formpatient from "../../components/pages/Emr/formPatient";
-import MembersInfo from "../../components/pages/Emr/memberInfo";
-import Notes from "../../components/pages/Emr/notes/notes.js";
 import AddClinician from "../../components/pages/clinician/addClinician";
-import MessageService from "../../services/api/api.message";
 import appglobal from "../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
-import Avatar from "@material-ui/core/Avatar";
-import { TiArrowBack } from "react-icons/ti";
-import { RiEdit2Fill } from "react-icons/ri";
-import Modal from "react-bootstrap/Modal";
+import Appointment from "../../components/pages/dashboard/appointment";
+import EventCalendar from "../../components/modules/calendar/calendar";
 import { useRouter } from "next/router";
-import { GoPlus } from "react-icons/go";
 import useSWR, { mutate } from "swr";
-import Select from "react-select";
-import Cookies from "js-cookie";
-import moment from "moment";
-import axios from "axios";
-import {
-  useMemberInfoStore,
-  useSnackStore,
-  useModalStore,
-  usePatientStore,
-} from "../../store/store";
-import {
-  customStyles,
-  customStyles_error,
-  options_relationship,
-} from "../../utils/global";
 const fetcher = (url) => instance.get(url).then((res) => res.data.data);
 
 export default function clinician() {
@@ -51,6 +28,10 @@ export default function clinician() {
     }
   }, [data]);
 
+  useEffect(() => {
+    console.log(router.query.tabs);
+  }, [router]);
+
   return (
     <>
       <Container fluid className="conPages conDashboard">
@@ -62,31 +43,25 @@ export default function clinician() {
             <p className="pHeadersub">Please fill up all required fields.</p>
             <ul className="ulDashboard">
               <li
-                className={showDemo ? "activeUl" : ""}
+                className={tab === "demo" ? "activeUl" : ""}
                 onClick={() => {
-                  setShowDemo(true);
-                  setShowEvent(false);
-                  setShowTime(false);
+                  router.push(`${clinicianId}?tabs=demo`);
                 }}
               >
                 Demographics
               </li>
               <li
-                className={showEvent ? "activeUl" : ""}
+                className={tab === "event" ? "activeUl" : ""}
                 onClick={() => {
-                  setShowDemo(false);
-                  setShowEvent(true);
-                  setShowTime(false);
+                  router.push(`${clinicianId}?tabs=event`);
                 }}
               >
                 Event Calendar
               </li>
               <li
-                className={showTime ? "activeUl" : ""}
+                className={tab === "time" ? "activeUl" : ""}
                 onClick={() => {
-                  setShowDemo(false);
-                  setShowEvent(false);
-                  setShowTime(true);
+                  router.push(`${clinicianId}?tabs=time`);
                 }}
               >
                 Time Reports
@@ -95,8 +70,14 @@ export default function clinician() {
           </Col>
         </Row>
         {(() => {
-          if (clinicianInfo) {
-            return <AddClinician action={Action} infoClinician={clinicianInfo} />;
+          if (tab === "demo") {
+            return (
+              <AddClinician action={Action} infoClinician={clinicianInfo} />
+            );
+          } else if (tab === "event") {
+            return <EventCalendar id={clinicianInfo.id} user="clinician" />;
+          } else if (tab === "time") {
+            return <Appointment />;
           }
         })()}
       </Container>

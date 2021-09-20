@@ -95,12 +95,12 @@ export default function clinician({ results }) {
                     <tr
                       key={i}
                       onClick={() => {
-                        router.push(`/clinician/${event.user_id}?tabs=demo`);
-                        console.log(event);
+                        setInfo(event);
                         setAction(true);
+                        handleShow();
                       }}
                     >
-                      <td data-title = "Name">
+                      <td data-title="Name">
                         <div className="form-inline">
                           {event.photo ? (
                             <Avatar
@@ -119,7 +119,7 @@ export default function clinician({ results }) {
                           </div>
                         </div>
                       </td>
-                      <td data-title = "Mobile">
+                      <td data-title="Mobile">
                         {(() => {
                           try {
                             return (
@@ -135,7 +135,7 @@ export default function clinician({ results }) {
                           }
                         })()}
                       </td>
-                      <td data-title = "Email">
+                      <td data-title="Email">
                         {(() => {
                           try {
                             return (
@@ -146,7 +146,7 @@ export default function clinician({ results }) {
                           }
                         })()}
                       </td>
-                      <td data-title = "Permission">
+                      <td data-title="Permission">
                         {(() => {
                           try {
                             return (
@@ -167,7 +167,7 @@ export default function clinician({ results }) {
                           }
                         })()}
                       </td>
-                      <td data-title = "Status">
+                      <td data-title="Status">
                         {(() => {
                           try {
                             return (
@@ -199,6 +199,11 @@ export default function clinician({ results }) {
                           onClick={(e) => {
                             e.stopPropagation();
                             setInfo(event);
+                            router.push(
+                              `/clinician/${event.user_id}?tabs=demo`
+                            );
+                            console.log(event);
+                            setAction(true);
                           }}
                         >
                           <FiEdit2 />

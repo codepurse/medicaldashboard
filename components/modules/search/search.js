@@ -54,12 +54,6 @@ export default function emrSearch(props) {
   const filterLocation = (id) => {
     MessageService.filterLocation(1, 15, id)
       .then((response) => {
-        setOptionsBusiness(
-          response.data.map((event) => ({
-            value: event.id,
-            label: event.business_name,
-          }))
-        );
         props.locationFilter(response.data);
       })
       .catch((error) => {
