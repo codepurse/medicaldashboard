@@ -165,6 +165,29 @@ img {
   width: max-content;
 }
 
+.dropdownFilter {
+  .dropdown-menu {
+    width: 300px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px !important;
+  }
+  .pTitle {
+    font-size: 15px !important;
+    font-weight: 500;
+  }
+  .pClear {
+    color: #0952b1;
+    font-weight: 500;
+    font-size: 14px;
+    text-align: right;
+    cursor: pointer;
+  }
+  .form-check-label {
+    font-size: 500;
+    color: $font-color-gray;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}
 .pMeeting,
 .pClinician {
   color: #6f51ed !important;

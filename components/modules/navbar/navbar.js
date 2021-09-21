@@ -72,7 +72,7 @@ export default function navbar() {
             </Dropdown>
             {photo ? (
               <Avatar
-                className="imgProfile"
+                className="avatar"
                 id="imgProfile"
                 src={appglobal.api.aws + photo}
               />

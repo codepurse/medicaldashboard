@@ -9,7 +9,7 @@ import { useMemberInfoStore } from "../store/store";
 import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Table from "react-bootstrap/Table";
-
+import Header from "../components/header";
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import moment from "moment";
@@ -44,7 +44,7 @@ export default function emr({ results }) {
   };
   useEffect(() => {
     if (data) {
-      setPatients(data.data)
+      setPatients(data.data);
       console.log(data);
       setPagecount(data.last_page);
     }
@@ -58,6 +58,7 @@ export default function emr({ results }) {
 
   return (
     <>
+      <Header />
       <Container fluid className="conDashboard conPages">
         <Row>
           <Search getdata={setData} />
@@ -82,7 +83,7 @@ export default function emr({ results }) {
                         setId(event.id);
                       }}
                     >
-                      <td data-title = "Identifiend Patient">
+                      <td data-title="Identifiend Patient">
                         <div className="form-inline">
                           {event.photo ? (
                             <Avatar
@@ -105,7 +106,7 @@ export default function emr({ results }) {
                           </div>
                         </div>
                       </td>
-                      <td data-title  = "Location">
+                      <td data-title="Location">
                         {(() => {
                           try {
                             return <p>{event.families.location.name}</p>;
@@ -114,13 +115,13 @@ export default function emr({ results }) {
                           }
                         })()}
                       </td>
-                      <td data-title = "Admission Date">
+                      <td data-title="Admission Date">
                         <p>{moment(event.created_at).format("LL")}</p>
                         <p className="pDay">
                           {moment(event.admission_date).format("dddd")}
                         </p>
                       </td>
-                      <td data-title = "Status">
+                      <td data-title="Status">
                         <p className={statusType(event.status)}>
                           {event.status == 1 ? "Active" : "Discharged"}
                         </p>

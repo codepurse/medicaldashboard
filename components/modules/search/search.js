@@ -14,9 +14,15 @@ import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 import Select from "react-select";
 import { useBussinessStore } from "../../../store/store";
-import { customStyles } from "../../../utils/global";
+import { customStyles, renderInput } from "../../../utils/global";
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
+import EmrFilter from "../../../components/modules/search/emrFIlter";
+import Grid from "@material-ui/core/Grid";
 
 export default function emrSearch(props) {
+  const dateToday = new Date();
+  const [datefrom, setDatefrom] = React.useState(dateToday);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -60,11 +66,12 @@ export default function emrSearch(props) {
         console.log(error);
       });
   };
+;
 
   return (
     <>
       <Header />
-      <Col lg={5} md={6} sm={9} xs = {10}>
+      <Col lg={5} md={6} sm={9} xs={10}>
         {(() => {
           if (tab === "location") {
             return (
@@ -95,22 +102,13 @@ export default function emrSearch(props) {
                     <i>
                       <HiOutlineFilter />
                     </i>
-                   <span> Filter</span>
+                    <span> Filter</span>
                   </button>
-                  <div className="dropdown-menu">
-                    <a className="dropdown-item" href="#">
-                      Action
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      Another action
-                    </a>
-                    <a className="dropdown-item" href="#">
-                      Something else here
-                    </a>
-                    <div role="separator" className="dropdown-divider" />
-                    <a className="dropdown-item" href="#">
-                      Separated link
-                    </a>
+                  <div
+                    className="dropdown-menu"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <EmrFilter/>
                   </div>
                 </div>
                 <input
@@ -141,7 +139,7 @@ export default function emrSearch(props) {
           }
         })()}
       </Col>
-      <Col lg={7} md={6} sm={3} xs = {2}>
+      <Col lg={7} md={6} sm={3} xs={2}>
         <div className="float-right">
           <button className="btnBlue" onClick={handleShow}>
             <i>
