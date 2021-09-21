@@ -11,11 +11,13 @@ import moment from "moment";
 import { MdClose } from "react-icons/md";
 import Avatar from "@material-ui/core/Avatar";
 import Cookies from "js-cookie";
+import { useRouter } from "next/router";
 const fetcher = (url) =>
   MessageService.getNotif(Cookies.get("clinician_id")).then(
     (response) => response.data
   );
 export default function navbar() {
+  const router = useRouter();
   const people = useSettingStore((state) => state.people);
   const [show, setShow] = useState(false);
   const [isOpen, setOpen] = useState(false);
@@ -37,7 +39,7 @@ export default function navbar() {
   return (
     <Container fluid className="conNavbar">
       <Row>
-        <Col lg={6} sm={3} md={6} sm = {3} xs={3}>
+        <Col lg={6} sm={3} md={6} sm={3} xs={3}>
           <div className="form-inline">
             <div className="divHamburger">
               <Hamburger toggled={isOpen} toggle={setOpen} size={20} />
@@ -54,7 +56,9 @@ export default function navbar() {
                 <span className="pRole">{people[0].user.roles[0]}</span>
               </Dropdown.Toggle>
               <Dropdown.Menu>
-                <Dropdown.Item>My profile</Dropdown.Item>
+                <Dropdown.Item onClick={() => router.push("/profile")}>
+                  My profile
+                </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item
                   onClick={() => {

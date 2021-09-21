@@ -318,7 +318,10 @@ function getProfile(id) {
     url: appglobal.api.get_profile + id,
     method: "GET",
     headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
     },
   });
 }

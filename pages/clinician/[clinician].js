@@ -72,7 +72,7 @@ export default function clinician() {
         {(() => {
           if (tab === "demo") {
             return (
-              <AddClinician action={Action} infoClinician={clinicianInfo} />
+              <AddClinician action={Action} infoClinician={clinicianInfo} urlInfo = "clinician" />
             );
           } else if (tab === "event") {
             return <EventCalendar id={clinicianInfo.id} user="clinician" />;

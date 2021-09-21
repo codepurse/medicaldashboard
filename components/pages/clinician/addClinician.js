@@ -5,7 +5,8 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import { useSnackStore } from "../../../store/store";
 import MessageService from "../../../services/api/api.message";
 import { v4 as uuidv4 } from "uuid";
-import Select from "react-select";
+import appglobal from "../../../services/api/api.services";
+import Select, { components } from "react-select";
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import {
@@ -115,6 +116,11 @@ export default function addClinician(props) {
     });
   }, []);
 
+  const Input = (props) => {
+    const { autoComplete = props.autoComplete } = props.selectProps;
+    return <components.Input {...props} autoComplete={autoComplete} />;
+  };
+
   useEffect(() => {
     if (props.infoClinician) {
       setFname(props.infoClinician.first_name);
@@ -122,12 +128,14 @@ export default function addClinician(props) {
       setMname(props.infoClinician.middle_name);
       setEmail(props.infoClinician.user.email);
       setType(capitalizeFirstLetter(props.infoClinician.user.roles[0].name));
+      const data_location = [];
       for (let i = 0; i < props.infoClinician.clinician_location.length; i++) {
-        location.push({
+        data_location.push({
           value: props.infoClinician.clinician_location[i].location.id,
           label: props.infoClinician.clinician_location[i].location.name,
         });
       }
+      setLocation(data_location)
       const data_number = [];
       for (var i = 0; i < props.infoClinician.phones.length; i++) {
         data_number.push({
@@ -138,6 +146,7 @@ export default function addClinician(props) {
       }
       setInputFields(data_number);
       setUserId(props.infoClinician.user_id);
+      setProfilepic(props.infoClinician.photo);
       console.log(props.infoClinician.clinician_location);
     }
   }, [props]);
@@ -205,12 +214,20 @@ export default function addClinician(props) {
       MessageService.createClinicians(formData, action, userId)
         .then((response) => {
           console.log(response);
-          setSnackMessage("Clinician added succesfully.");
+          if (props.urlInfo === "clinician") {
+            setSnackMessage("Clinician added succesfully.");
+          } else {
+            setSnackMessage("Profile succesfully saved.");
+          }
           setSnack(true);
           setSnackStyle(true);
           mutate(appglobal.api.base_api + appglobal.api.get_all_clinician);
           if (action) {
-            router.push("/clinician_directory");
+            if (props.urlInfo === "clinician") {
+              router.push("/clinician_directory");
+            } else {
+              router.push("/dashboard");
+            }
           } else {
             props.closeModal();
           }
@@ -253,7 +270,11 @@ export default function addClinician(props) {
             className="d-none"
           />
           <img
-            src={profilepic ? profilepic : "/Image/userprofile.png"}
+            src={
+              profilepic
+                ? appglobal.api.aws + profilepic
+                : "/Image/userprofile.png"
+            }
             className="imgProfile img-fluid"
           ></img>
         </Col>
@@ -387,11 +408,8 @@ export default function addClinician(props) {
                   onChange={(event) =>
                     handleChangeInputselect(inputField.id, event)
                   }
-                  inputProps={{
-                    autoComplete: "nope",
-                    autoCorrect: "off",
-                    spellCheck: "off",
-                  }}
+                  components={{ Input }}
+                  autoComplete="new-password"
                 />
               </Col>
               <Col lg={2} className="align-self-end">
@@ -427,6 +445,7 @@ export default function addClinician(props) {
             onChange={(e) => {
               setPassword(e.currentTarget.value);
             }}
+            autoComplete="new-password"
           />
         </Col>
         <Col lg={6}>
@@ -438,6 +457,7 @@ export default function addClinician(props) {
             onChange={(e) => {
               setConfirmpass(e.currentTarget.value);
             }}
+            autoComplete="new-password"
           />
         </Col>
       </Row>
@@ -448,7 +468,11 @@ export default function addClinician(props) {
               className="btnCancel"
               onClick={() => {
                 if (props.action) {
-                  router.push("/clinician_directory");
+                  if (props.urlInfo === "clinician") {
+                    router.push("/clinician_directory");
+                  } else {
+                    router.push("/dashboard");
+                  }
                 } else {
                   props.closeModal();
                 }

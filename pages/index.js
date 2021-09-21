@@ -50,6 +50,7 @@ export default function Login() {
         .then((response) => {
           Cookies.set("token", response.data.token);
           Cookies.set("clinician_id", response.data.user.clinician_id);
+          Cookies.set("user_id", response.data.user.id);
           setInfo(response.data);
           router.push("/dashboard");
         })
