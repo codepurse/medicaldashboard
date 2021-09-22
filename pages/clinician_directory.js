@@ -1,34 +1,22 @@
+import ViewClinician from "../components/pages/clinician/modalViewClinician";
 import { instance, clinicianType, statusType } from "../utils/validation";
-import React, { useState, useEffect } from "react";
 import Pagination from "../components/modules/pagination/pagination";
 const fetcher = (url) => instance.get(url).then((res) => res.data);
+import MessageService from "../services/api/api.message";
+import Search from "../components/modules/search/search";
 import { Container, Row, Col } from "react-bootstrap";
 import appglobal from "../services/api/api.services";
-import MessageService from "../services/api/api.message";
+import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Table from "react-bootstrap/Table";
 import Header from "../components/header";
-import ViewClinician from "../components/pages/clinician/modalViewClinician";
-import Search from "../components/modules/search/search";
-import { GrView } from "react-icons/gr";
-import { FiEdit2 } from "react-icons/fi";
 import Modal from "react-bootstrap/Modal";
+import { FiEdit2 } from "react-icons/fi";
+import { GrView } from "react-icons/gr";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 
-export async function getServerSideProps(context) {
-  const cookieSWR = context.req.cookies["token"];
-  const dataSSR = await MessageService.getCliniciansSSR(cookieSWR).then(
-    (response) => response.data
-  );
-  return {
-    props: {
-      results: JSON.parse(JSON.stringify(dataSSR)),
-    },
-  };
-}
-
-export default function clinician({ results }) {
+export default function clinician() {
   const [show, setShow] = useState(false);
   const router = useRouter();
   const handleClose = () => {
@@ -42,7 +30,7 @@ export default function clinician({ results }) {
   const { data, error } = useSWR(url, fetcher);
 
   const handleShow = () => setShow(true);
-  const [clinician, setClinician] = useState(results);
+  const [clinician, setClinician] = useState([]);
   const [pagecount, setPageCount] = useState();
   const [info, setInfo] = useState([]);
   const [action, setAction] = useState();

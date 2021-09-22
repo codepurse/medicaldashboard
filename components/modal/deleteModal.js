@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Modal from "react-bootstrap/Modal";
-import { AiOutlineDelete } from "react-icons/ai";
 import MessageService from "../../services/api/api.message";
+import { Container, Row, Col } from "react-bootstrap";
+import { AiOutlineDelete } from "react-icons/ai";
+import Modal from "react-bootstrap/Modal";
 import useSWR, { mutate } from "swr";
 
 export default function modal(props) {

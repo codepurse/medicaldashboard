@@ -1,18 +1,12 @@
-import { datePickerDefaultProps } from "@material-ui/pickers/constants/prop-types";
-import React, { useState, useEffect, useCallback } from "react";
 import { MdIndeterminateCheckBox } from "react-icons/md";
-import { FiClock } from "react-icons/fi";
-import { BsBookmarks } from "react-icons/bs";
-import { GoLocation } from "react-icons/go";
+import { Container, Row, Col } from "react-bootstrap";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import Avatar from "@material-ui/core/Avatar";
-import { Container, Row, Col } from "react-bootstrap";
-import Modal from "react-bootstrap/Modal";
-
+import { BsBookmarks } from "react-icons/bs";
+import { GoLocation } from "react-icons/go";
+import { FiClock } from "react-icons/fi";
+import React from "react";
 export default function modalInfo(props) {
-  useEffect(() => {
-    console.log(props);
-  }, [props]);
   return (
     <Container className="conInfoEvent">
       <Row>
@@ -68,7 +62,7 @@ export default function modalInfo(props) {
                     <div
                       className="form-inline"
                       key={i}
-                      style={{ marginLeft: "28px",marginTop: "-10px" }}
+                      style={{ marginLeft: "28px", marginTop: "-10px" }}
                     >
                       {event.clinicians.photo ? (
                         <Avatar

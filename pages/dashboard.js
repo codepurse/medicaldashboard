@@ -1,11 +1,13 @@
-import Header from "../components/header";
 import React, { Component, useState, useEffect, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { useRouter } from "next/router";
-import { useSettingStore } from "../store/store";
-import useSWR from "swr";
 import Appointment from "../components/pages/dashboard/appointment";
 import TimeEntry from "../components/pages/dashboard/timeEntry";
+import { Container, Row, Col } from "react-bootstrap";
+import { useSettingStore } from "../store/store";
+import Header from "../components/header";
+import { useRouter } from "next/router";
+import useSWR from "swr";
+
+
 
 export default function dashboard() {
   const people = useSettingStore((state) => state.people);

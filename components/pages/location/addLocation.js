@@ -1,3 +1,5 @@
+import { useBussinessStore, useSnackStore } from "../../../store/store";
+import { customStyles, customStyles_error } from "../../../utils/global";
 import MessageService from "../../../services/api/api.message";
 import appglobal from "../../../services/api/api.services";
 import timezones from "../../../services/timzone.json";
@@ -5,11 +7,9 @@ import { Container, Row, Col } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import Select from "react-select";
+import Cookies from "js-cookie";
 import moment from "moment";
 import axios from "axios";
-import { useBussinessStore, useSnackStore } from "../../../store/store";
-import Cookies from "js-cookie";
-import { customStyles, customStyles_error } from "../../../utils/global";
 
 export default function addLocation(props) {
   const setSnack = useSnackStore((state) => state.changeState);

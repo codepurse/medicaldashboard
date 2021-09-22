@@ -1,8 +1,8 @@
 import React, { Component, useState, useEffect, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Search from "../components/modules/search/search";
 import Location from "../components/pages/location/location";
 import Business from "../components/pages/location/business";
+import Search from "../components/modules/search/search";
+import { Container, Row, Col } from "react-bootstrap";
 import { useRouter } from "next/router";
 
 export default function location() {
@@ -27,12 +27,10 @@ export default function location() {
     }
   }, [router]);
 
-  useEffect(() => {
-
-  }, [filterLocation])
+  useEffect(() => {}, [filterLocation]);
 
   function putFilterLocation(e) {
-   setFilterLocation(e)
+    setFilterLocation(e);
   }
 
   return (
@@ -46,7 +44,7 @@ export default function location() {
                 id="ulAppointment"
                 onClick={() => {
                   router.replace("/location?tabs=location");
-                  setFilterLocation(null)
+                  setFilterLocation(null);
                 }}
               >
                 Location
@@ -62,13 +60,13 @@ export default function location() {
               </li>
             </ul>
           </Col>
-          <Search  locationFilter = {putFilterLocation} />
+          <Search locationFilter={putFilterLocation} />
         </Row>
         <Row>
           <Col lg={12}>
             {(() => {
               if (showLocation) {
-                return <Location filterlocation = {filterLocation}/>;
+                return <Location filterlocation={filterLocation} />;
               } else {
                 return <Business />;
               }

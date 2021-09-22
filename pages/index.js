@@ -1,10 +1,10 @@
-import Header from "../components/header";
 import React, { Component, useState, useEffect, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import { useRouter } from "next/router";
-import MessageService from "../services/api/api.message";
-import { isEmail } from "../utils/validation";
 import { useSettingStore, useSnackStore } from "../store/store";
+import MessageService from "../services/api/api.message";
+import { Container, Row, Col } from "react-bootstrap";
+import { isEmail } from "../utils/validation";
+import Header from "../components/header";
+import { useRouter } from "next/router";
 import Cookies from "js-cookie";
 
 export default function Login() {

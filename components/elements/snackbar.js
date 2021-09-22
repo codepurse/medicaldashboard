@@ -1,17 +1,15 @@
-import { useSnackStore, useModalStore } from "../../store/store";
-import React, { useState } from "react";
-import Snackbar from "@material-ui/core/Snackbar";
+import { IoIosCheckmarkCircle } from "react-icons/io";
 import { SnackbarContent } from "@material-ui/core";
+import Snackbar from "@material-ui/core/Snackbar";
+import { useSnackStore} from "../../store/store";
 import { MdError } from "react-icons/md";
-import {IoIosCheckmarkCircle} from "react-icons/io";
+import React from "react";
 
 export default function withSnackbar() {
-  const [open, setOpen] = React.useState(true);
   const stateAction = useSnackStore((state) => state.state);
   const setSnack = useSnackStore((state) => state.changeState);
   const message = useSnackStore((state) => state.Message);
   const styles = useSnackStore((state) => state.style);
-  const mess = useModalStore((state) => state.show);
   const styleError = {
     backgroundColor: "#FDF1F1",
     border: "1px solid #E53E3E",
@@ -39,7 +37,7 @@ export default function withSnackbar() {
         style={styles ? styleSuccess : styleError}
         message={
           <span className={styles ? "pSnack" : "pSnackError"}>
-            <i>{styles ? <IoIosCheckmarkCircle/> : <MdError/>}</i>
+            <i>{styles ? <IoIosCheckmarkCircle /> : <MdError />}</i>
             {message}
           </span>
         }

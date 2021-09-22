@@ -1,7 +1,6 @@
-import axios from "axios";
 import appglobal from "../services/api/api.services";
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 let call;
 let result;
@@ -101,9 +100,7 @@ export const searchLocation = async (query) => {
   var config = {
     method: "get",
     url:
-      appglobal.api.base_api +
-      appglobal.api.get_all_location +
-      `?&q=${query}`,
+      appglobal.api.base_api + appglobal.api.get_all_location + `?&q=${query}`,
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: "Bearer " + Cookies.get("token"),

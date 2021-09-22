@@ -1,29 +1,21 @@
-import { searchClinician, searchEmr } from "../../../utils/dashboardSearch";
+import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
+import { useBussinessStore, useFilterEmrStore } from "../../../store/store";
+import { customStyles, renderInput } from "../../../utils/global";
 import { Container, Row, Col } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
-import { HiOutlineFilter } from "react-icons/hi";
-import ModalAddPatient from "../../../components/pages/Emr/addPatient";
-import Header from "../../../components/header";
-import ModalAddClinician from "../../../components/pages/clinician/addClinician";
-import ModalAddLocation from "../../../components/pages/location/addLocation";
-import ModalAddBusiness from "../../../components/pages/location/addBusiness";
-import Modal from "react-bootstrap/Modal";
-import { GoPlus } from "react-icons/go";
-import MessageService from "../../../services/api/api.message";
-import { useRouter } from "next/router";
-import Cookies from "js-cookie";
-import Select from "react-select";
-import { useBussinessStore } from "../../../store/store";
-import { customStyles, renderInput } from "../../../utils/global";
 import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import Grid from "@material-ui/core/Grid";
+import { useRouter } from "next/router";
+import Select from "react-select";
+import moment from "moment";
 
 export default function emfFilter() {
   const router = useRouter();
   const tab = router.asPath.split("=").pop();
   const dateToday = new Date();
   const [datefrom, setDatefrom] = React.useState(dateToday);
+  const addFilter = useFilterEmrStore((state) => state.addFilter);
+  const emrFilter = useFilterEmrStore((state) => state.filter);
   const bussInfo = useBussinessStore((state) => state.business);
   const [optionsBusiness, setOptionsBusiness] = useState([]);
   useEffect(() => {
@@ -36,6 +28,52 @@ export default function emfFilter() {
   }, [router]);
   const startChange = (date) => {
     setDatefrom(date);
+    const check = (obj) => obj.label === "date";
+    if (!emrFilter.some(check)) {
+      addFilter([
+        ...emrFilter,
+        { label: "date", value: moment(date).format("YYYY-MM-DD") },
+      ]);
+    } else {
+      addFilter(
+        emrFilter.map((el) =>
+          el.label === "date"
+            ? { ...el, label: "date", value: moment(date).format("YYYY-MM-DD") }
+            : el
+        )
+      );
+    }
+  };
+
+  function goActive(e) {
+    if (e.target.checked == true) {
+      addFilter([...emrFilter, { label: "status", value: "1" }]);
+    } else {
+      addFilter(emrFilter.filter((item) => item.value !== "1"));
+    }
+  }
+
+  function goDischarge(e) {
+    if (e.target.checked == true) {
+      addFilter([...emrFilter, { label: "status", value: "0" }]);
+    } else {
+      addFilter(emrFilter.filter((item) => item.value !== "0"));
+    }
+  }
+
+  function goLocation(e) {
+    const check = (obj) => obj.label === "location";
+    if (!emrFilter.some(check)) {
+      addFilter([...emrFilter, { label: "location", value: e.value }]);
+    } else {
+      addFilter(
+        emrFilter.map((el) =>
+          el.label === "location"
+            ? { ...el, label: "location", value: e.value }
+            : el
+        )
+      );
+    }
   }
 
   return (
@@ -57,6 +95,7 @@ export default function emfFilter() {
                 options={optionsBusiness}
                 instanceId="2"
                 placeholder="Select location"
+                onChange={goLocation}
               />
             </Col>
             <Col lg={12} style={{ marginTop: "10px" }}>
@@ -82,6 +121,7 @@ export default function emfFilter() {
                   type="checkbox"
                   defaultValue
                   id="check1"
+                  onChange={goActive}
                 />
                 <label className="form-check-label" htmlFor="check1">
                   Active
@@ -95,6 +135,7 @@ export default function emfFilter() {
                   type="checkbox"
                   defaultValue
                   id="check2"
+                  onChange={goDischarge}
                 />
                 <label className="form-check-label" htmlFor="check2">
                   Discharge

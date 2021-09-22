@@ -1,15 +1,15 @@
+import ModalAddLocation from "../../../components/pages/location/addLocation";
 import React, { Component, useState, useEffect, useRef } from "react";
-import Table from "react-bootstrap/Table";
-import useSWR, { mutate } from "swr";
-import { statusType } from "../../../utils/validation";
+import Modaldelete from "../../../components/modal/deleteModal";
 import MessageService from "../../../services/api/api.message";
+import { statusType } from "../../../utils/validation";
+import { useSnackStore } from "../../../store/store";
 import { AiOutlineDelete } from "react-icons/ai";
+import Table from "react-bootstrap/Table";
+import Modal from "react-bootstrap/Modal";
 import { FiEdit2 } from "react-icons/fi";
 import { useRouter } from "next/router";
-import Modal from "react-bootstrap/Modal";
-import ModalAddLocation from "../../../components/pages/location/addLocation";
-import { useSnackStore } from "../../../store/store";
-import Modaldelete from "../../../components/modal/deleteModal";
+import useSWR, { mutate } from "swr";
 const fetcher = (url) =>
   MessageService.getLocation(1).then((response) => response.data);
 export default function locationTable(props) {
@@ -30,13 +30,15 @@ export default function locationTable(props) {
   useEffect(() => {
     console.log(tab);
     setLocation(data);
-  }, [data, tab]);
+  }, [data, tab, router]);
 
   useEffect(() => {
-    console.log(props);
-    if (props.filterlocation) {
-      setLocation(props.filterlocation);
-    }
+    try {
+      if (props.filterlocation.length !== 0) {
+        console.log("filterlocation", props.filterlocation.length);
+        setLocation(props.filterlocation);
+      }
+    } catch (error) {}
   }, [props]);
 
   function goDelete() {
@@ -64,7 +66,12 @@ export default function locationTable(props) {
   }
 
   return (
-    <div className="conTable">
+    <div
+      className="conTable"
+      onClick={() => {
+        console.log(location);
+      }}
+    >
       <Table responsive>
         <thead>
           <tr>

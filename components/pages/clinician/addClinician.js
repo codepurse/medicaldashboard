@@ -1,14 +1,15 @@
-import { Container, Row, Col } from "react-bootstrap";
+import MessageService from "../../../services/api/api.message";
+import appglobal from "../../../services/api/api.services";
 import React, { useState, useEffect, useRef } from "react";
-import { AiOutlineDelete } from "react-icons/ai";
+import { Container, Row, Col } from "react-bootstrap";
 import { IoMdAddCircleOutline } from "react-icons/io";
 import { useSnackStore } from "../../../store/store";
-import MessageService from "../../../services/api/api.message";
-import { v4 as uuidv4 } from "uuid";
-import appglobal from "../../../services/api/api.services";
 import Select, { components } from "react-select";
+import { AiOutlineDelete } from "react-icons/ai";
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
+import { v4 as uuidv4 } from "uuid";
+
 import {
   customStyles,
   customStyles_error,
@@ -135,7 +136,7 @@ export default function addClinician(props) {
           label: props.infoClinician.clinician_location[i].location.name,
         });
       }
-      setLocation(data_location)
+      setLocation(data_location);
       const data_number = [];
       for (var i = 0; i < props.infoClinician.phones.length; i++) {
         data_number.push({

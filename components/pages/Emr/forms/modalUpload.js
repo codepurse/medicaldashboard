@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Modal from "react-bootstrap/Modal";
-import { FaCloudUploadAlt } from "react-icons/fa";
 import MessageService from "../../../../services/api/api.message";
 import { useSnackStore } from "../../../../store/store";
+import { Container, Row, Col } from "react-bootstrap";
+import { FaCloudUploadAlt } from "react-icons/fa";
+import Modal from "react-bootstrap/Modal";
 import useSWR, { mutate } from "swr";
 import Cookies from "js-cookie";
 

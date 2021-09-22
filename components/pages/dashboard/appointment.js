@@ -1,24 +1,24 @@
-import Header from "../../../components/header";
+import ModalAppointment from "../../../components/pages/dashboard/modalAppointment";
+import { searchTable, searchPota } from "../../../utils/dashboardSearch";
 import React, { Component, useState, useEffect, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Table from "react-bootstrap/Table";
-import useSWR, { mutate } from "swr";
-import axios from "axios";
-import moment from "moment";
-import Cookies from "js-cookie";
+import ModalInfo from "../../../components/modal/modalInfoEvent";
+import Modaldelete from "../../../components/modal/deleteModal";
 import MessageService from "../../../services/api/api.message";
+import { useAppointmentStore } from "../../../store/store";
+import { permission } from "../../../utils/validation";
+import { Container, Row, Col } from "react-bootstrap";
+import { GoSearch, GoPlus } from "react-icons/go";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2, FiPlus } from "react-icons/fi";
-import { GoSearch, GoPlus } from "react-icons/go";
-import { searchTable, searchPota } from "../../../utils/dashboardSearch";
-import { permission } from "../../../utils/validation";
-import { useAppointmentStore } from "../../../store/store";
+import Header from "../../../components/header";
 import Avatar from "@material-ui/core/Avatar";
+import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
-import Modaldelete from "../../../components/modal/deleteModal";
-import ModalAppointment from "../../../components/pages/dashboard/modalAppointment";
-import ModalInfo from "../../../components/modal/modalInfoEvent";
 import { useRouter } from "next/router";
+import useSWR, { mutate } from "swr";
+import Cookies from "js-cookie";
+import moment from "moment";
+import axios from "axios";
 
 const fetcher = (url) =>
   MessageService.getEvents(Cookies.get("clinician_id")).then(

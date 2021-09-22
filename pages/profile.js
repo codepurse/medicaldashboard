@@ -1,11 +1,11 @@
 import { statusType, instance, riskcategory } from "../utils/validation";
 import React, { Component, useState, useEffect, useRef } from "react";
 import AddClinician from "../components/pages/clinician/addClinician";
-import appglobal from "../services/api/api.services";
-import { Container, Row, Col } from "react-bootstrap";
 import Appointment from "../components/pages/dashboard/appointment";
 import EventCalendar from "../components/modules/calendar/calendar";
 import MessageService from "../services/api/api.message";
+import { Container, Row, Col } from "react-bootstrap";
+import appglobal from "../services/api/api.services";
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import Cookies from "js-cookie";

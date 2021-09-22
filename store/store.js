@@ -61,6 +61,10 @@ let businessInfo = (set) => ({
   addBusiness: (action) => set((state) => ({ business: action })),
 });
 
+let filterEmrInfo = (set) => ({
+  filter: [],
+  addFilter: (action) => set((state) => ({ filter: action })),
+});
 
 settingStore = persist(settingStore, { name: "user_info" });
 export const useSettingStore = create(settingStore);
@@ -71,3 +75,4 @@ export const useSnackStore = create(snackInfo);
 export const useModalStore = create(modalInfo);
 export const usePatientStore = create(patientInfo);
 export const useBussinessStore = create(businessInfo);
+export const useFilterEmrStore = create(filterEmrInfo);

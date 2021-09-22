@@ -1,11 +1,11 @@
 import { statusType, instance, riskcategory } from "../utils/validation";
+import { useMemberInfoStore, useFilterEmrStore } from "../store/store";
 import Pagination from "../components/modules/pagination/pagination";
 const fetcher = (url) => instance.get(url).then((res) => res.data);
 import Search from "../components/modules/search/search";
+import MessageService from "../services/api/api.message";
 import { Container, Row, Col } from "react-bootstrap";
 import appglobal from "../services/api/api.services";
-import MessageService from "../services/api/api.message";
-import { useMemberInfoStore } from "../store/store";
 import React, { useState, useEffect } from "react";
 import Avatar from "@material-ui/core/Avatar";
 import Table from "react-bootstrap/Table";
@@ -14,21 +14,10 @@ import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import moment from "moment";
 
-export async function getServerSideProps(context) {
-  const cookieSWR = context.req.cookies["token"];
-  const dataSSR = await MessageService.getPatientsSSR(1, cookieSWR).then(
-    (response) => response.data
-  );
-  return {
-    props: {
-      results: JSON.parse(JSON.stringify(dataSSR)),
-    },
-  };
-}
-
-export default function emr({ results }) {
+export default function emr() {
   const setInfo = useMemberInfoStore((state) => state.addInfo);
   const setId = useMemberInfoStore((state) => state.addMemberId);
+  const filterEmr = useFilterEmrStore((state) => state.filter);
   const [page, setPage] = useState(1);
   const { data, error } = useSWR(
     appglobal.api.base_api +
@@ -37,7 +26,7 @@ export default function emr({ results }) {
     fetcher
   );
   const [pagecount, setPagecount] = useState(1);
-  const [patients, setPatients] = useState(results);
+  const [patients, setPatients] = useState([]);
   const router = useRouter();
   const getPage = (value) => {
     setPage(value);
@@ -55,6 +44,12 @@ export default function emr({ results }) {
       setPatients(value.data);
     } catch (error) {}
   };
+
+  useEffect(() => {
+    if (filterEmr.length !== 0) {
+      console.log(filterEmr);
+    }
+  }, [filterEmr]);
 
   return (
     <>

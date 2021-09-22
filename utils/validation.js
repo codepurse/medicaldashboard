@@ -1,7 +1,8 @@
-import React from "react";
-import moment from "moment";
-import axios from "axios";
 import Cookies from "js-cookie";
+import moment from "moment";
+import React from "react";
+import axios from "axios";
+
 
 export const isEmail = (email) => {
   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;

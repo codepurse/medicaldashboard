@@ -1,8 +1,8 @@
+import { instance, clinicianType, statusType } from "../../../utils/validation";
 import React, { useState, useEffect, useCallback } from "react";
+import appglobal from "../../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import { instance, clinicianType, statusType } from "../../../utils/validation";
-import appglobal from "../../../services/api/api.services";
 
 export default function viewClinician(props) {
   useEffect(() => {

@@ -1,24 +1,22 @@
-import { searchClinician, searchEmr } from "../../../utils/dashboardSearch";
-import { Container, Row, Col } from "react-bootstrap";
-import React, { useEffect, useState } from "react";
-import { HiOutlineFilter } from "react-icons/hi";
-import ModalAddPatient from "../../../components/pages/Emr/addPatient";
-import Header from "../../../components/header";
 import ModalAddClinician from "../../../components/pages/clinician/addClinician";
 import ModalAddLocation from "../../../components/pages/location/addLocation";
 import ModalAddBusiness from "../../../components/pages/location/addBusiness";
+import { searchClinician, searchEmr } from "../../../utils/dashboardSearch";
+import ModalAddPatient from "../../../components/pages/Emr/addPatient";
+import EmrFilter from "../../../components/modules/search/emrFIlter";
+import MessageService from "../../../services/api/api.message";
+import { useBussinessStore } from "../../../store/store";
+import { customStyles } from "../../../utils/global";
+import React, { useEffect, useState } from "react";
+import { HiOutlineFilter } from "react-icons/hi";
+import Header from "../../../components/header";
 import Modal from "react-bootstrap/Modal";
 import { GoPlus } from "react-icons/go";
-import MessageService from "../../../services/api/api.message";
 import { useRouter } from "next/router";
-import Cookies from "js-cookie";
+import { Col } from "react-bootstrap";
 import Select from "react-select";
-import { useBussinessStore } from "../../../store/store";
-import { customStyles, renderInput } from "../../../utils/global";
-import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
-import EmrFilter from "../../../components/modules/search/emrFIlter";
-import Grid from "@material-ui/core/Grid";
+import Cookies from "js-cookie";
+
 
 export default function emrSearch(props) {
   const dateToday = new Date();
@@ -66,8 +64,6 @@ export default function emrSearch(props) {
         console.log(error);
       });
   };
-;
-
   return (
     <>
       <Header />
@@ -108,7 +104,7 @@ export default function emrSearch(props) {
                     className="dropdown-menu"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <EmrFilter/>
+                    <EmrFilter />
                   </div>
                 </div>
                 <input

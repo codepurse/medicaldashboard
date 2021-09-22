@@ -1,3 +1,4 @@
+import { customStyles, customStyles_error } from "../../../utils/global";
 import MessageService from "../../../services/api/api.message";
 import appglobal from "../../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
@@ -6,7 +7,7 @@ import useSWR, { mutate } from "swr";
 import Select from "react-select";
 import moment from "moment";
 import axios from "axios";
-import { customStyles, customStyles_error } from "../../../utils/global";
+
 const fetcher = (url) =>
   MessageService.getLocationNoPage().then((response) => response.data);
 export default function addPatient(props) {

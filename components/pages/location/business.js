@@ -1,19 +1,20 @@
-import Header from "../../../components/header";
+import ModalAddBusiness from "../../../components/pages/location/addBusiness";
 import React, { Component, useState, useEffect, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Table from "react-bootstrap/Table";
-import useSWR, { mutate } from "swr";
-import moment from "moment";
-import { statusType } from "../../../utils/validation";
-import Cookies from "js-cookie";
+import Modaldelete from "../../../components/modal/deleteModal";
 import MessageService from "../../../services/api/api.message";
+import { statusType } from "../../../utils/validation";
+import { Container, Row, Col } from "react-bootstrap";
+import { useSnackStore } from "../../../store/store";
+import { GoSearch, GoPlus } from "react-icons/go";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2, FiPlus } from "react-icons/fi";
-import { GoSearch, GoPlus } from "react-icons/go";
+import Header from "../../../components/header";
+import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
-import ModalAddBusiness from "../../../components/pages/location/addBusiness";
-import { useSnackStore } from "../../../store/store";
-import Modaldelete from "../../../components/modal/deleteModal";
+import useSWR, { mutate } from "swr";
+import Cookies from "js-cookie";
+import moment from "moment";
+
 const fetcher = (url) =>
   MessageService.getBusiness(1).then((response) => response.data);
 export default function businessTable() {

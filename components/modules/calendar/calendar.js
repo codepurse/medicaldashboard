@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
+import ModalInfo from "../../../components/modal/modalInfoEvent";
 import { Calendar, momentLocalizer } from "react-big-calendar";
-import { Container, Row, Col } from "react-bootstrap";
 import MessageService from "../../../services/api/api.message";
+import { Container, Row, Col } from "react-bootstrap";
+import React, { useState, useEffect } from "react";
+import Modal from "react-bootstrap/Modal";
+import useSWR, { mutate } from "swr";
 import Cookies from "js-cookie";
 import moment from "moment";
-import Modal from "react-bootstrap/Modal";
-import { HiArrowNarrowLeft, HiArrowNarrowRight } from "react-icons/hi";
-import useSWR, { mutate } from "swr";
-import ModalInfo from "../../../components/modal/modalInfoEvent";
 
 export default function calendar(props) {
   const fetcher = (url) =>

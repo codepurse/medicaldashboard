@@ -21,6 +21,7 @@ function MyApp({ Component, pageProps }) {
   useEffect(() => {
    if (data) {
      setBuss(data);
+     console.log(data)
    }
   }, [data])
   return (

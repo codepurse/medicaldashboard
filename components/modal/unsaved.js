@@ -1,9 +1,9 @@
-import { Container, Row, Col } from "react-bootstrap";
-import React, { useState, useEffect } from "react";
-import Snackbar from "@material-ui/core/Snackbar";
 import { useModalStore, usePatientStore } from "../../store/store";
+import { Container, Row, Col } from "react-bootstrap";
 import { AiOutlineDelete } from "react-icons/ai";
 import Modal from "react-bootstrap/Modal";
+import React, {useEffect } from "react";
+
 
 export default function withSnackbar() {
   const stateShow = useModalStore((state) => state.state);

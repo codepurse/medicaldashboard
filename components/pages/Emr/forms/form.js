@@ -1,3 +1,18 @@
+import MessageService from "../../../../services/api/api.message";
+import { instance } from "../../../../utils/validation";
+import { useSnackStore } from "../../../../store/store";
+import { Container, Row, Col } from "react-bootstrap";
+import { filetype } from "../../../../utils/global";
+import { HiPhotograph } from "react-icons/hi";
+import { FiDownload } from "react-icons/fi";
+import Table from "react-bootstrap/Table";
+import Modal from "react-bootstrap/Modal";
+import { GoPlus } from "react-icons/go";
+import { GrView } from "react-icons/gr";
+import Modalupload from "./modalUpload";
+import useSWR, { mutate } from "swr";
+import moment from "moment";
+import axios from "axios";
 import React, {
   Component,
   useState,
@@ -5,21 +20,6 @@ import React, {
   useRef,
   useCallback,
 } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Table from "react-bootstrap/Table";
-import axios from "axios";
-import Modal from "react-bootstrap/Modal";
-import { GoPlus } from "react-icons/go";
-import { GrView } from "react-icons/gr";
-import { FiDownload } from "react-icons/fi";
-import moment from "moment";
-import { instance } from "../../../../utils/validation";
-import { filetype } from "../../../../utils/global";
-import { HiPhotograph } from "react-icons/hi";
-import { useSnackStore } from "../../../../store/store";
-import MessageService from "../../../../services/api/api.message";
-import useSWR, { mutate } from "swr";
-import Modalupload from "./modalUpload";
 const fetcher = (url) => instance.get(url).then((res) => res.data.data);
 function form(props) {
   const url =
@@ -45,7 +45,7 @@ function form(props) {
   function saveFile(e) {
     try {
       window.open(
-        appglobal.api.base_api + appglobal.api.download_files +e.path
+        appglobal.api.base_api + appglobal.api.download_files + e.path
       );
     } catch (error) {
       console.log(error);

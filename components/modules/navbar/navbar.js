@@ -1,17 +1,18 @@
 import React, { Component, useState, useEffect, useRef } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import Dropdown from "react-bootstrap/Dropdown";
-import Image from "react-bootstrap/Image";
-import { RiNotification3Line } from "react-icons/ri";
-import { useSettingStore } from "../../../store/store";
 import MessageService from "../../../services/api/api.message";
-import useSWR from "swr";
-import Hamburger from "hamburger-react";
-import moment from "moment";
-import { MdClose } from "react-icons/md";
+import { useSettingStore } from "../../../store/store";
+import { Container, Row, Col } from "react-bootstrap";
+import { RiNotification3Line } from "react-icons/ri";
+import Dropdown from "react-bootstrap/Dropdown";
 import Avatar from "@material-ui/core/Avatar";
-import Cookies from "js-cookie";
+import Image from "react-bootstrap/Image";
+import { MdClose } from "react-icons/md";
+import Hamburger from "hamburger-react";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import moment from "moment";
+import useSWR from "swr";
+
 const fetcher = (url) =>
   MessageService.getNotif(Cookies.get("clinician_id")).then(
     (response) => response.data
