@@ -61,7 +61,19 @@ let businessInfo = (set) => ({
   addBusiness: (action) => set((state) => ({ business: action })),
 });
 
+let locationInfo = (set) => ({
+  location: [],
+  addLocation: (action) => set((state) => ({ location: action })),
+});
+
 let filterEmrInfo = (set) => ({
+  filter: [],
+  searchQuery: "",
+  addFilter: (action) => set((state) => ({ filter: action })),
+  addQuery: (action) => set((state) => ({ searchQuery: action })),
+});
+
+let filterClinicianInfo = (set) => ({
   filter: [],
   searchQuery: "",
   addFilter: (action) => set((state) => ({ filter: action })),
@@ -77,4 +89,6 @@ export const useSnackStore = create(snackInfo);
 export const useModalStore = create(modalInfo);
 export const usePatientStore = create(patientInfo);
 export const useBussinessStore = create(businessInfo);
+export const useLocationStore = create(locationInfo);
 export const useFilterEmrStore = create(filterEmrInfo);
+export const useFilterClinicianStore = create(filterClinicianInfo);

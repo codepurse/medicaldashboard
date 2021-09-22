@@ -24,6 +24,14 @@ export default function modal(props) {
     } else if (props.type === "business") {
       props.action();
       props.closeModal();
+    } else if (props.type === "clinician") {
+      const formData = new FormData();
+      formData.append("status", "3");
+      formData.append(`user_ids[${props.id}]`, props.id);
+      MessageService.changeStatusClinician(formData).then((response) => {
+        props.closeModal();
+        mutate("TimeEntry");
+      });
     }
   };
 

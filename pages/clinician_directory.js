@@ -1,9 +1,10 @@
 import ViewClinician from "../components/pages/clinician/modalViewClinician";
+import { useMemberInfoStore, useFilterClinicianStore } from "../store/store";
 import { instance, clinicianType, statusType } from "../utils/validation";
 import Pagination from "../components/modules/pagination/pagination";
 const fetcher = (url) => instance.get(url).then((res) => res.data);
-import MessageService from "../services/api/api.message";
 import Search from "../components/modules/search/search";
+import MessageService from "../services/api/api.message";
 import { Container, Row, Col } from "react-bootstrap";
 import appglobal from "../services/api/api.services";
 import React, { useState, useEffect } from "react";
@@ -17,7 +18,10 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 
 export default function clinician() {
+  const filterClinician = useFilterClinicianStore((state) => state.filter);
+  const [filterArray, setFilterArray] = useState([]);
   const [show, setShow] = useState(false);
+  const query = useFilterClinicianStore((state) => state.searchQuery);
   const router = useRouter();
   const handleClose = () => {
     setShow(false);
@@ -34,30 +38,72 @@ export default function clinician() {
   const [pagecount, setPageCount] = useState();
   const [info, setInfo] = useState([]);
   const [action, setAction] = useState();
-  const [selectedClinician, setSelectedClinician] = useState([]);
-
-  console.log(data);
-  console.log(error);
-
   useEffect(() => {
     if (data) {
       console.log(data);
       setClinician(data.data);
-      setPageCount(data.last_page);
+      setPageCount(data.meta.last_page);
     }
-  }, [data]);
+  }, [data, router]);
 
   const getPage = (value) => {
     setPage(value);
   };
   const setData = (value) => {
     try {
-      setPageCount(value.last_page);
+      setPageCount(value.meta.last_page);
       setClinician(value.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+  function makeArray() {
+    var x = 0;
+    var y = 0;
+    var roleFilter = "";
+    var statusFilter = "";
+    var locationFilter = "";
+    for (var i = 0; i < filterClinician.length; i++) {
+      if (filterClinician[i].label == "status") {
+        statusFilter =
+          statusFilter + `status[${y}]=${filterClinician[i].value}&`;
+        y = y + 1;
+      } else if (filterClinician[i].label == "permission") {
+        roleFilter = roleFilter + `role[${x}]=${filterClinician[i].value}&`;
+        x = x + 1;
+      } else if (filterClinician[i].label == "location") {
+        locationFilter = `location[0]=${filterClinician[i].value}&`;
+      }
+    }
+    setFilterArray(roleFilter + statusFilter + locationFilter);
+  }
+
+  useEffect(() => {
+    if (filterClinician.length !== 0) {
+      makeArray();
+    } else {
+      if (data) {
+        console.log("try", filterArray);
+        setClinician(data.data);
+        setPage(data.meta.last_page);
+      }
+    }
+  }, [filterClinician]);
+
+  useEffect(() => {
+    if (filterArray.length !== 0) {
+      console.log(filterArray);
+      MessageService.getCliniciansFilter(query, filterArray)
+        .then((response) => {
+          console.log(response);
+          setClinician(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [filterArray]);
 
   return (
     <>

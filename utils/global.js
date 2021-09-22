@@ -65,6 +65,12 @@ export const options_status = [
   { value: 0, label: "Discharged" },
 ];
 
+
+export const options_status_clinician = [
+  { value: 1, label: "Active" },
+  { value: 3, label: "Discharged" },
+];
+
 export const options_race = [
   {
     value: "American Indian or Alaska Native",
@@ -322,6 +328,7 @@ export const renderInput = (props) => (
     className={props.invalid ? "txtError" : "txtInput"}
     onClick={props.onClick}
     value={props.value}
+    placeholder = "Select date"
     onChange={props.onChange}
   />
 );

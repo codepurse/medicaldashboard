@@ -1,21 +1,15 @@
-import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
-import { useLocationStore, useFilterEmrStore } from "../../../store/store";
-import { customStyles, renderInput } from "../../../utils/global";
+import {
+  useLocationStore,
+  useFilterClinicianStore,
+} from "../../../store/store";
 import { Container, Row, Col } from "react-bootstrap";
+import { customStyles } from "../../../utils/global";
 import React, { useEffect, useState } from "react";
-import DateFnsUtils from "@date-io/date-fns";
-import Grid from "@material-ui/core/Grid";
-import { useRouter } from "next/router";
 import Select from "react-select";
-import moment from "moment";
 
 export default function emfFilter() {
-  const router = useRouter();
-  const tab = router.asPath.split("=").pop();
-  const dateToday = new Date();
-  const [datefrom, setDatefrom] = React.useState(dateToday);
-  const addFilter = useFilterEmrStore((state) => state.addFilter);
-  const emrFilter = useFilterEmrStore((state) => state.filter);
+  const addFilter = useFilterClinicianStore((state) => state.addFilter);
+  const emrFilter = useFilterClinicianStore((state) => state.filter);
   const locationInfo = useLocationStore((state) => state.location);
   const [optionsLocation, setOptionsLocation] = useState([]);
   const [selectLocation, setSelectLocation] = useState([]);
@@ -29,25 +23,6 @@ export default function emfFilter() {
       );
     }
   }, [locationInfo]);
-  const startChange = (date) => {
-    setDatefrom(date);
-    const check = (obj) => obj.label === "date";
-    if (!emrFilter.some(check)) {
-      addFilter([
-        ...emrFilter,
-        { label: "date", value: moment(date).format("YYYY-MM-DD") },
-      ]);
-    } else {
-      addFilter(
-        emrFilter.map((el) =>
-          el.label === "date"
-            ? { ...el, label: "date", value: moment(date).format("YYYY-MM-DD") }
-            : el
-        )
-      );
-    }
-  };
-
   function goActive(e) {
     if (e.target.checked == true) {
       addFilter([...emrFilter, { label: "status", value: "1" }]);
@@ -58,9 +33,25 @@ export default function emfFilter() {
 
   function goDischarge(e) {
     if (e.target.checked == true) {
-      addFilter([...emrFilter, { label: "status", value: "0" }]);
+      addFilter([...emrFilter, { label: "status", value: "3" }]);
     } else {
-      addFilter(emrFilter.filter((item) => item.value !== "0"));
+      addFilter(emrFilter.filter((item) => item.value !== "3"));
+    }
+  }
+
+  function goAdmin(e) {
+    if (e.target.checked == true) {
+      addFilter([...emrFilter, { label: "permission", value: "admin" }]);
+    } else {
+      addFilter(emrFilter.filter((item) => item.value !== "admin"));
+    }
+  }
+
+  function goClinician(e) {
+    if (e.target.checked == true) {
+      addFilter([...emrFilter, { label: "permission", value: "clinician" }]);
+    } else {
+      addFilter(emrFilter.filter((item) => item.value !== "clinician"));
     }
   }
 
@@ -97,8 +88,9 @@ export default function emfFilter() {
                   addFilter([]);
                   document.getElementById("check1").checked = false;
                   document.getElementById("check2").checked = false;
+                  document.getElementById("check3").checked = false;
+                  document.getElementById("check4").checked = false;
                   setSelectLocation(null);
-                  setDatefrom(null);
                 }}
               >
                 Clear
@@ -116,23 +108,12 @@ export default function emfFilter() {
                 onChange={goLocation}
               />
             </Col>
-            <Col lg={12} style={{ marginTop: "10px" }}>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justifyContent="space-around">
-                  <DateTimePicker
-                    value={datefrom}
-                    TextFieldComponent={renderInput}
-                    onChange={startChange}
-                  />
-                </Grid>
-              </MuiPickersUtilsProvider>
-            </Col>
           </Row>
           <Row style={{ marginTop: "10px" }}>
             <Col lg={12} style={{ marginBottom: "-8px" }}>
               <p className="pHeadersub">Status</p>
             </Col>
-            <Col lg={6}>
+            <Col lg={12}>
               <div className="form-check">
                 <input
                   className="form-check-input"
@@ -146,7 +127,7 @@ export default function emfFilter() {
                 </label>
               </div>
             </Col>
-            <Col lg={6}>
+            <Col lg={12}>
               <div className="form-check">
                 <input
                   className="form-check-input"
@@ -157,6 +138,39 @@ export default function emfFilter() {
                 />
                 <label className="form-check-label" htmlFor="check2">
                   Discharge
+                </label>
+              </div>
+            </Col>
+          </Row>
+          <Row style={{ marginTop: "10px" }}>
+            <Col lg={12} style={{ marginBottom: "-8px" }}>
+              <p className="pHeadersub">Permission</p>
+            </Col>
+            <Col lg={12}>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  defaultValue
+                  id="check3"
+                  onChange={goAdmin}
+                />
+                <label className="form-check-label" htmlFor="check3">
+                  Admin
+                </label>
+              </div>
+            </Col>
+            <Col lg={12}>
+              <div className="form-check">
+                <input
+                  className="form-check-input"
+                  type="checkbox"
+                  defaultValue
+                  id="check4"
+                  onChange={goClinician}
+                />
+                <label className="form-check-label" htmlFor="check4">
+                  Clinician
                 </label>
               </div>
             </Col>

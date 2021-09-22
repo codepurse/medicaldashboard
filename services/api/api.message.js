@@ -123,7 +123,7 @@ function getPatients(page) {
   });
 }
 
-function getPatientsFilter(query,data) {
+function getPatientsFilter(query, data) {
   return request({
     url: appglobal.api.get_patient + `?search=${query}&${data}`,
     method: "GET",
@@ -175,11 +175,38 @@ function getCliniciansSSR(cookieSWR) {
   });
 }
 
+function getCliniciansFilter(query, data) {
+  return request({
+    url: appglobal.api.get_all_clinicians + `?q=${query}&${data}`,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
 function createClinicians(data, action, id) {
   return request({
     url: action
       ? appglobal.api.update_clinician + id
       : appglobal.api.add_clinician,
+    method: "POST",
+    data: data,
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function changeStatusClinician(data) {
+  return request({
+    url: appglobal.api.update_clinicians,
     method: "POST",
     data: data,
     headers: {
@@ -463,6 +490,7 @@ const MessageService = {
   getEvents,
   getEventsSSR,
   getCliniciansSSR,
+  getCliniciansFilter,
   createPatient,
   createInstantfamily,
   createEvent,
@@ -495,6 +523,7 @@ const MessageService = {
   uploadFile,
   updateLocation,
   createBusiness,
+  changeStatusClinician,
   createNotes,
 };
 

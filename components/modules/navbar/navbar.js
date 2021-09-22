@@ -34,7 +34,6 @@ export default function navbar() {
   }, [data]);
 
   useEffect(() => {
-    console.log(people[0]);
     setPhoto(people[0].user.photo);
   }, []);
   return (

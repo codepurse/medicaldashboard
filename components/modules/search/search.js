@@ -1,8 +1,8 @@
 import ModalAddClinician from "../../../components/pages/clinician/addClinician";
+import ClinicianFilter from "../../../components/modules/search/clinicianFilter";
 import ModalAddLocation from "../../../components/pages/location/addLocation";
 import ModalAddBusiness from "../../../components/pages/location/addBusiness";
 import { searchClinician, searchEmr } from "../../../utils/dashboardSearch";
-import { useBussinessStore, useFilterEmrStore } from "../../../store/store";
 import ModalAddPatient from "../../../components/pages/Emr/addPatient";
 import EmrFilter from "../../../components/modules/search/emrFIlter";
 import MessageService from "../../../services/api/api.message";
@@ -16,7 +16,11 @@ import { useRouter } from "next/router";
 import { Col } from "react-bootstrap";
 import Select from "react-select";
 import Cookies from "js-cookie";
-
+import {
+  useBussinessStore,
+  useFilterEmrStore,
+  useFilterClinicianStore,
+} from "../../../store/store";
 export default function emrSearch(props) {
   const dateToday = new Date();
   const [show, setShow] = useState(false);
@@ -29,6 +33,7 @@ export default function emrSearch(props) {
   const [buttonName, setButtonName] = useState("");
   const filterEmr = useFilterEmrStore((state) => state.filter);
   const addQuery = useFilterEmrStore((state) => state.addQuery);
+  const addQuery1 = useFilterClinicianStore((state) => state.addQuery);
   const bussInfo = useBussinessStore((state) => state.business);
   const [optionsBusiness, setOptionsBusiness] = useState([]);
   useEffect(() => {
@@ -114,7 +119,13 @@ export default function emrSearch(props) {
                     className="dropdown-menu"
                     onClick={(e) => e.stopPropagation()}
                   >
-                    <EmrFilter />
+                    {(() => {
+                      if (pathUrl === "emr") {
+                        return <EmrFilter />;
+                      } else if (pathUrl === "clinician_directory") {
+                        return <ClinicianFilter />;
+                      }
+                    })()}
                   </div>
                 </div>
                 <input
@@ -129,7 +140,10 @@ export default function emrSearch(props) {
                       ? searchClinician(
                           Cookies.get("clinician_id"),
                           e.currentTarget.value
-                        ).then((res) => props.getdata(res))
+                        ).then(
+                          (res) => props.getdata(res),
+                          addQuery1(e.currentTarget.value)
+                        )
                       : pathUrl === "emr"
                       ? searchEmr(e.currentTarget.value, filterEmr).then(
                           (res) => props.getdata(res),

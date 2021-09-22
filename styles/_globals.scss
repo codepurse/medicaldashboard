@@ -164,6 +164,10 @@ img {
   border-radius: 5px;
   width: max-content;
 }
+.btnSuspend {
+  background-color: #f94350 !important;
+  color: white !important;
+}
 
 .dropdownFilter {
   .dropdown-menu {
@@ -186,6 +190,9 @@ img {
     color: $font-color-gray;
     font-size: 14px;
     font-weight: 500;
+  }
+  .pHeadersub {
+    font-size: 14px !important;
   }
 }
 .pMeeting,
