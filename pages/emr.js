@@ -17,7 +17,9 @@ import moment from "moment";
 export default function emr() {
   const setInfo = useMemberInfoStore((state) => state.addInfo);
   const setId = useMemberInfoStore((state) => state.addMemberId);
+  const [filterArray, setFilterArray] = useState([]);
   const filterEmr = useFilterEmrStore((state) => state.filter);
+  const query = useFilterEmrStore((state) => state.searchQuery);
   const [page, setPage] = useState(1);
   const { data, error } = useSWR(
     appglobal.api.base_api +
@@ -45,11 +47,50 @@ export default function emr() {
     } catch (error) {}
   };
 
+  function makeArray() {
+    var x = 0;
+    var y = 0;
+    var dateFilter = "";
+    var statusFilter = "";
+    var locationFilter = "";
+    for (var i = 0; i < filterEmr.length; i++) {
+      if (filterEmr[i].label == "date") {
+        dateFilter = dateFilter + `admission_date[${x}]=${filterEmr[i].value}&`;
+        x = x + 1;
+      } else if (filterEmr[i].label == "status") {
+        statusFilter = statusFilter + `status[${y}]=${filterEmr[i].value}&`;
+        y = y + 1;
+      } else if (filterEmr[i].label == "location") {
+        locationFilter = `location_id=${filterEmr[i].value}&`;
+      }
+    }
+    setFilterArray(dateFilter + statusFilter + locationFilter);
+  }
+
   useEffect(() => {
     if (filterEmr.length !== 0) {
-      console.log(filterEmr);
+      makeArray();
+    } else {
+      if (data) {
+        console.log("try", filterArray);
+        setPatients(data.data);
+      }
     }
   }, [filterEmr]);
+
+  useEffect(() => {
+    if (filterArray.length !== 0) {
+      console.log(filterArray);
+      MessageService.getPatientsFilter(query, filterArray)
+        .then((response) => {
+          console.log(response);
+          setPatients(response.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }, [filterArray]);
 
   return (
     <>
@@ -59,7 +100,10 @@ export default function emr() {
           <Search getdata={setData} />
           <Col lg={12}>
             <div className="conTable">
-              <Table id="no-more-tables">
+              <Table
+                id="no-more-tables"
+                onClick={() => console.log(filterArray)}
+              >
                 <thead>
                   <tr onClick={() => console.log(patients)}>
                     <th>Identified Patient</th>

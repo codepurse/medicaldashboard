@@ -63,7 +63,9 @@ let businessInfo = (set) => ({
 
 let filterEmrInfo = (set) => ({
   filter: [],
+  searchQuery: "",
   addFilter: (action) => set((state) => ({ filter: action })),
+  addQuery: (action) => set((state) => ({ searchQuery: action })),
 });
 
 settingStore = persist(settingStore, { name: "user_info" });

@@ -18,6 +18,7 @@ export default function emfFilter() {
   const emrFilter = useFilterEmrStore((state) => state.filter);
   const bussInfo = useBussinessStore((state) => state.business);
   const [optionsBusiness, setOptionsBusiness] = useState([]);
+  const [selectLocation, setSelectLocation] = useState([]);
   useEffect(() => {
     setOptionsBusiness(
       bussInfo.map((event) => ({
@@ -25,7 +26,7 @@ export default function emfFilter() {
         label: event.business_name,
       }))
     );
-  }, [router]);
+  });
   const startChange = (date) => {
     setDatefrom(date);
     const check = (obj) => obj.label === "date";
@@ -63,6 +64,7 @@ export default function emfFilter() {
 
   function goLocation(e) {
     const check = (obj) => obj.label === "location";
+    setSelectLocation({ value: e.value, label: e.label });
     if (!emrFilter.some(check)) {
       addFilter([...emrFilter, { label: "location", value: e.value }]);
     } else {
@@ -81,11 +83,24 @@ export default function emfFilter() {
       <form>
         <Container className="divFilter">
           <Row>
-            <Col lg={6}>
-              <p className="pTitle">Filters</p>
+            <Col lg={6} md={6} sm={6} xs={6}>
+              <p className="pTitle" onClick={() => console.log(emrFilter)}>
+                Filters
+              </p>
             </Col>
-            <Col lg={6}>
-              <p className="pClear btnClear">Clear</p>
+            <Col lg={6} md={6} sm={6} xs={6}>
+              <p
+                className="pClear btnClear"
+                onClick={() => {
+                  addFilter([]);
+                  document.getElementById("check1").checked = false;
+                  document.getElementById("check2").checked = false;
+                  setSelectLocation(null);
+                  setDatefrom(null);
+                }}
+              >
+                Clear
+              </p>
             </Col>
           </Row>
           <Row>
@@ -94,6 +109,7 @@ export default function emfFilter() {
                 styles={customStyles}
                 options={optionsBusiness}
                 instanceId="2"
+                value={selectLocation}
                 placeholder="Select location"
                 onChange={goLocation}
               />

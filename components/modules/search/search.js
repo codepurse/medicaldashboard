@@ -2,10 +2,10 @@ import ModalAddClinician from "../../../components/pages/clinician/addClinician"
 import ModalAddLocation from "../../../components/pages/location/addLocation";
 import ModalAddBusiness from "../../../components/pages/location/addBusiness";
 import { searchClinician, searchEmr } from "../../../utils/dashboardSearch";
+import { useBussinessStore, useFilterEmrStore } from "../../../store/store";
 import ModalAddPatient from "../../../components/pages/Emr/addPatient";
 import EmrFilter from "../../../components/modules/search/emrFIlter";
 import MessageService from "../../../services/api/api.message";
-import { useBussinessStore } from "../../../store/store";
 import { customStyles } from "../../../utils/global";
 import React, { useEffect, useState } from "react";
 import { HiOutlineFilter } from "react-icons/hi";
@@ -17,10 +17,8 @@ import { Col } from "react-bootstrap";
 import Select from "react-select";
 import Cookies from "js-cookie";
 
-
 export default function emrSearch(props) {
   const dateToday = new Date();
-  const [datefrom, setDatefrom] = React.useState(dateToday);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -29,9 +27,10 @@ export default function emrSearch(props) {
   const urlPath = router.pathname;
   const [pathUrl, setPathUrl] = useState("");
   const [buttonName, setButtonName] = useState("");
+  const filterEmr = useFilterEmrStore((state) => state.filter);
+  const addQuery = useFilterEmrStore((state) => state.addQuery);
   const bussInfo = useBussinessStore((state) => state.business);
   const [optionsBusiness, setOptionsBusiness] = useState([]);
-  const [businessid, setBusinessId] = useState();
   useEffect(() => {
     const path = urlPath.split("/")[1];
     setPathUrl(path);
@@ -54,6 +53,17 @@ export default function emrSearch(props) {
       }))
     );
   }, [router]);
+
+  useEffect(() => {
+    if (bussInfo) {
+      setOptionsBusiness(
+        bussInfo.map((event) => ({
+          value: event.id,
+          label: event.business_name,
+        }))
+      );
+    }
+  }, [bussInfo]);
 
   const filterLocation = (id) => {
     MessageService.filterLocation(1, 15, id)
@@ -115,19 +125,17 @@ export default function emrSearch(props) {
                   placeholder="Search by first or last name.."
                   aria-label="Text input with dropdown button"
                   onChange={(e) => {
-                    {
-                      pathUrl === "clinician_directory"
-                        ? searchClinician(
-                            Cookies.get("clinician_id"),
-                            e.currentTarget.value
-                          ).then((res) => props.getdata(res))
-                        : pathUrl === "emr"
-                        ? searchEmr(
-                            Cookies.get("clinician_id"),
-                            e.currentTarget.value
-                          ).then((res) => props.getdata(res))
-                        : "";
-                    }
+                    pathUrl === "clinician_directory"
+                      ? searchClinician(
+                          Cookies.get("clinician_id"),
+                          e.currentTarget.value
+                        ).then((res) => props.getdata(res))
+                      : pathUrl === "emr"
+                      ? searchEmr(e.currentTarget.value, filterEmr).then(
+                          (res) => props.getdata(res),
+                          addQuery(e.currentTarget.value)
+                        )
+                      : "";
                   }}
                 />
               </div>

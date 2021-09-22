@@ -123,6 +123,19 @@ function getPatients(page) {
   });
 }
 
+function getPatientsFilter(query,data) {
+  return request({
+    url: appglobal.api.get_patient + `?search=${query}&${data}`,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
 function getPatientsSSR(page, cookieSSR) {
   return request({
     url: appglobal.api.get_patient + `?&page=${page}`,
@@ -474,6 +487,7 @@ const MessageService = {
   getClients,
   getMembers,
   getPatients,
+  getPatientsFilter,
   getPatientsSSR,
   getBusiness,
   getAllBusiness,
