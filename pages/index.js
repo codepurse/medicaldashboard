@@ -138,13 +138,7 @@ export default function Login() {
                 router.push("/?action=reset_password")
               }}>Forgot Password?</p>
             </div>
-            <div >
-              <p className="pHeader">Forgot Password</p>
-              <p className="pHeadersub">
-                Enter the email address associated with your account and we'll
-                send you a link to reset your password.
-              </p>
-            </div>
+          
           </Col>
         </Row>
       </Container>
