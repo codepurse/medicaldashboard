@@ -11,6 +11,14 @@ function goLogin(data) {
   });
 }
 
+function goReset(data) {
+  return request({
+    url: appglobal.api.forgot_password,
+    method: "POST",
+    data: data,
+  });
+}
+
 function getEvents(id, page) {
   return request({
     url: appglobal.api.get_events + "?clinician_id=" + `${id}&page=${page}`,
@@ -475,6 +483,7 @@ function downloadFile(data) {
 
 const MessageService = {
   getEvents,
+  goReset,
   getCliniciansSSR,
   getCliniciansFilter,
   createPatient,

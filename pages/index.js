@@ -12,6 +12,7 @@ export default function Login() {
   const setSnackMessage = useSnackStore((state) => state.changeMessage);
   const setSnackStyle = useSnackStore((state) => state.changeStyle);
   const setInfo = useSettingStore((state) => state.addInfo);
+  const [reset, setReset] = useState(false);
   const router = useRouter();
   const goHide = useRef();
   const pErroremail = useRef(0);
@@ -62,9 +63,32 @@ export default function Login() {
     }
   };
 
+  const goReset = (evt) => {
+    var clear = 0;
+    if (!state.email) {
+      setEmailerror(false);
+      clear = 1;
+    }
+    if (clear === 0) {
+      const formData = new FormData();
+      formData.append("email", state.email);
+      MessageService.goReset(formData)
+        .then((response) => {
+          setSnackMessage("The link was sent into your email.");
+          setSnack(true);
+          setSnackStyle(true);
+        })
+        .catch((error) => {
+          setSnackMessage("Sorry something went wrong.");
+          setSnack(true);
+          setSnackStyle(false);
+        });
+    }
+  };
+
   useEffect(() => {
     router.prefetch("/dashboard");
-    router.replace("/?action=login")
+    router.replace("/?action=login");
   }, []);
   return (
     <>
@@ -94,9 +118,13 @@ export default function Login() {
           </Col>
           <Col lg={6} md={8}>
             <div className="divLogin mx-auto">
-              <p className="pHeader">Log in.</p>
+              <p className="pHeader">
+                {reset ? "Forgot password." : "Log in."}
+              </p>
               <p className="pHeadersub">
-                Please input all the needed credentials.
+                {reset
+                  ? "Enter the email address associated with your account and we'll send you a link to reset your passwrod."
+                  : "Please input all the needed credentials."}
               </p>
               <p className="pHeaderinput">Email</p>
               <input
@@ -118,27 +146,40 @@ export default function Login() {
               >
                 Invalid email format.
               </p>
-              <p className="pHeaderinput">Password</p>
-              <input
-                type="password"
-                className={passwordError ? "txtInput" : "txtError"}
-                name="password"
-                onInput={(e) => {
-                  setPassworderror(true);
-                }}
-                onChange={handleChange}
-              />
+
+              <div className={reset ? "d-none" : ""}>
+                <p className="pHeaderinput">Password</p>
+                <input
+                  type="password"
+                  className={passwordError ? "txtInput" : "txtError"}
+                  name="password"
+                  onInput={(e) => {
+                    setPassworderror(true);
+                  }}
+                  onChange={handleChange}
+                />
+              </div>
               <p className="pInvalid" ref={goHide}>
                 Invalid credentials.
               </p>
-              <button className="btnLogin" onClick={goLogin}>
-                Login
+              <button className="btnLogin" onClick={reset ? goReset : goLogin}>
+                {reset ? "Continue" : "Login"}
               </button>
-              <p className="pForgot" onClick = {() => {
-                router.push("/?action=reset_password")
-              }}>Forgot Password?</p>
+              <p
+                className="pForgot"
+                onClick={() => {
+                  if (!reset) {
+                    router.push("/?action=reset_password");
+                    setReset(true);
+                  } else {
+                    router.push("/?action=login");
+                    setReset(false);
+                  }
+                }}
+              >
+                {reset ? "I have an account, go Login" : "Forgot Password?"}
+              </p>
             </div>
-          
           </Col>
         </Row>
       </Container>
