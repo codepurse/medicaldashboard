@@ -510,7 +510,7 @@ export default function addClinician(props) {
                   className={
                     props.infoClinician.status === 1
                       ? "btnSuspend btnCancel"
-                      : "btnCancel"
+                      : "btnCancel btnActivate"
                   }
                   onClick={() => {
                     handleShow();
