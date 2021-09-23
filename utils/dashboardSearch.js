@@ -28,9 +28,9 @@ export const searchPota = async (id, query) => {
     },
   };
 
-  await once(config)``
+  await once(config)
     .then((response) => {
-      result = response.data.data;
+      result = response.data;
     })
     .catch((error) => {});
   return result;

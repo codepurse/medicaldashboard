@@ -1,16 +1,16 @@
 import ModalAppointment from "../../../components/pages/dashboard/modalAppointment";
+import Pagination from "../../../components/modules/pagination/pagination";
 import { searchTable, searchPota } from "../../../utils/dashboardSearch";
 import React, { Component, useState, useEffect, useRef } from "react";
+const fetcher = (url) => instance.get(url).then((res) => res.data);
+import { permission, instance } from "../../../utils/validation";
 import ModalInfo from "../../../components/modal/modalInfoEvent";
 import Modaldelete from "../../../components/modal/deleteModal";
-import MessageService from "../../../services/api/api.message";
 import { useAppointmentStore } from "../../../store/store";
-import { permission } from "../../../utils/validation";
 import { Container, Row, Col } from "react-bootstrap";
 import { GoSearch, GoPlus } from "react-icons/go";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2, FiPlus } from "react-icons/fi";
-import Header from "../../../components/header";
 import Avatar from "@material-ui/core/Avatar";
 import Table from "react-bootstrap/Table";
 import Modal from "react-bootstrap/Modal";
@@ -18,22 +18,25 @@ import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import Cookies from "js-cookie";
 import moment from "moment";
-import axios from "axios";
 
-const fetcher = (url) =>
-  MessageService.getEvents(Cookies.get("clinician_id")).then(
-    (response) => response.data
-  );
 export default function appointment() {
+  const id1 = Cookies.get("clinician_id");
   const router = useRouter();
+  const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const setInfo = useAppointmentStore((state) => state.addInfo);
   const setAction = useAppointmentStore((state) => state.addAction);
-  const [search, setSearch] = useState(null);
-  const { data, error } = useSWR(!search ? "Appointment" : null, fetcher, {
-    refreshInterval: 1000,
-  });
+  const { data, error } = useSWR(
+    appglobal.api.base_api +
+      appglobal.api.get_events +
+      "?clinician_id=" +
+      `${id1}&page=${page}&q=${search}`,
+    fetcher
+  );
+  console.log(data);
   console.log(error);
   const [appointment, setAppointment] = useState([]);
+  const [pagecount, setPagecount] = useState(1);
   const [id, setId] = useState("");
   const [show, setShow] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
@@ -46,9 +49,29 @@ export default function appointment() {
   const handleShowEvent = () => setShowInfo(true);
   const handleCloseEvent = () => setShowInfo(false);
   useEffect(() => {
-    setAppointment(data);
-    console.log(data);
+    if (data) {
+      console.log(
+        appglobal.api.base_api +
+          appglobal.api.get_events +
+          "?clinician_id=" +
+          `${id1}&page=${page}q=${search}`
+      );
+      setAppointment(data.data);
+      setPagecount(data.meta.last_page);
+    }
   }, [data]);
+
+  const getPage = (value) => {
+    console.log(value);
+    setPage(value);
+  };
+
+  const setData = (value) => {
+    try {
+      setPagecount(value.meta.last_page);
+      setPatients(value.data);
+    } catch (error) {}
+  };
 
   return (
     <>
@@ -75,7 +98,11 @@ export default function appointment() {
                       searchPota(
                         Cookies.get("clinician_id"),
                         e.currentTarget.value
-                      ).then((res) => setAppointment(res));
+                      ).then((res) => {
+                        setAppointment(res.data);
+                        setPagecount(res.meta.last_page);
+                        console.log(res);
+                      });
                     }}
                   />
                 </div>
@@ -97,7 +124,7 @@ export default function appointment() {
             </Row>
             <div className="conTable" id="no-more-tables">
               <Table className="table-condensed cf">
-                <thead class="cf">
+                <thead>
                   <tr>
                     <th>Start</th>
                     <th>End</th>
@@ -221,6 +248,7 @@ export default function appointment() {
                 </tbody>
               </Table>
             </div>
+            <Pagination page={getPage} mutateData={fetcher} count={pagecount} />
           </Col>
         </Row>
       </Container>

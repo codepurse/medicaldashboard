@@ -64,6 +64,7 @@ export default function Login() {
 
   useEffect(() => {
     router.prefetch("/dashboard");
+    router.replace("/?action=login")
   }, []);
   return (
     <>
@@ -71,7 +72,7 @@ export default function Login() {
       <Container fluid className="conLogin">
         <img src="Image/Logo-white.png" className="img-fluid imgLogoNav" />
         <Row className="align-items-center rowLogin">
-          <Col lg={6} md = {4} className="colVideo">
+          <Col lg={6} md={4} className="colVideo">
             <div className="bgOverlay align-items-center">
               <div className="childOverlay mx-auto">
                 <p className="pOverlayHeader">
@@ -91,7 +92,7 @@ export default function Login() {
               ></source>
             </video>
           </Col>
-          <Col lg={6} md = {8}>
+          <Col lg={6} md={8}>
             <div className="divLogin mx-auto">
               <p className="pHeader">Log in.</p>
               <p className="pHeadersub">
@@ -133,7 +134,16 @@ export default function Login() {
               <button className="btnLogin" onClick={goLogin}>
                 Login
               </button>
-              <p className="pForgot">Forgot Password?</p>
+              <p className="pForgot" onClick = {() => {
+                router.push("/?action=reset_password")
+              }}>Forgot Password?</p>
+            </div>
+            <div >
+              <p className="pHeader">Forgot Password</p>
+              <p className="pHeadersub">
+                Enter the email address associated with your account and we'll
+                send you a link to reset your password.
+              </p>
             </div>
           </Col>
         </Row>

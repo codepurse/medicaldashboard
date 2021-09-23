@@ -11,25 +11,12 @@ function goLogin(data) {
   });
 }
 
-function getEvents(id, cookieSWR) {
+function getEvents(id, page) {
   return request({
-    url: appglobal.api.get_events + "?clinician_id=" + `${id}`,
+    url: appglobal.api.get_events + "?clinician_id=" + `${id}&page=${page}`,
     method: "GET",
     headers: {
       Authorization: "Bearer " + Cookies.get("token"),
-      xsrfCookieName: "token",
-      xsrfHeaderName: "X-XSRF-TOKEN",
-      withCredentials: true,
-    },
-  });
-}
-
-function getEventsSSR(id, cookieSWR) {
-  return request({
-    url: appglobal.api.get_events + "?clinician_id=" + `${id}`,
-    method: "GET",
-    headers: {
-      Authorization: "Bearer " + cookieSWR,
       xsrfCookieName: "token",
       xsrfHeaderName: "X-XSRF-TOKEN",
       withCredentials: true,
@@ -488,7 +475,6 @@ function downloadFile(data) {
 
 const MessageService = {
   getEvents,
-  getEventsSSR,
   getCliniciansSSR,
   getCliniciansFilter,
   createPatient,

@@ -23,8 +23,8 @@ export default function emr() {
   const [page, setPage] = useState(1);
   const { data, error } = useSWR(
     appglobal.api.base_api +
-      appglobal.api.get_all_identified_patient +
-      `?&page=${page}`,
+      appglobal.api.get_patient +
+      `?search=${query}&${filterArray}&page=${page}`,
     fetcher
   );
   const [pagecount, setPagecount] = useState(1);
