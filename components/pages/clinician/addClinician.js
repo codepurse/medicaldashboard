@@ -559,7 +559,12 @@ export default function addClinician(props) {
         centered
         className="modalDelete"
       >
-        <Modaldelete closeModal={handleClose} id={userId} type="clinician" />
+        <Modaldelete
+          closeModal={handleClose}
+          id={userId}
+          type="clinician"
+          statususer={props.infoClinician ? props.infoClinician.status : ""}
+        />
       </Modal>
     </Container>
   );
