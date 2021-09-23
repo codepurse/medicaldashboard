@@ -4,29 +4,22 @@ import Forms from "../../components/pages/Emr/forms/form.js";
 import Formpatient from "../../components/pages/Emr/formPatient";
 import MembersInfo from "../../components/pages/Emr/memberInfo";
 import Notes from "../../components/pages/Emr/notes/notes.js";
-import MessageService from "../../services/api/api.message";
 import appglobal from "../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
 import Avatar from "@material-ui/core/Avatar";
 import { TiArrowBack } from "react-icons/ti";
 import { RiEdit2Fill } from "react-icons/ri";
-import Modal from "react-bootstrap/Modal";
 import { useRouter } from "next/router";
 import { GoPlus } from "react-icons/go";
 import useSWR, { mutate } from "swr";
 import Select from "react-select";
-import Cookies from "js-cookie";
-import moment from "moment";
-import axios from "axios";
 import {
   useMemberInfoStore,
-  useSnackStore,
   useModalStore,
   usePatientStore,
 } from "../../store/store";
 import {
   customStyles,
-  customStyles_error,
   options_relationship,
 } from "../../utils/global";
 
@@ -41,7 +34,7 @@ export default function patient() {
   const changeCancelPatient = usePatientStore(
     (state) => state.changeCancelPatient
   );
-  const [action, setAction] = useState(); // true if add false if edit
+  const [action, setAction] = useState(true); // true if add false if edit
   const [visible, setVisible] = useState(false);
   const [activitiy, setAcitivity] = useState(""); // last action made
   const router = useRouter();
@@ -116,6 +109,12 @@ export default function patient() {
     }
   }
 
+  useEffect(() => {
+    stateHide(false);
+    changeVisible(false);
+    setAction(true);
+  }, []);
+
   function changeAction() {
     setAction();
     setVisible(false);
@@ -135,7 +134,7 @@ export default function patient() {
     if (cancelPatient) {
       setProfilepic(appglobal.api.aws + memberInfo[0].photo);
       setFullname(memberInfo[0].first_name + " " + memberInfo[0].last_name);
-      changeCancelPatient(false)
+      changeCancelPatient(false);
     }
     setVisible(stateVisible);
   }, [stateVisible]);
@@ -342,17 +341,19 @@ export default function patient() {
           </div>
           {(() => {
             if (tab === "demo" && visible) {
-              return (
-                <Formpatient
-                  memberinfo={action ? "" : memberInfo}
-                  action={action}
-                  setAction={changeAction}
-                  url={url}
-                  idfamily={familyid}
-                  photo={changePhoto}
-                  fullname={changeFullname} // trigger if the user edit the profile picture
-                />
-              );
+              try {
+                return (
+                  <Formpatient
+                    memberinfo={action ? "" : memberInfo}
+                    action={action}
+                    setAction={changeAction}
+                    url={url}
+                    idfamily={familyid}
+                    photo={changePhoto}
+                    fullname={changeFullname} // trigger if the user edit the profile picture
+                  />
+                );
+              } catch (error) {}
             } else if (tab === "demo" && !visible) {
               return <MembersInfo memberinfo={memberInfo} />;
             }
