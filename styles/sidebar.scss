@@ -11,6 +11,7 @@
   padding: 12px;
   padding-top: 65px;
   left: 0px;
+  transition: all 0.2s;
   z-index: 2;
   .imgLogo {
     width: 190px;
@@ -38,7 +39,7 @@
       border-radius: 5px;
       padding: 6px;
       transition: all 0.1s;
-      
+      padding-left: 8px !important;
       .centered-label {
         display: flex;
         align-items: center;

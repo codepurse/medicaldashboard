@@ -26,7 +26,11 @@ export default function memberInfo(props) {
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Middle Name</p>
-                    <p className="pInfo">{props.memberinfo[0].middle_name}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].middle_name !== "null"
+                        ? props.memberinfo[0].middle_name
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
@@ -37,14 +41,18 @@ export default function memberInfo(props) {
                   <Col lg={4}>
                     <p className="pTitlesub">Relationship Status</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].marital_status}
+                      {props.memberinfo[0].marital_status !== "null"
+                        ? props.memberinfo[0].marital_status
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Family Relationship</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].family_relationship}
+                      {props.memberinfo[0].family_relationship !== "null"
+                        ? props.memberinfo[0].family_relationship
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
@@ -55,13 +63,19 @@ export default function memberInfo(props) {
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Gender</p>
-                    <p className="pInfo">{props.memberinfo[0].gender}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].gender !== "null"
+                        ? props.memberinfo[0].gender
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Social Security</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].social_security}
+                      {props.memberinfo[0].social_security !== "null"
+                        ? props.memberinfo[0].social_security
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
@@ -69,18 +83,28 @@ export default function memberInfo(props) {
                   <Col lg={4}>
                     <p className="pTitlesub">Driver's License Number</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].license_number}
+                      {props.memberinfo[0].license_number !== "null"
+                        ? props.memberinfo[0].license_number
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Ethnicity</p>
-                    <p className="pInfo">{props.memberinfo[0].ethnic}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].ethnic !== "null"
+                        ? props.memberinfo[0].ethnic
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Location</p>
-                    <p className="pInfo">{props.memberinfo[0].state}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].state !== "null"
+                        ? props.memberinfo[0].state
+                        : ""}
+                    </p>
 
                     <p className="pInfoloading"></p>
                   </Col>
@@ -114,27 +138,47 @@ export default function memberInfo(props) {
 
                   <Col lg={4}>
                     <p className="pTitlesub">Email Address</p>
-                    <p className="pInfo">{props.memberinfo[0].email}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].email !== "null"
+                        ? props.memberinfo[0].email
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Address</p>
-                    <p className="pInfo">{props.memberinfo[0].address}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].address !== "null"
+                        ? props.memberinfo[0].address
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">City</p>
-                    <p className="pInfo">{props.memberinfo[0].city}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].city !== "null"
+                        ? props.memberinfo[0].city
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">State</p>
-                    <p className="pInfo">{props.memberinfo[0].state}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].state !== "null"
+                        ? props.memberinfo[0].state
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Zip Code</p>
-                    <p className="pInfo">{props.memberinfo[0].zipcode}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].zipcode !== "null"
+                        ? props.memberinfo[0].zipcode
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={12}>
@@ -146,14 +190,18 @@ export default function memberInfo(props) {
                   <Col lg={4}>
                     <p className="pTitlesub">Contact Name</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].emergency_name}
+                      {props.memberinfo[0].emergency_name !== "null"
+                        ? props.memberinfo[0].emergency_name
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Contact Number</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].emergency_number}
+                      {props.memberinfo[0].emergency_number !== "null"
+                        ? props.memberinfo[0].emergency_number
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
@@ -195,27 +243,37 @@ export default function memberInfo(props) {
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Name</p>
-                    <p className="pInfo">{props.memberinfo[0].referred_name}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].referred_name !== "null"
+                        ? props.memberinfo[0].referred_name
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Company</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].referred_company}
+                      {props.memberinfo[0].referred_company !== "null"
+                        ? props.memberinfo[0].referred_company
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Phone Number</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].referred_phone}
+                      {props.memberinfo[0].referred_phone !== "null"
+                        ? props.memberinfo[0].referred_phone
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Email</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].referred_email}
+                      {props.memberinfo[0].referred_email !== "null"
+                        ? props.memberinfo[0].referred_email
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
@@ -226,14 +284,18 @@ export default function memberInfo(props) {
                   <Col lg={4}>
                     <p className="pTitlesub">Current Medication</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].current_medication}
+                      {props.memberinfo[0].current_medication !== "null"
+                        ? props.memberinfo[0].current_medication
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Diagnostic Code</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].diagnostic_code}
+                      {props.memberinfo[0].diagnostic_code !== "null"
+                        ? props.memberinfo[0].diagnostic_code
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
@@ -245,29 +307,45 @@ export default function memberInfo(props) {
                   <Col lg={4}>
                     <p className="pTitlesub">Insurance Plan</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].insurance_plan}
+                      {props.memberinfo[0].insurance_plan !== "null"
+                        ? props.memberinfo[0].insurance_plan
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Member Id</p>
-                    <p className="pInfo">{props.memberinfo[0].member_id}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].member_id !== "null"
+                        ? props.memberinfo[0].member_id
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Group Number</p>
-                    <p className="pInfo">{props.memberinfo[0].group_no}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].group_no !== "null"
+                        ? props.memberinfo[0].group_no
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Pharmacy Name</p>
-                    <p className="pInfo">{props.memberinfo[0].pharmacy_name}</p>
+                    <p className="pInfo">
+                      {props.memberinfo[0].pharmacy_name !== "null"
+                        ? props.memberinfo[0].pharmacy_name
+                        : ""}
+                    </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={4}>
                     <p className="pTitlesub">Pharmacy Contact</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].pharmacy_contact_person}
+                      {props.memberinfo[0].pharmacy_contact_person !== "null"
+                        ? props.memberinfo[0].pharmacy_contact_person
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
@@ -275,14 +353,18 @@ export default function memberInfo(props) {
                   <Col lg={4}>
                     <p className="pTitlesub">Pharmacy Number</p>
                     <p className="pInfo">
-                      {props.memberinfo[0].pharmacy_number}
+                      {props.memberinfo[0].pharmacy_number !== "null"
+                        ? props.memberinfo[0].pharmacy_number
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>
                   <Col lg={12}>
                     <p className="pTitlesub">Pharmacy Address</p>
                     <p className="pInfo" style={{ wordBreak: "break-all" }}>
-                      {props.memberinfo[0].pharmacy_address}
+                      {props.memberinfo[0].pharmacy_address !== "null"
+                        ? props.memberinfo[0].pharmacy_address
+                        : ""}
                     </p>
                     <p className="pInfoloading"></p>
                   </Col>

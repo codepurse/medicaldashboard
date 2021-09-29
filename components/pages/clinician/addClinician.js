@@ -1,4 +1,3 @@
-import Modaldelete from "../../../components/modal/deleteModal";
 import MessageService from "../../../services/api/api.message";
 import appglobal from "../../../services/api/api.services";
 import React, { useState, useEffect, useRef } from "react";
@@ -7,7 +6,6 @@ import { IoMdAddCircleOutline } from "react-icons/io";
 import { useSnackStore } from "../../../store/store";
 import Select, { components } from "react-select";
 import { AiOutlineDelete } from "react-icons/ai";
-import Modal from "react-bootstrap/Modal";
 import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import { v4 as uuidv4 } from "uuid";
@@ -17,7 +15,7 @@ import {
   customStyles_error,
   options_phone,
   options_type,
-  options_status_clinician,
+  options_status,
 } from "../../../utils/global";
 
 export default function addClinician(props) {
@@ -25,20 +23,16 @@ export default function addClinician(props) {
   const setSnack = useSnackStore((state) => state.changeState);
   const setSnackMessage = useSnackStore((state) => state.changeMessage);
   const setSnackStyle = useSnackStore((state) => state.changeStyle);
-  const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const inputFileRef = useRef(null);
   const [errorLocation, setErrorLocation] = useState("");
   const [errorFname, setErrorFname] = useState("");
   const [errorLname, setErrorLname] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
   const [errorPassword, setErrorPassword] = useState("");
-  const [errorCurrentPassword, setErrorCurrentPassword] = useState("");
   const [profilepic, setProfilepic] = useState("");
   const [photo, setPhoto] = useState(null);
   const [type, setType] = useState("Admin");
-  const [userstatus, setUserstatus] = useState(1);
+  const [userstatus, setUserstatus] = useState({ value: 1, label: "Active" });
   const [locationlist, setLocationlist] = useState([]);
   const [location, setLocation] = useState([]);
   const [email, setEmail] = useState("");
@@ -47,7 +41,6 @@ export default function addClinician(props) {
   const [lname, setLname] = useState("");
   const [password, setPassword] = useState("");
   const [confirmpass, setConfirmpass] = useState("");
-  const [currentPass, setCurrentPass] = useState("");
   const [userId, setUserId] = useState();
   const [inputFields, setInputFields] = useState([
     { id: uuidv4(), phonenumber: "", type: "" },
@@ -155,8 +148,7 @@ export default function addClinician(props) {
       setInputFields(data_number);
       setUserId(props.infoClinician.user_id);
       setProfilepic(props.infoClinician.photo);
-      setUserstatus(props.infoClinician.status);
-      console.log(router.pathname);
+      console.log(props.infoClinician.clinician_location);
     }
   }, [props]);
 
@@ -178,13 +170,6 @@ export default function addClinician(props) {
       if (!password) {
         setErrorPassword(true);
         clear = 1;
-      }
-    } else {
-      if (router.pathname === "/profile") {
-        if (password && !currentPass) {
-          setErrorPassword(true);
-          setErrorCurrentPassword(true);
-        }
       }
     }
     if (!location) {
@@ -210,9 +195,6 @@ export default function addClinician(props) {
       formData.append("email", email);
       if (password) {
         formData.append("password", password);
-      }
-      if (currentPass) {
-        formData.append("old_password", currentPass);
       }
       if (photo !== null) {
         formData.append("photo", photo, photo.name);
@@ -240,7 +222,7 @@ export default function addClinician(props) {
           }
           setSnack(true);
           setSnackStyle(true);
-          mutate(appglobal.api.base_api + appglobal.api.get_all_clinician);
+          mutate(props.mutatedata);
           if (action) {
             if (props.urlInfo === "clinician") {
               router.push("/clinician_directory");
@@ -332,12 +314,10 @@ export default function addClinician(props) {
           <p className="pTitleInput">User Status </p>
           <Select
             styles={customStyles}
-            options={options_status_clinician}
-            value={options_status_clinician.filter(
-              (option) => option.value === userstatus
-            )}
+            options={options_status}
+            value={userstatus}
             onChange={(e) => {
-              setUserstatus(e.value);
+              setUserstatus(e);
             }}
           />
         </Col>
@@ -457,21 +437,7 @@ export default function addClinician(props) {
         </Col>
       </Row>
       <Row>
-        <Col className={router.pathname === "/profile" ? "col-lg-4" : "d-none"}>
-          <p className="pTitleInput">Current Password</p>
-          <input
-            type="password"
-            className="txtInput"
-            className={errorCurrentPassword ? "txtError" : "txtInput"}
-            onChange={(e) => {
-              setCurrentPass(e.currentTarget.value);
-            }}
-            autoComplete="new-password"
-          />
-        </Col>
-        <Col
-          className={router.pathname === "/profile" ? "col-lg-4" : "col-lg-6"}
-        >
+        <Col lg={6}>
           <p className="pTitleInput">Password</p>
           <input
             type="password"
@@ -483,9 +449,7 @@ export default function addClinician(props) {
             autoComplete="new-password"
           />
         </Col>
-        <Col
-          className={router.pathname === "/profile" ? "col-lg-4" : "col-lg-6"}
-        >
+        <Col lg={6}>
           <p className="pTitleInput">Confirm Password</p>
           <input
             type="password"
@@ -499,36 +463,7 @@ export default function addClinician(props) {
         </Col>
       </Row>
       <Row>
-        {(() => {
-          if (
-            props.infoClinician &&
-            router.pathname === "/clinician/[clinician]"
-          ) {
-            return (
-              <Col lg={6} style={{ marginTop: "10px" }}>
-                <button
-                  className={
-                    props.infoClinician.status === 1
-                      ? "btnSuspend btnCancel"
-                      : "btnCancel btnActivate"
-                  }
-                  onClick={() => {
-                    handleShow();
-                  }}
-                >
-                  {props.infoClinician.status === 1 ? "Suspend" : "Activate"}
-                </button>
-              </Col>
-            );
-          }
-        })()}
-        <Col
-          className={
-            props.action && router.pathname === "/clinician/[clinician]"
-              ? "col-lg-6"
-              : "col-lg-12"
-          }
-        >
+        <Col lg={12}>
           <div className="float-right" style={{ marginTop: "10px" }}>
             <button
               className="btnCancel"
@@ -552,20 +487,6 @@ export default function addClinician(props) {
           </div>
         </Col>
       </Row>
-      <Modal
-        show={show}
-        onHide={handleClose}
-        size="sm"
-        centered
-        className="modalDelete"
-      >
-        <Modaldelete
-          closeModal={handleClose}
-          id={userId}
-          type="clinician"
-          statususer={props.infoClinician ? props.infoClinician.status : ""}
-        />
-      </Modal>
     </Container>
   );
 }

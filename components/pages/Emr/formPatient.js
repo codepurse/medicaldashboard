@@ -125,6 +125,7 @@ export default function formPatient(props) {
       }
       setInputFields(data_number);
     }
+    console.log(props.memberinfo);
   }, [props]);
   const onBtnClick = () => {
     inputFileRef.current.click();
@@ -329,7 +330,7 @@ export default function formPatient(props) {
             type="text"
             className={"txtInput"}
             name="mname"
-            value={state.mname}
+            value={state.mname !== "null" ? state.mname : ""}
             onChange={handleChange}
           />
         </Col>
@@ -415,7 +416,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="license"
-            value={state.license}
+            value={state.license !== "null" ? state.license : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -425,7 +426,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             maxLength="11"
-            value={ss}
+            value={ss !== "null" ? ss : ""}
             onInput={(e) => {
               var val = e.currentTarget.value.replace(/\D/g, "");
               val = val.replace(/^(\d{3})(\d{1,2})/, "$1-$2");
@@ -474,7 +475,7 @@ export default function formPatient(props) {
                   type="text"
                   name="phonenumber"
                   className="txtInput"
-                  value={inputField.phonenumber}
+                  value={inputField.phonenumber !== "null" ? inputField.phonenumber : ""}
                   maxLength="12"
                   onChange={(event) => {
                     handleChangeInput(inputField.id, event);
@@ -525,7 +526,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="email"
-            value={state.email}
+            value={state.email !== "null" ? state.email : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -535,7 +536,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="address"
-            value={state.address}
+            value={state.address !== "null" ? state.address : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -545,7 +546,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="city"
-            value={state.city}
+            value={state.city !== "null" ? state.city : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -555,7 +556,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="state"
-            value={state.state}
+            value={state.state !== "null" ? state.state : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -565,7 +566,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="zip"
-            value={state.zip}
+            value={state.zip !== "null" ? state.zip : ""}
             maximum="5"
             onChange={handleChange}
           ></input>
@@ -580,17 +581,17 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="contactname"
-            value={state.contactname}
+            value={state.contactname !== "null" ? state.contactname : ""}
             onChange={handleChange}
           ></input>
         </Col>
         <Col lg={4}>
-          <p className="pTitlesub">Contact Name</p>
+          <p className="pTitlesub">Contact Number</p>
           <input
             type="text"
             className="txtInput"
             name="contactnumber"
-            value={state.contactnumber}
+            value={state.contactnumber !== "null" ? state.contactnumber : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -650,7 +651,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="refname"
-            value={state.refname}
+            value={state.refname !== "null" ? state.refname : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -660,7 +661,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="refcom"
-            value={state.refcom}
+            value={state.refcom !== "null" ? state.refcom : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -670,7 +671,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="refphone"
-            value={state.refphone}
+            value={state.refphone !== "null" ? state.refphone : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -680,7 +681,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="refemail"
-            value={state.refemail}
+            value={state.refemail !== "null" ? state.refemail : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -694,7 +695,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="medication"
-            value={state.medication}
+            value={state.medication !== "null" ? state.medication : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -704,7 +705,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="diagnostic"
-            value={state.diagnostic}
+            value={state.diagnostic !== "null" ? state.diagnostic : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -729,7 +730,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="insurance"
-            value={state.insurance}
+            value={state.insurance !== "null" ? state.insurance : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -739,7 +740,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="memberid"
-            value={state.memberid}
+            value={state.memberid !== "null" ? state.memberid : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -749,7 +750,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="groupnumber"
-            value={state.groupnumber}
+            value={state.groupnumber !== "null" ? state.groupnumber : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -759,7 +760,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="rxbin"
-            value={state.rxbin}
+            value={state.rxbin !== "null" ? state.rxbin : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -769,7 +770,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="pharmacyperson"
-            value={state.pharmacyperson}
+            value={state.pharmacyperson !== "null" ? state.pharmacyperson : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -779,7 +780,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="pharmacycontact"
-            value={state.pharmacycontact}
+            value={state.pharmacycontact !== "null" ? state.pharmacycontact : ""}
             onChange={handleChange}
           ></input>
         </Col>
@@ -789,7 +790,7 @@ export default function formPatient(props) {
             type="text"
             className="txtInput"
             name="pharmacyaddress"
-            value={state.pharmacyaddress}
+            value={state.pharmacyaddress !== "null" ? state.pharmacyaddress : ""}
             onChange={handleChange}
           ></input>
         </Col>

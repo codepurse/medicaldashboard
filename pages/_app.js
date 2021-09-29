@@ -9,8 +9,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Snack from "../components/elements/snackbar";
 import Modal from "../components/modal/unsaved";
+import withAuth from "../services/auth";
 import { useBussinessStore, useLocationStore } from "../store/store";
-import useSWR, { mutate } from "swr";
+import useSWR, { SWRConfig } from "swr";
 import { useEffect } from "react";
 const fetcher1 = (url) =>
   MessageService.getAllBusiness(1).then((response) => response.data);
@@ -32,14 +33,16 @@ function MyApp({ Component, pageProps }) {
     }
   }, [locationInfo]);
   return (
-    <Layout>
-      <Header />
-      <Snack />
-      <Modal />
-      <NextNprogress color="#29D" height={3} />
-      <Component {...pageProps} />
-    </Layout>
+    <SWRConfig>
+      <Layout>
+        <Header />
+        <Snack />
+        <Modal />
+        <NextNprogress color="#29D" height={3} />
+        <Component {...pageProps} />
+      </Layout>
+    </SWRConfig>
   );
 }
 
-export default MyApp;
+export default withAuth(MyApp);

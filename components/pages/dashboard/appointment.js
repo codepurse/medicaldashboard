@@ -2,11 +2,10 @@ import ModalAppointment from "../../../components/pages/dashboard/modalAppointme
 import Pagination from "../../../components/modules/pagination/pagination";
 import { searchTable, searchPota } from "../../../utils/dashboardSearch";
 import React, { Component, useState, useEffect, useRef } from "react";
-const fetcher = (url) => instance.get(url).then((res) => res.data);
-import { permission, instance } from "../../../utils/validation";
 import ModalInfo from "../../../components/modal/modalInfoEvent";
 import Modaldelete from "../../../components/modal/deleteModal";
 import { useAppointmentStore } from "../../../store/store";
+import { permission, fetcher } from "../../../utils/validation";
 import { Container, Row, Col } from "react-bootstrap";
 import { GoSearch, GoPlus } from "react-icons/go";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -18,25 +17,22 @@ import { useRouter } from "next/router";
 import useSWR, { mutate } from "swr";
 import Cookies from "js-cookie";
 import moment from "moment";
-
 export default function appointment() {
-  const id1 = Cookies.get("clinician_id");
+  const clinicianId = Cookies.get("clinician_id");
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [search, setSearch] = useState("");
+  const [pagecount, setPagecount] = useState(1);
   const setInfo = useAppointmentStore((state) => state.addInfo);
   const setAction = useAppointmentStore((state) => state.addAction);
-  const { data, error } = useSWR(
+  const [search, setSearch] = useState(null);
+  const url =
     appglobal.api.base_api +
-      appglobal.api.get_events +
-      "?clinician_id=" +
-      `${id1}&page=${page}&q=${search}`,
-    fetcher
-  );
-  console.log(data);
+    appglobal.api.get_events +
+    `?clinician_id=
+  ${clinicianId}&page=${page}`;
+  const { data, error } = useSWR(url, fetcher);
   console.log(error);
   const [appointment, setAppointment] = useState([]);
-  const [pagecount, setPagecount] = useState(1);
   const [id, setId] = useState("");
   const [show, setShow] = useState(false);
   const [showInfo, setShowInfo] = useState(false);
@@ -50,22 +46,13 @@ export default function appointment() {
   const handleCloseEvent = () => setShowInfo(false);
   useEffect(() => {
     if (data) {
-      console.log(
-        appglobal.api.base_api +
-          appglobal.api.get_events +
-          "?clinician_id=" +
-          `${id1}&page=${page}q=${search}`
-      );
       setAppointment(data.data);
       setPagecount(data.meta.last_page);
     }
   }, [data]);
-
   const getPage = (value) => {
-    console.log(value);
     setPage(value);
   };
-
   const setData = (value) => {
     try {
       setPagecount(value.meta.last_page);
@@ -98,11 +85,7 @@ export default function appointment() {
                       searchPota(
                         Cookies.get("clinician_id"),
                         e.currentTarget.value
-                      ).then((res) => {
-                        setAppointment(res.data);
-                        setPagecount(res.meta.last_page);
-                        console.log(res);
-                      });
+                      ).then((res) => setAppointment(res));
                     }}
                   />
                 </div>
@@ -262,7 +245,7 @@ export default function appointment() {
         <Modaldelete
           closeModal={handleClose}
           id={id}
-          mutatedata={fetcher}
+          mutatedata={url}
           type="event"
         />
       </Modal>
@@ -275,7 +258,7 @@ export default function appointment() {
         <ModalAppointment
           closeModal={handleCloseAppointment}
           id={id}
-          mutatedata={fetcher}
+          mutatedata={url}
         />
       </Modal>
       <Modal

@@ -33,6 +33,7 @@ module.exports = appglobal = {
     add_time_entries: "/api/auth/time-entries",
     update_time_entries: "/api/auth/time-entries/",
     delete_time_entries: "/api/auth/time-entries/",
+    export_time_entries: "/api/auth/time-export",
 
     // Location Endpoint
     get_all_location: "/api/auth/locations",
@@ -75,6 +76,10 @@ module.exports = appglobal = {
     add_client: "/api/auth/clients",
     get_notif: "/api/auth/notif-user",
 
+    // Lead Endpont
+    get_all_lead:"/api/auth/crm/leads",
+    add_lead:"/api/auth/crm/leads",
+
     // Identifield patient
     get_patient: "/api/auth/get-identified-clients",
 
@@ -86,5 +91,8 @@ module.exports = appglobal = {
 
     // create instant family
     create_family: "/api/auth/clients-to-family",
+
+    // Exportin
+    get_all_time_entries_export: "/api/auth/getTimeEntriesFiltering"
   },
 };

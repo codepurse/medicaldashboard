@@ -1,10 +1,10 @@
 import Pagination from "../../../components/modules/pagination/pagination";
 import { searchTable, searchTime } from "../../../utils/dashboardSearch";
-import { converter, timeType, instance } from "../../../utils/validation";
+import { converter, timeType, fetcher } from "../../../utils/validation";
 import React, { Component, useState, useEffect, useRef } from "react";
 import ModalTime from "../../../components/pages/dashboard/Timemodal";
-const fetcher = (url) => instance.get(url).then((res) => res.data);
 import Modaldelete from "../../../components/modal/deleteModal";
+import appglobal from "../../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTimeStore } from "../../../store/store";
 import { GoSearch, GoPlus } from "react-icons/go";
@@ -17,23 +17,18 @@ import moment from "moment";
 import useSWR from "swr";
 
 export default function appointment() {
-  const id1 = Cookies.get("clinician_id");
-  const setInfo = useTimeStore((state) => state.addInfo);
   const [page, setPage] = useState(1);
   const [pagecount, setPagecount] = useState(1);
-  const [search, setSearch] = useState(null);
+  const setInfo = useTimeStore((state) => state.addInfo);
   const setAction = useTimeStore((state) => state.addAction);
-  const { data, error } = useSWR(
-    !search
-      ? appglobal.api.base_api +
-          appglobal.api.get_all_time_entries +
-          "?clinician_id=" +
-          `${id1}&page=${page}&q=${search}`
-      : null,
-    fetcher
-  );
   const [timeentry, setTimeentry] = useState([]);
+  const url =
+    appglobal.api.base_api +
+    appglobal.api.get_all_time_entries +
+    `?clinician_id=
+  ${Cookies.get("clinician_id")}&page=${page}`;
   const [id, setId] = useState("");
+  const { data, error } = useSWR(url, fetcher);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -47,13 +42,16 @@ export default function appointment() {
       setPagecount(data.meta.last_page);
     }
   }, [data]);
+
   const getPage = (value) => {
-    console.log(value);
     setPage(value);
   };
-
-  useEffect(() => {
-  }, [page]);
+  const setData = (value) => {
+    try {
+      setPagecount(value.meta.last_page);
+      setPatients(value.data);
+    } catch (error) {}
+  };
 
   return (
     <>
@@ -76,8 +74,6 @@ export default function appointment() {
                     className="form-control txtInput"
                     placeholder="Search time entry.."
                     onChange={(e) => {
-                      setSearch(e.currentTarget.value);
-                      setPagecount(res.meta.last_page);
                       searchTime(
                         Cookies.get("clinician_id"),
                         e.currentTarget.value
@@ -90,6 +86,7 @@ export default function appointment() {
                 <button
                   className="btnBlue float-right "
                   onClick={() => {
+                    setAction("Add");
                     handleShowTime();
                   }}
                 >
@@ -177,7 +174,7 @@ export default function appointment() {
           closeModal={handleClose}
           id={id}
           type="timeEntry"
-          mutatedata={fetcher}
+          mutatedata={url}
         />
       </Modal>
       <Modal
@@ -186,7 +183,7 @@ export default function appointment() {
         centered
         className="modalNormal"
       >
-        <ModalTime closeModal={handleCloseTime} />
+        <ModalTime closeModal={handleCloseTime} mutatedata={url} />
       </Modal>
     </>
   );

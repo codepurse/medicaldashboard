@@ -1,7 +1,6 @@
-import axios from "axios";
 import appglobal from "../services/api/api.services";
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 let call;
 let result;
@@ -30,7 +29,7 @@ export const searchPota = async (id, query) => {
 
   await once(config)
     .then((response) => {
-      result = response.data;
+      result = response.data.data;
     })
     .catch((error) => {});
   return result;
@@ -57,13 +56,11 @@ export const searchTime = async (id, query) => {
   return result;
 };
 
-export const searchEmr = async (query, filterEmr) => {
+export const searchEmr = async (id, query) => {
   var config = {
     method: "get",
     url:
-      appglobal.api.base_api +
-      appglobal.api.get_patient +
-      `?&search=${query}&${filterEmr}`,
+      appglobal.api.base_api + appglobal.api.get_patient + `?&search=${query}`,
     headers: {
       "Content-Type": "multipart/form-data",
       Authorization: "Bearer " + Cookies.get("token"),

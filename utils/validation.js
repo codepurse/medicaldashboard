@@ -1,8 +1,6 @@
 import Cookies from "js-cookie";
 import moment from "moment";
-import React from "react";
 import axios from "axios";
-
 
 export const isEmail = (email) => {
   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -23,6 +21,15 @@ export const converter = (start, end) => {
   } else {
     return `${diffdays} Day/s, ${diffhours} hour/s and ${diffmins} minute/s`;
   }
+};
+
+export const hourstominsConverter = (hour) => {
+  let convertTime = moment.duration(hour, "hours");
+  let convertHours = convertTime.hours();
+  let convertMins = convertTime.minutes();
+  let hourToMins = convertHours * 60;
+  let total = convertMins + hourToMins;
+  return total;
 };
 
 export const timeType = (value) => {
@@ -82,3 +89,10 @@ export const riskcategory = (value) => {
       return "Norisk";
   }
 };
+
+export const fetcher = (url, token) =>
+  axios
+    .get(url, {
+      headers: { Authorization: "Bearer " + Cookies.get("token") },
+    })
+    .then((res) => res.data);

@@ -170,9 +170,19 @@ export default function emrSearch(props) {
       <Modal show={show} onHide={handleClose} centered className="modalNormal">
         {(() => {
           if (pathUrl === "emr") {
-            return <ModalAddPatient closeModal={handleClose} />;
+            return (
+              <ModalAddPatient
+                closeModal={handleClose}
+                mutatedata={props.mutatedata}
+              />
+            );
           } else if (pathUrl === "clinician_directory") {
-            return <ModalAddClinician closeModal={handleClose} />;
+            return (
+              <ModalAddClinician
+                closeModal={handleClose}
+                mutatedata={props.mutatedata}
+              />
+            );
           } else if (pathUrl === "location" && tab === "location") {
             return <ModalAddLocation closeModal={handleClose} />;
           } else if (pathUrl === "location" && tab === "business") {

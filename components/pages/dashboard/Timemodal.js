@@ -1,26 +1,26 @@
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
 import React, { useState, useEffect, useCallback } from "react";
+import { hourstominsConverter } from "../../../utils/validation";
 import MessageService from "../../../services/api/api.message";
+import appglobal from "../../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTimeStore } from "../../../store/store";
 import DateFnsUtils from "@date-io/date-fns";
-import Modal from "react-bootstrap/Modal";
 import Grid from "@material-ui/core/Grid";
-import useSWR, { mutate } from "swr";
 import Select from "react-select";
 import Cookies from "js-cookie";
+import { mutate } from "swr";
 import moment from "moment";
-
 
 import {
   customStyles,
-  event_type,
   renderInput,
   customStyles_error,
   activity_type,
 } from "../../../utils/global";
 
 export default function modalTime(props) {
+  const clinician_id = Cookies.get("clinician_id");
   const stateTime = useTimeStore((state) => state.timeInfo);
   const stateAction = useTimeStore((state) => state.action);
   const dateToday = new Date();
@@ -36,6 +36,8 @@ export default function modalTime(props) {
   const [selectedclients, setSelectedClient] = useState("");
   const [errorClients, setErrorclients] = useState(false);
   const [errorActivity, setErrorActivity] = useState(false);
+  const [travelTo, setTravelTo] = useState("");
+  const [travelFrom, setTravelFrom] = useState("");
   const startChange = (date) => {
     setDatefrom(date);
   };
@@ -54,24 +56,25 @@ export default function modalTime(props) {
     });
   }, []);
   useEffect(() => {
+    console.log(stateAction);
     if (stateAction === "Edit") {
       console.log(stateTime);
       setDatefrom(moment(stateTime[0].date_from));
       setDateto(moment(stateTime[0].date_to));
       setNotes(stateTime[0].notes);
-      setId(stateTime[0].id)
+      setId(stateTime[0].id);
       setDefaultActivity({
         value: stateTime[0].activity_type,
         label: stateTime[0].activity_type,
       });
-      setActivitytype(stateTime[0].activity_type)
+      setActivitytype(stateTime[0].activity_type);
       setDefaultClients({
         value: stateTime[0].clients.id,
         label: stateTime[0].clients.first_name + stateTime[0].clients.last_name,
       });
       setSelectedClient(stateTime[0].clients.id);
     }
-  }, [stateTime]);
+  }, []);
   function goSave1() {
     var clear = 0;
     if (!selectedclients) {
@@ -94,17 +97,21 @@ export default function modalTime(props) {
       formData.append("date_to", moment(dateto).format("YYYY/MM/DD HH:mm"));
       formData.append("duration", moment(dateto).diff(moment(datefrom)));
       formData.append("activity_type", activitytype);
+      formData.append("travel_from", hourstominsConverter(travelFrom));
+      formData.append("travel_to", hourstominsConverter(travelTo));
       formData.append("notes", notes);
       if (stateAction === "Edit") {
         formData.append("_method", "PUT");
       }
-      MessageService.createTime(formData, stateAction, id).then((response) => {
-        for (var pair of formData.entries()) {
-          console.log(pair[0] + ", " + pair[1]);
-        }
-        props.closeModal();
-        mutate("TimeEntry");
-      });
+      MessageService.createTime(formData, stateAction, id)
+        .then((response) => {
+          mutate(props.mutatedata);
+          console.log(props.mutatedata);
+          props.closeModal();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }
 
@@ -169,6 +176,24 @@ export default function modalTime(props) {
                 setActivitytype(e.value);
               }}
             />
+          </Col>
+          <Col lg={6} className={stateAction === "Edit" ? "d-none" : ""}>
+            <p className="pTitleInput">Travel To Time (Hrs)</p>
+            <input
+              type="number"
+              className="txtInput"
+              step="0.01"
+              onChange={(e) => setTravelTo(e.currentTarget.value)}
+            ></input>
+          </Col>
+          <Col lg={6} className={stateAction === "Edit" ? "d-none" : ""}>
+            <p className="pTitleInput">Travel From Time (Hrs)</p>
+            <input
+              type="number"
+              className="txtInput"
+              step="0.01"
+              onChange={(e) => setTravelFrom(e.currentTarget.value)}
+            ></input>
           </Col>
           <Col lg={12}>
             <p className="pTitleInput">Notes</p>

@@ -1,7 +1,6 @@
 import request from "../../services/api/api.request";
 import appglobal from "../../services/api/api.services";
 import Cookies from "js-cookie";
-import * as cookie from "cookie";
 
 function goLogin(data) {
   return request({
@@ -11,20 +10,25 @@ function goLogin(data) {
   });
 }
 
-function goReset(data) {
+function getEvents(id, cookieSWR) {
   return request({
-    url: appglobal.api.forgot_password,
-    method: "POST",
-    data: data,
-  });
-}
-
-function getEvents(id, page) {
-  return request({
-    url: appglobal.api.get_events + "?clinician_id=" + `${id}&page=${page}`,
+    url: appglobal.api.get_events + "?clinician_id=" + `${id}`,
     method: "GET",
     headers: {
       Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function getEventsSSR(id, cookieSWR) {
+  return request({
+    url: appglobal.api.get_events + "?clinician_id=" + `${id}`,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + cookieSWR,
       xsrfCookieName: "token",
       xsrfHeaderName: "X-XSRF-TOKEN",
       withCredentials: true,
@@ -118,6 +122,7 @@ function getPatients(page) {
   });
 }
 
+
 function getPatientsFilter(query, data) {
   return request({
     url: appglobal.api.get_patient + `?search=${query}&${data}`,
@@ -188,20 +193,6 @@ function createClinicians(data, action, id) {
     url: action
       ? appglobal.api.update_clinician + id
       : appglobal.api.add_clinician,
-    method: "POST",
-    data: data,
-    headers: {
-      Authorization: "Bearer " + Cookies.get("token"),
-      xsrfCookieName: "token",
-      xsrfHeaderName: "X-XSRF-TOKEN",
-      withCredentials: true,
-    },
-  });
-}
-
-function changeStatusClinician(data) {
-  return request({
-    url: appglobal.api.update_clinicians,
     method: "POST",
     data: data,
     headers: {
@@ -481,11 +472,42 @@ function downloadFile(data) {
   });
 }
 
+function getTimeReporting(params) {
+  return request({
+    url: appglobal.api.get_all_time_entries_export + params,
+    method: "GET",
+    headers: {
+      Authorization: "Bearer " + Cookies.get("token"),
+      xsrfCookieName: "token",
+      xsrfHeaderName: "X-XSRF-TOKEN",
+      withCredentials: true,
+    },
+  });
+}
+
+function exportFile(params,type){
+ 
+    return request({
+      url: appglobal.api.export_time_entries + params,
+      method: "GET",
+      headers: {
+        "Content-Type": type === "pdf" ? "application/pdf": "application/xls" ,
+        Authorization: "Bearer " + Cookies.get("token"),
+        xsrfCookieName: "token",
+        xsrfHeaderName: "X-XSRF-TOKEN",
+        withCredentials: true,
+      },
+      responseType: "blob"
+    });
+
+}
+
+
+
 const MessageService = {
   getEvents,
-  goReset,
+  getEventsSSR,
   getCliniciansSSR,
-  getCliniciansFilter,
   createPatient,
   createInstantfamily,
   createEvent,
@@ -510,16 +532,18 @@ const MessageService = {
   getClients,
   getMembers,
   getPatients,
-  getPatientsFilter,
   getPatientsSSR,
   getBusiness,
+  getPatientsFilter,
+  getCliniciansFilter,
   getAllBusiness,
   deleteTime,
   uploadFile,
   updateLocation,
   createBusiness,
-  changeStatusClinician,
   createNotes,
+  exportFile,
+  getTimeReporting,
 };
 
 export default MessageService;

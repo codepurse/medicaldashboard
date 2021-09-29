@@ -7,8 +7,6 @@ import { useRouter } from "next/router";
 
 export default function location() {
   const router = useRouter();
-  const urlPath = router.pathname;
-  const [pathUrl, setPathUrl] = useState("");
   const [showLocation, setShowlocation] = useState(false);
   const [showBuss, setShowBuss] = useState(false);
   const tab = router.asPath.split("=").pop();

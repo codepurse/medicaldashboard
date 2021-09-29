@@ -1,5 +1,6 @@
 import { customStyles, customStyles_error } from "../../../utils/global";
 import MessageService from "../../../services/api/api.message";
+import { useSettingStore, useSnackStore } from "../../../store/store";
 import appglobal from "../../../services/api/api.services";
 import { Container, Row, Col } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
@@ -11,6 +12,9 @@ import axios from "axios";
 const fetcher = (url) =>
   MessageService.getLocationNoPage().then((response) => response.data);
 export default function addPatient(props) {
+  const setSnack = useSnackStore((state) => state.changeState);
+  const setSnackMessage = useSnackStore((state) => state.changeMessage);
+  const setSnackStyle = useSnackStore((state) => state.changeStyle);
   const { data, error } = useSWR("Location", fetcher);
   console.log(error);
   const [errorFname, setErrorFname] = useState("");
@@ -71,16 +75,19 @@ export default function addPatient(props) {
           );
           MessageService.createPatient(formData1, "add")
             .then((response) => {
-              console.log(response);
+              setSnackMessage("Patient add successfully.");
+              setSnack(true);
+              setSnackStyle(true);
+              console.log(props.mutatedata);
               props.closeModal();
-              mutate(
-                appglobal.api.base_api +
-                  appglobal.api.get_all_identified_patient
-              );
+              mutate(props.mutatedata);
             })
             .catch((error) => {
-              alert("something went wrong");
               props.closeModal();
+              console.log(error);
+              setSnackMessage("Something went wrong.");
+              setSnack(true);
+              setSnackStyle(false);
             });
         })
         .catch((error) => {});

@@ -54,7 +54,11 @@ export default function addBusiness(props) {
       }
       MessageService.createBusiness(formData, props.action, bussId)
         .then((response) => {
-          mutate("BusinessDirectory");
+          mutate(
+            appglobal.api.base_api +
+              appglobal.api.get_all_business +
+              `?&page=1`
+          );
           setSnackMessage("Business sucessfully created.");
           setSnack(true);
           setSnackStyle(true);

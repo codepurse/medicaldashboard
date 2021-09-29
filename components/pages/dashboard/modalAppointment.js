@@ -1,6 +1,6 @@
 import { MuiPickersUtilsProvider, DateTimePicker } from "@material-ui/pickers";
+import { useAppointmentStore, useSnackStore } from "../../../store/store";
 import MessageService from "../../../services/api/api.message";
-import { useAppointmentStore } from "../../../store/store";
 import { Container, Row, Col } from "react-bootstrap";
 import React, { useState, useEffect } from "react";
 import DateFnsUtils from "@date-io/date-fns";
@@ -16,6 +16,9 @@ import {
   customStyles_error,
 } from "../../../utils/global";
 export default function modal(props) {
+  const setSnack = useSnackStore((state) => state.changeState);
+  const setSnackMessage = useSnackStore((state) => state.changeMessage);
+  const setSnackStyle = useSnackStore((state) => state.changeStyle);
   const stateAppointment = useAppointmentStore(
     (state) => state.appointmentInfo
   );
@@ -139,14 +142,20 @@ export default function modal(props) {
       if (stateAction === "Edit") {
         formData.append("_method", "PUT");
       }
-      MessageService.createEvent(formData, stateAction, id).then((response) => {
-        for (var pair of formData.entries()) {
-          console.log(pair[0] + ", " + pair[1]);
-        }
-        props.closeModal();
-        mutate("Appointment");
-        mutate("Notification");
-      });
+      MessageService.createEvent(formData, stateAction, id)
+        .then((response) => {
+          props.closeModal();
+          mutate(props.mutatedata);
+          mutate("Notification");
+          setSnackMessage("Event successfuly added.");
+          setSnack(true);
+          setSnackStyle(true);
+        })
+        .catch((error) => {
+          setSnackMessage("Sorry somethin went wrong.");
+          setSnack(true);
+          setSnackStyle(false);
+        });
     }
   }
 
@@ -252,6 +261,7 @@ export default function modal(props) {
               cols="50"
               name="notes"
               value={state.notes}
+              onChange={handleChange}
             ></textarea>
           </Col>
         </Row>

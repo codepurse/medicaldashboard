@@ -7,7 +7,8 @@ const DynamicNavbar = dynamic(
 );
 const Layout = ({ children }) => {
   const router = useRouter();
-  const showLayout = router.pathname === "/"  ? false : true;
+  
+  const showLayout = router.pathname === "/" || router.pathname === "/time_reporting_print" ? false : true;
   return (
     <>
       {showLayout && <DynamicNavbar />}

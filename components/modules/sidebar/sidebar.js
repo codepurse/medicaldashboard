@@ -14,7 +14,7 @@ export default function sidebar() {
     setPathUrl(urlPath.split("/")[1]);
   }, [urlPath]);
   return (
-    <Container className="divSidebar">
+    <Container className="divSidebar" id = "divSidebar">
       <Row>
         <Col lg={12} className="colUl" style={{ marginTop: "0px" }}>
           <p className="pHeader">ANALYTICS</p>

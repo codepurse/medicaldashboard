@@ -7,10 +7,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import useSWR, { mutate } from "swr";
 import Select from "react-select";
-import Cookies from "js-cookie";
-import moment from "moment";
-import axios from "axios";
-
 export default function addLocation(props) {
   const setSnack = useSnackStore((state) => state.changeState);
   const setSnackMessage = useSnackStore((state) => state.changeMessage);
@@ -98,7 +94,11 @@ export default function addLocation(props) {
       }
       MessageService.createLocation(formData, props.action, locationId)
         .then((response) => {
-          mutate("LocationDirectory");
+          mutate(
+            appglobal.api.base_api +
+              appglobal.api.get_all_location +
+              `?&page=1`
+          );
           setSnackMessage("Location sucessfully created.");
           setSnack(true);
           setSnackStyle(true);

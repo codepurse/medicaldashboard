@@ -3,10 +3,6 @@ import Appointment from "../components/pages/dashboard/appointment";
 import TimeEntry from "../components/pages/dashboard/timeEntry";
 import { Container, Row, Col } from "react-bootstrap";
 import { useSettingStore } from "../store/store";
-import Header from "../components/header";
-import { useRouter } from "next/router";
-import useSWR from "swr";
-
 
 
 export default function dashboard() {
@@ -17,7 +13,11 @@ export default function dashboard() {
   const date = new Date();
   let hours = date.getHours();
   let status =
-    hours < 12 ? "Morning" : hours <= 18 && hours >= 12 ? "Afternoon" : "Evening";
+    hours < 12
+      ? "Morning"
+      : hours <= 18 && hours >= 12
+      ? "Afternoon"
+      : "Evening";
   useEffect(() => {
     setFullname(people[0].user.full_name);
   }, []);

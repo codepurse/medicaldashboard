@@ -1,8 +1,7 @@
 import ViewClinician from "../components/pages/clinician/modalViewClinician";
 import { useMemberInfoStore, useFilterClinicianStore } from "../store/store";
-import { instance, clinicianType, statusType } from "../utils/validation";
+import { fetcher, clinicianType, statusType } from "../utils/validation";
 import Pagination from "../components/modules/pagination/pagination";
-const fetcher = (url) => instance.get(url).then((res) => res.data);
 import Search from "../components/modules/search/search";
 import MessageService from "../services/api/api.message";
 import { Container, Row, Col } from "react-bootstrap";
@@ -32,7 +31,7 @@ export default function clinician() {
     appglobal.api.get_all_clinicians +
     `?&page=${page}`;
   const { data, error } = useSWR(url, fetcher);
-
+  console.log(error);
   const handleShow = () => setShow(true);
   const [clinician, setClinician] = useState([]);
   const [pagecount, setPageCount] = useState();
@@ -110,7 +109,7 @@ export default function clinician() {
       <Header />
       <Container fluid className="conPages">
         <Row>
-          <Search getdata={setData} url={url} />
+          <Search getdata={setData} mutatedata={url} />
           <Col lg={12}>
             <div className="conTable">
               <Table id="no-more-tables">

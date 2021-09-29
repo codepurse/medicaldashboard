@@ -1,7 +1,6 @@
-import { statusType, instance, riskcategory } from "../utils/validation";
+import { statusType, fetcher, riskcategory } from "../utils/validation";
 import { useMemberInfoStore, useFilterEmrStore } from "../store/store";
 import Pagination from "../components/modules/pagination/pagination";
-const fetcher = (url) => instance.get(url).then((res) => res.data);
 import Search from "../components/modules/search/search";
 import MessageService from "../services/api/api.message";
 import { Container, Row, Col } from "react-bootstrap";
@@ -21,15 +20,14 @@ export default function emr() {
   const filterEmr = useFilterEmrStore((state) => state.filter);
   const query = useFilterEmrStore((state) => state.searchQuery);
   const [page, setPage] = useState(1);
-  const { data, error } = useSWR(
+  const url =
     appglobal.api.base_api +
-      appglobal.api.get_patient +
-      `?search=${query}&${filterArray}&page=${page}`,
-    fetcher
-  );
+    appglobal.api.get_all_identified_patient +
+    `?search=${query}&${filterArray}&page=${page}`;
+  const { data, error } = useSWR(url, fetcher);
   const [pagecount, setPagecount] = useState(1);
   const [patients, setPatients] = useState([]);
-  const router = useRouter();
+  const router = useRouter(); 
   const getPage = (value) => {
     setPage(value);
   };
@@ -97,7 +95,7 @@ export default function emr() {
       <Header />
       <Container fluid className="conDashboard conPages">
         <Row>
-          <Search getdata={setData} />
+          <Search getdata={setData} mutatedata= {url} />
           <Col lg={12}>
             <div className="conTable">
               <Table

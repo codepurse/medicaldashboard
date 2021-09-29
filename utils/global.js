@@ -18,6 +18,16 @@ export const activity_type = [
   { value: "Virtual Session", label: "Virtual Session" },
 ];
 
+export const timeEntry_option = [
+  { value: "", label: "All" },
+  { value: "Company Meeting", label: "Company Meeting" },
+  { value: "Phone", label: "Phone" },
+  { value: "Session", label: "Session" },
+  { value: "Shift", label: "Shift" },
+  { value: "Travel", label: "Travel" },
+  { value: "Virtual Session", label: "Virtual Session" },
+];
+
 export const options_phone = [
   { value: "Office", label: "Office" },
   { value: "Mobile", label: "Mobile" },
@@ -53,6 +63,18 @@ export const options_relationship = [
   { value: "Other", label: "Other" },
 ];
 
+export const options_lead = [
+  { value: "Mother", label: "Mother" },
+  { value: "Father", label: "Father" },
+  { value: "Husband", label: "Husband" },
+  { value: "Wife", label: "Wife" },
+  { value: "Brother", label: "Brother" },
+  { value: "Sister", label: "Sister" },
+  { value: "Son", label: "Son" },
+  { value: "Daughter", label: "Daughter" },
+  { value: "Other", label: "Other" },
+];
+
 export const options_risk = [
   { value: "1", label: "Low" },
   { value: "2", label: "Moderate" },
@@ -63,12 +85,6 @@ export const options_risk = [
 export const options_status = [
   { value: 1, label: "Active" },
   { value: 0, label: "Discharged" },
-];
-
-
-export const options_status_clinician = [
-  { value: 1, label: "Active" },
-  { value: 3, label: "Discharged" },
 ];
 
 export const options_race = [
@@ -135,6 +151,32 @@ export const customStyles = {
     background: "#F7F8FA",
     color: "#212121",
     border: "2px solid #EEEEEE",
+    boxShadow: "none",
+    borderRadius: "5px",
+    fontWeight: "500",
+    fontSize: "15px",
+    width: "100%",
+    padding: "1px",
+    marginTop: "5px",
+    fontFamily: "Poppins",
+    marginBottom: "0px",
+    boxShadow: state.isFocused ? "#003171" : null,
+    "&:hover": {
+      borderColor: state.isFocused ? "#003171" : "",
+    },
+  }),
+  singleValue: (provided) => ({
+    ...provided,
+    color: "#212121",
+  }),
+};
+
+export const customStyles_time = {
+  control: (base, state) => ({
+    ...base,
+    background: "tranparent",
+    color: "#212121",
+    border: "1px solid #ced4da",
     boxShadow: "none",
     borderRadius: "5px",
     fontWeight: "500",
@@ -328,7 +370,16 @@ export const renderInput = (props) => (
     className={props.invalid ? "txtError" : "txtInput"}
     onClick={props.onClick}
     value={props.value}
-    placeholder = "Select date"
+    onChange={props.onChange}
+  />
+);
+
+export const renderInput_time = (props) => (
+  <input
+    type="text"
+    className={props.invalid ? "txtError" : "txtInput txtInputTime"}
+    onClick={props.onClick}
+    value={props.value}
     onChange={props.onChange}
   />
 );
